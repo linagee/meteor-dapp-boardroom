@@ -1,0 +1,187 @@
+// sidebar proposals
+.sidebar-proposals {
+    background-color: #F1F1F1;   
+}
+
+.group-proposals-nav {
+    margin: 0px auto;
+    
+    margin-top: 20px;
+    
+    left: 10%;
+    
+    width: 90%;
+    
+    .btn {
+        width: 45%;
+    }
+}
+
+.list-proposals-nav-wrapper {
+    .list-proposals-header {
+        padding-left: 20px;
+        
+        padding-top: 15px;
+
+        border-bottom: 1px solid #ddd;
+        
+        .glyphicon {
+            margin-right: 10px;
+        }
+        
+        h3 {
+            color: #555;
+        }
+    }
+}
+
+// the main proposals filter nav, open, closed etc.
+.list-proposals-nav {
+    .list-group-item {
+        button {
+            width: inherit;
+        }
+    }
+}
+
+.list-proposals-back {
+    margin: 0px;
+    
+    padding: 0px;
+    
+    &:hover {
+        i {
+            padding-left: 20px;
+    
+            color: #555;
+        }
+    }
+    
+    i {
+        padding-left: 15px;
+        
+        font-size: @font-size-h5;
+    
+        color: #aaa;
+    }
+    
+    h4 {
+        font-weight: 500;
+        
+        margin: 0px;
+    
+        color: #aaa;
+    }
+}
+
+// the main proposals list wrapper for scrolling
+.list-proposals-wrapper {
+    overflow: hidden;
+    
+    position: absolute;
+    
+    top: 145px;
+    
+    bottom: 0px;
+    
+    right: 0px;
+    
+    left: 0px;
+
+    .list-proposals {
+        .list-group-item {
+            border-bottom: 1px solid #ddd;
+        }
+
+        // a list item proposal
+        .list-proposals-proposal {
+            h4 {
+                margin-bottom: 0px;
+            }
+            
+            .selected {
+                background-color: #FFF;
+            }
+            
+            a {
+                color: @text-muted;
+            }
+
+            &:hover {
+                background-color: #FFF; 
+
+                a {
+                    color: #333;
+                }
+
+                .glyphicon {
+                    background: #333;
+                }
+            }
+        }
+
+        // load proposal
+        .list-proposals-loading {    
+            background-color: #F1F1F1;
+            
+            border-top: 1px solid #ddd;
+            
+            h4 {
+                margin-bottom: 0px;
+                
+                margin-top: 5px;
+                
+                color: @text-muted;
+            }
+        }
+
+        // start new proposal
+        .list-proposals-new {
+            border-top: 1px solid #ddd;
+            
+            text-transform: lowercase;
+            
+            h4 {
+                margin-top: 5px;
+
+                margin-bottom: 0px;
+
+                color: #999;
+            }
+            
+            &:hover {
+                background-color: #FFF;
+                
+                color: #333;
+            }
+            
+            i {
+                font-size: 18px;
+                
+                padding-left: 1px;
+            }
+
+            .glyphicon-round {
+                background-color: lightgrey;
+            }
+        }
+
+        .glyphicon-round {
+            background: none;
+            
+            line-height: 30px;
+            
+            text-align: center;
+
+            width: 30px;
+
+            height: 30px;
+
+            border-radius: 50%;
+
+            color: #FFF;
+
+            background: #aaa;
+        }
+    }
+}

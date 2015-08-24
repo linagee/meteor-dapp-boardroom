@@ -1,0 +1,55 @@
+<template name="components_discussion">
+    <!--<h3 class="discussion-header">
+        <i class="glyphicon glyphicon-equalizer"></i>
+        Discussion
+    </h3>-->
+
+    <ul class="list-group list-discussion">
+        {{> components_itemComment}}
+        
+        {{> components_itemComment}}
+        
+        <li class="list-group-item row list-discussion-new">
+            <div class="col-xs-2">
+                {{#with accounts 'selected'}}
+                    {{> dapp_identicon identity=address class="dapp-normal"}}
+                {{/with}}
+            </div>
+            <div class="col-xs-10">
+                <textarea id="newComment" class="form-control"
+                          placeholder="Comment"></textarea>
+                
+                <hr />
+                
+                <div class="row new-comment-buttons text-right">
+                    <button type="button" id="sendComment"
+                            class="btn btn-success btn-new-comment">
+                        <i class="glyphicon glyphicon-send"></i> 
+                        Post
+                    </button>
+                </div>
+            </div>
+        </li>
+    </ul>
+    
+    {{#with TemplateVar.get 'state'}}
+        {{#if isPosting}}
+            <div class="alert alert-info">
+                Your comment is being processed... This may take a minute.
+            </div>
+        {{/if}}
+    
+        {{#if isPosted}}
+            <div class="alert alert-success">
+                Your comment has been processed!
+            </div>
+        {{/if}}
+    
+        {{#if isError}}
+            <div class="alert alert-warning">
+                There was an error processing your comment.
+                The error was: {{error}}
+            </div>
+        {{/if}}
+    {{/with}}
+</template>

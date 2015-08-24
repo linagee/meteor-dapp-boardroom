@@ -1,0 +1,31 @@
+<template name="views_accounts">
+    <h1>Accounts</h1>
+    
+    <p class="description description-accounts">Here you can generate, manage, select and remove Ethereum accounts in browser.</p>
+    
+    <ul class="list-group list-accounts-nav list-inline">
+        <li class="list-group-item">
+            <button type="button" class="btn btn-default" id="accounts-new">
+                New
+            </button>
+        </li>
+        <li class="list-group-item">
+            <button type="button" class="btn btn-default" id="accounts-backup">
+                Backup
+            </button>
+        </li>
+        <li class="list-group-item">
+            <a class="btn btn-default" href="/namereg/">
+                NameReg
+            </a>
+        </li>
+    </ul>
+    
+    <ul class="list-group list-accounts">
+    {{#with accounts 'selected'}}
+        {{#each accounts}}
+            {{> components_itemAccount}}
+        {{/each}}
+    {{/with}}
+    </ul>
+</template>

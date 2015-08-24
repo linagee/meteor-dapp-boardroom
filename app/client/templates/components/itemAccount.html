@@ -1,0 +1,45 @@
+<template name="components_itemAccount">
+    <li class="list-group-item pointer list-account-item row {{#if $eq address ../address}}list-account-selected{{/if}}"
+        data-address="{{address}}">
+        <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+        {{> dapp_identicon identity=address class="dapp-normal"}}
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-7 col-lg-7">
+            <h2>
+                {{>components_toName address}}
+            </h2>
+            <p>
+                <input class="web3-address" value="{{address}}"
+                       style="width: 75px">
+                . Bal
+                <strong>
+                {{#with getBalance address}}
+                    {{fromWei balance 'ether'}}
+                {{/with}}
+                </strong>
+                ether
+                {{#if encrypted}}
+                    . <i class="glyphicon glyphicon-lock"></i>
+                {{/if}}
+            </p>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <button class="btn btn-default accounts-faucet 
+                           list-item-faucet">
+                <span class="hidden-xs">
+                    Faucet
+                </span>
+                <i class="visible-xs fa fa-plus-square"></i>
+            </button>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <button class="btn btn-default accounts-remove 
+                           list-item-remove">
+                <span class="hidden-xs">
+                    Remove
+                </span>
+                <i class="visible-xs glyphicon glyphicon-minus"></i>
+            </button>
+        </div>
+    </li>
+</template>

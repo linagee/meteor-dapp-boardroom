@@ -1,5 +1,5 @@
-// sol BoardRoom
-// The core BoardRoom contract, that will simulate the boardroom on the Ethereum blockchain. This contract is in pre-alpha and is still being developed.
+//sol BoardRoom
+// The core BoardRoom contract.
 // Recommended gas: 3000000
 // @authors:
 //   Nick Dodson <thenickdodson@gmail.com>
@@ -306,7 +306,7 @@ contract Democracy is Membered, Proposable, Delegatable {
     function table(bytes32 _name, bytes32 _data, uint _kind
     , address _addr, uint _value, uint _expiry) isMember {
         uint memberId = toMember[msg.sender];
-        addProposal(_name,  _data, _kind, _addr, memberId, _value, numMembers, _expiry);
+        addProposal(_name,  _data, _kind, _addr, memberId, _value, numMembersActive, _expiry);
     }
     
     function vote(uint _pid, bool _type) isMember notExecuted(_pid) {
@@ -337,9 +337,18 @@ contract Chaired is Membered {
     }
 }
 
+contract NameReg {
+	function register(bytes32 name) {}
+	function unregister() {}
+}
+
 contract Middleware { function execute(uint _pid){}}
 
 contract BoardRoom is Chaired, Budgeted, Family, Democracy {
+    //function BoardRoom(address nameregAddr, bytes32 name) {
+    //    NameReg(nameregAddr).register(name);
+    //}
+
     function hasWon(uint _pid) isMember isProposal(_pid) returns (bool) {
         Proposal p = proposals[_pid];
         Member m = members[p.from];
@@ -414,6 +423,12 @@ contract BoardRoom is Chaired, Budgeted, Family, Democracy {
             
         if(p.kind == 14) // Transact with proposal specific middleware
             Middleware(p.addr).execute.value(p.value)(_pid);
+            
+        if(p.kind == 15)
+            NameReg(p.addr).register(p.data);
+            
+        if(p.kind == 16)
+            NameReg(p.addr).unregister();
         
         Democracy.execute(_pid);
     }
@@ -476,4 +491,4 @@ contract BoardRoom is Chaired, Budgeted, Family, Democracy {
 
         return p.executed;
     }
-}
+}   

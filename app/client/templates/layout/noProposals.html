@@ -1,0 +1,22 @@
+<template name="layout_noProposals">
+    <div class="container-fluid col-gutter col-md-6">
+        
+        <hr class="spacer" />
+        
+        <h3>No Proposals</h3>
+
+        <p class="description description-no-proposal">
+            There are no proposals currently tabled with this board. Table a proposal by clicking "Table Proposal". Proposals can send funds, add and remove board members, and do a bunch of other cool things.
+        </p>
+
+        <ul class="list-group list-no-proposal list-inline">
+            <li class="list-group-item">
+                <a class="btn btn-default"
+                   href="/boardroom/{{boardroom.address}}/proposal/new">
+                    <i class="glyphicon glyphicon-file"></i>
+                    Table Proposal
+                </a>
+            </li>
+        </ul>
+    </div>
+</template>

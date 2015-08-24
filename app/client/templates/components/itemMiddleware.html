@@ -1,0 +1,21 @@
+<template name="components_itemMiddleware">
+    <li class="list-group-item row list-middleware-item"
+        data-address="{{address}}">
+        <div class="col-xs-2 col-sm-2 col-md-1 
+                    col-lg-1 text-left">
+            <i class="glyphicon glyphicon-plus middleware-icon"></i>
+        </div>
+        <div class="col-xs-6 col-sm-7 col-md-8 col-lg-8 col-gutter">
+            <a href="/boardroom/{{../boardroom.address}}/middleware/{{address}}">
+                <h3>{{> components_toName address}}</h3>
+            </a>
+            <p>{{description}}</p>
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+            <button class="btn btn-primary btn-middle">
+                <i class="glyphicon glyphicon-plus"></i>
+                Add Middleware
+            </button>
+        </div>
+    </li>        
+</template>

@@ -1,0 +1,8 @@
+<template name="components_itemBoardModel">
+    <a class="list-group-item pointer text-center 
+              list-boards-modal {{#if $eq address ../boardroom.address}}selected{{/if}}"
+        href="/boardroom/{{address}}">
+        {{> dapp_identicon identity=address class="dapp-normal"}}
+        <h6>{{> components_toName address}}</h6>
+    </a>
+</template>

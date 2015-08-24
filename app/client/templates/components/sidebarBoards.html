@@ -1,0 +1,38 @@
+<template name="components_sidebarBoards">
+    <div class="list-sidebar-boards-wrapper scrollbar-macosx">
+        <ul class="list-group list-sidebar-boards">
+            <li class="list-group-item list-sidebar-boards-nav
+                       avalanche-nav" style="display: none;">
+                <i class="glyphicon glyphicon-menu-hamburger"></i>
+            </li>
+            {{#each find 'Boards'}}
+                {{> components_itemBoardModel}}
+            {{/each}}
+            <a class="list-group-item pointer list-boards-modal
+                      text-center list-sidebar-boards-new"
+                href="/boards">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <h6>Add Board</h6>
+            </a>
+            <li class="list-group-item">
+                <hr />
+            </li>
+        </ul>    
+    </div>
+        
+    <ul class="list-group list-sidebar-global no-margin">
+        <li class="list-group-item">
+            <hr />
+        </li>
+        <a class="list-group-item pointer text-center"
+            href="/help">
+                <i class="fa fa-info-circle"></i>
+                <h6>Help</h6>
+        </a>
+        <a class="list-group-item pointer text-center"
+            href="/accounts">
+                <i class="glyphicon glyphicon-user"></i>
+                <h6>Accounts</h6>
+        </a>
+    </ul>
+</template>

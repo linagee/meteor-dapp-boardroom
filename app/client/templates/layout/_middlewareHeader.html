@@ -1,0 +1,66 @@
+<template name="layout_middlewareHeader">
+    <ul class="breadcrumb breadcrumb-middleware">
+        <li>
+            <a href="/boardroom/{{boardroom.address}}/middleware">
+                Middleware
+            </a>
+        </li>
+        {{#if middleware.address}}
+        <li>
+            <a href="/boardroom/{{boardroom.address}}/middleware/{{middleware.address}}">
+                {{> components_toName middleware.address}}
+            </a>
+        </li>
+            {{#unless $eq url.blockLast middleware.address}} 
+            <li class="active">
+                {{capitolize url.blockLast}}
+            </li>
+            {{/unless}}
+        {{/if}}
+    </ul>
+    
+    {{#with middleware}}
+        <h2>{{> components_toName address}}</h2>
+
+        <p class="middleware-url">
+            {{#with decompressURL url}}{{url}}{{/with}}
+        </p>
+
+        <p class="description description-middleware">
+        {{description}}
+        </p>
+
+        <ul class="list-group list-middleware-nav list-inline">
+            <li class="list-group-item">
+                <a class="btn btn-default
+                          {{#if $eq ../url.blockLast address}} 
+                            btn-primary
+                          {{/if}}
+                          {{#if $eq ../url.blockLast 'about'}} 
+                            btn-primary
+                          {{/if}}"
+                   href="/boardroom/{{../boardroom.address}}/middleware/{{address}}/about">
+                    About
+                </a>
+            </li>
+            <li class="list-group-item">
+                <a class="btn btn-default
+                          {{#if $eq ../url.blockLast 'contract'}} 
+                            btn-primary
+                          {{/if}}" href="/boardroom/{{../boardroom.address}}/middleware/{{address}}/contract">
+                    Contract
+                </a>
+            </li>
+            <li class="list-group-item">
+                <a class="btn btn-default
+                          {{#if $eq ../url.blockLast 'interface'}} 
+                            btn-primary
+                          {{/if}}" href="/boardroom/{{../boardroom.address}}/middleware/{{address}}/interface">
+                    Interface
+                </a>
+            </li>
+        </ul>
+
+        <hr />
+    {{/with}}
+</template>

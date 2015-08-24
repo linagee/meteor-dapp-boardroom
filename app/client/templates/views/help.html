@@ -1,0 +1,35 @@
+<template name="views_help">
+    <!-- a complete help section -->
+    <h2>{{i18n 'dapp.help.title'}}</h2>
+    
+    <p class="description description-help">
+        {{i18n 'dapp.help.description'}}
+    </p>
+    
+    <hr />
+    
+    <h3>Proposal Kinds</h3>
+    
+    <p class="description description-kinds">
+        Below is a list of all the proposal types.
+    </p>
+    
+    <ul class="list-group">
+    {{#each br 'proposalKinds'}}
+        <li class="list-group-item">
+            <h4>
+                <i class="glyphicon glyphicon-{{glyphicon}} 
+                          text-muted"></i>
+                {{title}}
+            </h4>
+            <p>
+                Type 
+                <span class="badge">
+                    {{id}}
+                </span>
+            </p>
+            <p class="well">{{description}}</p>
+        </li>
+    {{/each}}
+    </ul>
+</template>

@@ -1,0 +1,20 @@
+<template name="layout_main">    
+    <!-- global wrapper -->
+    <div class="wrapper wrapper-main">
+        <div class="sidebar sidebar-boards">
+            {{> components_sidebarBoards}}
+        </div>
+
+        <!-- content -->
+        <main class="wrapper-container container-main">
+            <div class="col-gutter col-sm-12 col-xs-12 
+                        col-md-12 col-lg-8">                
+                {{> yield region="subheader"}}
+                
+                {{> yield}}
+                
+                {{> yield region="subfooter"}}
+            </div>
+        </main>
+    </div>
+</template>

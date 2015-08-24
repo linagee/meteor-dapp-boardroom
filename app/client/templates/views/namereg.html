@@ -1,0 +1,111 @@
+<template name="views_namereg">
+    <h2>
+        NameReg - Global Name Registry
+    </h2>
+    
+    <p class="description description-namereg">Here you can leverage all of the global or local name registration facitilies. You can choose to use the global name space, available with Ethereum's blockchain, or choose to deploy your own. This utility will allow you to use the NameReg contract so you can register, unregister, lookup and find names in the registry.</p>
+            
+    <p class="text-muted"> The names registered with this contract and interface will be used to display the names of boards and board members in BoardRoom.</p>
+    
+    <hr class="spacer" />
+            
+    <input type="text" class="form-control" id="nameregValue" placeholder="Name or Address" value="{{TemplateVar.get 'value'}}"/>
+    
+    {{#with TemplateVar.get 'state'}}
+        <hr class="spacer no-margin-bottom" />
+    
+        {{#if isMining}}
+        <div class="alert alert-info" role="alert">
+            {{#if isDeploying}}
+                Your NameReg contract is being deployed...
+            {{/if}}
+            {{#if isRegistering}}
+                Your name is being registered...
+            {{/if}}
+            {{#if isUnregistering}}
+                Your name is being unregistered...
+            {{/if}}
+            
+            <span class="badge">
+                <i class="fa fa-cog fa-spin"></i>
+            </span>
+        </div>
+        {{/if}}
+    
+        {{#if isSuccess}}
+        <div class="alert alert-success" role="alert">
+            {{#if isDeploying}}
+                Your NameReg contract has been deployed to the address provided above!
+            {{/if}}
+            {{#if isRegistering}}
+                Your name has been registered!
+            {{/if}}
+            {{#if isUnregistering}}
+                Your name is being unregistered!
+            {{/if}}
+        </div>
+        {{/if}}
+    
+        {{#if isError}}
+        <div class="alert alert-warning" role="alert">
+            {{#if isDeploying}}
+                There was an error deploying your NameReg contract.
+            {{/if}}
+            {{#if isRegistering}}
+                There was an error registering your name.
+                
+            {{/if}}
+            {{#if isUnregistering}}
+                There was an error unregistering your name.
+            {{/if}}
+    
+            The error was: {{error}}
+        </div>
+        {{/if}}
+    {{/with}}
+    
+    <hr />
+    
+    <ul class="list-group list-inline">
+        <li class="list-group-item">
+            <button type="button" 
+                    class="btn btn-default btn-primary 
+                           btn-register">
+                Register
+            </button>
+        </li>
+            
+        <li class="list-group-item">
+            <button type="button" 
+                    class="btn btn-default btn-info 
+                           btn-unregister">
+                Unregister
+            </button>
+        </li>
+            
+        <li class="list-group-item">
+            <button type="button" 
+                    class="btn btn-default btn-lookup">
+                Lookup
+            </button>
+        </li>
+            
+        <li class="list-group-item">
+            <button type="button" 
+                    class="btn btn-default 
+                           btn-deploy">
+                Deploy
+            </button>
+        </li>
+    </ul>
+    
+    <hr />
+    
+    <h3>NameReg Contract Details</h3>
+    
+    <p class="description description-namereg">Here you can find details about the current NameReg contract in use.</p>
+    
+    <label>Address</label>
+    
+    <input type="text" class="web3-address" value="{{nameregAddress}}" />
+</template>

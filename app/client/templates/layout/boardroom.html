@@ -1,0 +1,28 @@
+<template name="layout_boardroom">    
+    <div class="navbar-global navbar-boardroom">
+        {{> yield region="header"}}
+    </div>
+    
+    <!-- main -->
+    <main class="wrapper wrapper-boardroom row">
+        <div class="sidebar sidebar-boards">
+            {{> components_sidebarBoards}}
+        </div>
+
+        <div class="sidebar sidebar-boardroom avalanche-content">
+            {{> components_sidebarBoardroom}}
+        </div>
+
+        <div class="wrapper-container container-boardroom 
+                    container-boardroom-max 
+                    col-xs-12 col-sm-12 col-md-12 col-lg-10">
+            <div class="col-gutter">
+                {{> yield region="subheader"}}
+
+                {{> yield}}
+
+                {{> yield region="subfooter"}}
+            </div>
+        </div>
+    </main>
+</template>

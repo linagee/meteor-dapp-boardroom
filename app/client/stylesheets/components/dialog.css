@@ -1,0 +1,75 @@
+.dialog-wrapper {
+    z-index: 10000;
+    
+    position: fixed;
+    
+    top: 0px;
+    
+    bottom: 0px;
+    
+    right: 0px;
+    
+    left: 0px;
+    
+    background-color: rgba(255,255,255,.3);
+}
+
+.dialog {
+    width: 300px;
+    
+    margin: 0px auto;
+    
+    margin-top: 250px;
+    
+    padding: 20px;
+    
+    display: table;
+    
+    background-color: #F1F1F1;
+}
+
+.dialog-header {
+    font-size: 24px;
+    
+    text-align: left;
+    
+    padding-bottom: 20px;
+    
+    border-bottom: 1px solid #ddd;
+    
+    display: table;
+    
+    width: 100%;
+}
+
+.dialog-body {
+    margin-top: 20px;
+    
+    display: table;
+    
+    width: 100%;
+}
+
+.dialog-inputs input, checkbox, label, textarea {
+    margin-top: 20px;
+    
+    display: table;
+    
+    width: 100%;
+}
+
+.dialog-footer {
+    margin-top: 20px;
+    
+    display: table;
+    
+    width: 100%;
+}
+
+.dialog-footer button {
+    margin-left: 15px;
+    
+    padding: 7px;
+    
+    float: right;
+}

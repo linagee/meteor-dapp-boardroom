@@ -1,0 +1,49 @@
+<template name="views_proposal">
+    {{#with proposal}}
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 
+                        col-gutter proposal-container">  
+                <hr class="spacer" />
+                <hr class="spacer" />
+                
+                {{> components_proposalHeader}}
+                
+                <hr class="spacer" />
+                <hr class="spacer" />
+                <hr class="spacer" />
+                
+                {{> components_proposalContent}}
+                
+                <div class="proposal-vote">
+                    {{> components_proposalVote}}
+                </div>
+                
+                <hr class="spacer" />
+
+                {{> components_proposalData}}
+            </div> 
+            <!--
+            <div class="col-xs-12 col-sm-12 
+                        col-md-12 col-lg-6
+                        col-gutter
+                        proposal-discussion">
+                <hr class="spacer" />
+                
+                <div class="proposal-discussion">
+                    {{> components_discussion}}
+                </div>
+            </div>
+            -->
+        </div>
+        <hr class="spacer" />
+    {{/with}}
+    
+    {{#unless proposal}}
+        {{> layout_noProposals}}
+    {{/unless}}
+    
+    <a class="btn-new-proposal"
+       href="/boardroom/{{boardroom.address}}/proposal/new">
+        <i class="glyphicon glyphicon-plus"></i>
+    </a>
+</template>

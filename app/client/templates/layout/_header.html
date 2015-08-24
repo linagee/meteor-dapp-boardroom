@@ -1,0 +1,31 @@
+<template name="layout_header">     
+    {{#with boardroom}}
+    <ul class="group-list list-inline">   
+        <li class="list-group-item list-boardroom-item 
+                   col-gutter" style="width: 50%;">
+            <a href="/boardroom/{{address}}" class="row">
+                <div class="col-xs-2 col-md-2 col-lg-1">
+                    {{> dapp_identicon identity=address}}
+                </div>
+                <h3 class="col-xs-10 col-md-8 col-lg-11
+                           no-margin-bottom text-left" 
+                    style="margin-top: 7px;">
+                    {{> components_toName address}}
+                </h3>
+            </a>
+        </li>
+        <a class="list-group-item list-boardroom-item 
+                   list-boardroom-modal
+                   col-gutter pull-right"
+           href="/boardroom/{{address}}/proposal/new">
+            <i class="glyphicon glyphicon-file"></i>
+        </a>
+        <a class="list-group-item list-boardroom-item 
+                   list-boardroom-modal
+                   col-gutter pull-right"
+           href="/boardroom/{{address}}/members">
+            <i class="glyphicon glyphicon-user"></i>
+        </a>
+    </ul>
+    {{/with}}
+</template>

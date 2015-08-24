@@ -1,0 +1,20 @@
+<template name="views_boards">
+    <!-- to manage and display all related boards (parent/children) -->
+    <h2>
+        Boards
+    </h2>
+    
+    <p class="description description-boards">
+        Deploy and manage the boards you have access too or are keeping an eye on. If no boards exist, deploy one!
+    </p>
+    
+    {{> components_deploy}}
+    
+    <hr />
+    
+    <ul class="list-group list-boards">
+        {{#each find 'Boards'}}
+            {{> components_itemBoard}}
+        {{/each}}
+    </ul>
+</template>

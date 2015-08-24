@@ -1,0 +1,41 @@
+<template name="components_sidebarProposals">    
+    <ul class="list-group list-proposals-nav-wrapper">  
+        {{> components_itemSelectedAccount}}
+        
+        <div class="btn-group group-proposals-nav" role="group">
+            <button type="button" class="btn btn-default">
+                <strong>{{stats.numUnexecuted}}</strong> 
+                Open
+            </button>
+            <button type="button" class="btn btn-default">
+                <strong>{{stats.numExecuted}}</strong> 
+                Executed
+            </button>
+        </div>
+    </ul>
+    <div class="list-proposals-wrapper scrollbar-macosx">
+        <ul class="list-group list-proposals">
+            <!--<li class="list-group-item row pointer list-proposals-loading">
+                <div class="col-xs-2 col-md-2">
+                    <i class="fa fa-circle-o-notch fa-spin
+                              glyphicon-round"></i>
+                </div>
+                <div class="col-xs-10 col-md-10">
+                    <h4> Loading proposals...</h4>
+                </div>
+            </li>-->
+            {{#each find 'Proposals' boardroom.boardroomFilter}}
+                {{> components_itemProposal}}
+            {{/each}}
+            <a class="list-group-item row pointer list-proposals-new"
+                 href="/boardroom/{{boardroom.address}}/proposal/new">
+                <div class="col-xs-2 col-md-2">
+                    <i class="glyphicon glyphicon-plus glyphicon-round"></i>
+                </div>
+                <div class="col-xs-10 col-md-10">
+                    <h4>New Proposal</h4>
+                </div>
+            </a>
+        </ul>
+    </div>
+</template>

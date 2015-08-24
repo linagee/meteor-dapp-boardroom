@@ -1,0 +1,219 @@
+@global-nav-height: 70px;
+@sidebar-boards-width: 100px;
+@sidebar-proposals-width: 300px;
+@sidebar-boardroom-width: 250px;
+
+.selected-account-item {
+    border-bottom: 1px solid #ddd;
+    
+    //background-color: #777;
+    
+    &:hover {   
+        small, h4 {
+            color: #333;
+        }
+    }
+    
+    small, h4 {
+        color: #444;
+    }
+}
+
+.list-header {
+    .list-group-item {
+        margin-left: 20px;
+    }
+}
+
+.navbar-global {
+    height: @global-nav-height;
+    
+    position: fixed;
+    
+    top: 0px;
+    
+    left: 0px;
+    
+    right: 0px;
+    
+    z-index: 12000;
+    
+    border-bottom: 1px #ddd solid;
+    
+    margin: 0px;
+    
+    padding-left: 20px;
+    
+    background-color: #FFF;
+    
+    padding-top: 5px;
+    
+    .dapp-identicon {
+        width: 40px;
+
+        height: 40px;
+    }
+    
+    .list-boardroom-modal {
+        margin: 0px;
+        
+        padding: 0px;
+        
+        margin-right: 10px;
+        
+        margin-top: 10px;
+        
+        text-align: center;
+        
+        &:visited {
+            background: none;
+        }
+        
+        &:hover {
+            background: none;
+        }
+        
+        i {
+            text-align: center;
+            
+            border-radius: 50%;
+            
+            border: 1px solid #ddd;
+            
+            font-size: 18px;
+            
+            padding: 10px;
+        
+            &:hover {
+                color: #555;
+                
+                background-color: #F1F1F1;
+            }
+        }
+    }
+    
+    .list-boardroom-item {
+        
+        a {
+            color: #555;
+            
+            h3 {
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+.navbar-main {
+    left: @sidebar-boards-width;
+}
+
+.navbar-boardroom-max {
+    left: @sidebar-boards-width;
+}
+
+.navbar-proposals-max {
+    left: @sidebar-boards-width;
+}
+
+.navbar-boardroom {
+    left: (@sidebar-boardroom-width + @sidebar-boards-width);
+}
+
+.navbar-proposals {
+    left: (@sidebar-proposals-width + @sidebar-boards-width);
+}
+
+.wrapper {
+    height: 100vh;
+    
+    position: relative;
+    
+    .sidebar {
+        position: fixed;
+        
+        z-index: 1;
+        
+        height: 100%;
+    }
+    
+    .sidebar-boards {
+        width: @sidebar-boards-width;
+    }
+
+    .wrapper-container {
+        z-index: 0;
+        
+        min-width: 800px;
+        
+        padding-top: 20px;
+        
+        position: fixed;
+        
+        top: @global-nav-height;
+        
+        left: 0px;
+        
+        right: 0px;
+        
+        bottom: 0px;
+        
+        overflow-y: auto;
+    }
+}
+
+.wrapper-main {
+    .container-main {
+        padding-left: @sidebar-boards-width;
+    }
+}
+
+.wrapper-boardroom {
+    .sidebar-boardroom {
+        margin-left: 100px;
+        
+        padding-top: 0px;
+        
+        padding-left: 0px;
+        
+        width: @sidebar-boardroom-width;
+        
+        .list-group-item {
+            padding-left: 20px;
+        }
+    }
+
+    .container-boardroom {
+        height: 90vh;
+    }
+
+    .container-boardroom-max {
+        padding-left: (@sidebar-boardroom-width + @sidebar-boards-width);
+    }
+
+    .container-boardroom-min {
+        padding-left: @sidebar-boards-width;
+    }
+}
+
+.wrapper-proposals {
+    .sidebar-proposals {
+        margin-left: 100px;
+        
+        width: @sidebar-proposals-width;
+        
+        border-right: 1px solid #ddd;
+    }
+
+    .container-proposals {
+        padding-top: 0px;
+    }
+    
+    .container-proposals-max {
+         padding-left: (@sidebar-proposals-width + @sidebar-boards-width);
+    }
+    
+    .container-proposals-min {
+        padding-left: @sidebar-boards-width;
+    }
+}

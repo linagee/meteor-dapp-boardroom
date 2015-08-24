@@ -1,0 +1,28 @@
+<template name="views_children">
+    <h2>
+        <i class="glyphicon glyphicon-link 
+ text-subcommittee"></i>
+        Subcommittees
+    </h2>
+    
+    <p class="description description-children">
+        Here you can create, remove and manage subcommittees to this board. If no subcommittees exist, propose one here.
+    </p>
+    
+    <ul class="list-group list-children-nav list-inline">
+        <li class="list-group-item">
+            <a class="btn btn-default"
+               href="/boardroom/{{boardroom.address}}/proposal/new/addSubcommittee">
+                <i class="glyphicon glyphicon-file 
+                          text-proposal"></i>
+                Propose A Subcommittee
+            </a>
+        </li>
+    </ul>
+    
+    <ul class="list-group list-children">
+        {{#each children}}
+            {{> components_itemChild}}
+        {{/each}}
+    </ul>
+</template>

@@ -1,0 +1,210 @@
+<template name="views_newProposal">
+    <div class="new-proposal col-md-6 col-gutter">
+        <h2 class="new-proposal-header">
+            <i class="glyphicon glyphicon-file 
+ text-proposal"></i>
+            New Proposal
+        </h2>
+
+        <p class="description description-new-proposal">Here you can build and table a new proposal.</p>
+        
+        <hr class="spacer" />
+        
+        {{#with TemplateVar.get 'state'}}
+            {{#if isMining}}
+            <div class="alert alert-info">
+                Your proposal is being processed...
+                <i class="fa fa-spinner fa-pulse"></i>
+            </div>
+            {{/if}}
+        
+            {{#if isError}}
+            <div class="alert alert-warning">
+                There was an error processing your proposal.. {{error}}
+            </div>
+            {{/if}}
+        
+            {{#if isMined}}
+            <div class="alert alert-success">
+                Your proposal has been tabled!
+            </div>
+            {{/if}}
+        {{/with}}
+
+        <ul class="list-group list-new-proposal">
+            <li class="list-group-item">
+                <select class="form-control"
+                        id="proposalKind">
+                    <option value="0">
+                        Proposal Kind
+                    </option>
+                    {{#each br 'proposalKinds'}}
+                        {{#unless $eq id 0}}
+                            {{#if $eq ../kind.name name}}
+                            <option value="{{id}}" selected>
+                                {{titleShort}}
+                            </option>
+                            {{else}}
+                            <option value="{{id}}">
+                                {{titleShort}}
+                            </option>
+                            {{/if}}
+                        {{/unless}}
+                    {{/each}}
+                </select>
+            </li>
+            {{#with TemplateVar.get 'kind'}}
+                {{#with toKind this}}
+                    {{update}}
+                    <li class="list-group-item"></li>
+                    <li class="list-group-item">
+                        <h4>
+                            <i class="glyphicon 
+                                      glyphicon-{{glyphicon}}"></i>
+                            {{title}}
+                        </h4>
+                        <p class="well no-margin-bottom">
+                            <span>Type</span>
+                            <span class="badge">
+                                {{this.id}}
+                            </span>
+                            <br />
+                            <br />
+                            {{description}}
+                        </p>
+                    </li>
+                    <li class="list-group-item"></li>
+                    <li class="list-group-item">
+                        <label>
+                            {{#if nameTitle}}
+                                {{nameTitle}}
+                            {{else}}
+                                Proposal Name
+                            {{/if}}
+                        </label>
+                        {{#if nameDescription}}
+                        <p class="description description-proposal-name">
+                            {{nameDescription}}
+                        </p>
+                        {{/if}}
+                        <input type="text" class="form-control" 
+                               id="proposalName"
+                               placeholder="{{#if namePlaceholder}}{{namePlaceholder}}{{else}}name{{/if}}" />
+                    </li>
+                    {{#if requireAddress}}
+                    <li class="list-group-item">
+                        <label>
+                            {{#if addressTitle}}
+                                {{addressTitle}}
+                            {{else}}
+                                Address
+                            {{/if}}
+                            <i class="text-danger">*</i>
+                        </label>
+                        {{#if addressDescription}}
+                        <p class="description description-proposal-name">
+                            {{addressDescription}}
+                        </p>
+                        {{/if}}
+                        <input type="text" class="form-control"
+                               id="proposalAddress"
+                               placeholder="{{#if addressPlaceholder}} {{addressPlaceholder}}{{else}}Address{{/if}}" />
+                    </li>
+                    {{/if}}
+                    {{#if requireData}}
+                    <li class="list-group-item list-new-proposal-data">
+                        <label>
+                            {{#if dataTitle}}
+                                {{dataTitle}}
+                            {{else}}
+                                Data
+                            {{/if}}
+                            <i class="text-danger">*</i>
+                        </label>
+                        {{#if dataDescription}}
+                        <p class="description description-proposal-name">
+                            {{dataDescription}}
+                        </p>
+                        {{/if}}
+                        <div class="info info-char-count">
+
+                        </div>
+                        <div class="btn-data-compress pointer">
+                            compress
+                        </div>
+                        <input type="text" class="form-control" 
+                               id="proposalData"
+                               placeholder="{{#if dataPlaceholder}}{{dataPlaceholder}}{{else}}Data{{/if}}" />
+                    </li>
+                    {{/if}}
+                    {{#if requireValue}}
+                    <li class="list-group-item">
+                        <label>
+                            {{#if valueTitle}}
+                                {{valueTitle}}
+                            {{else}}
+                                Value
+                            {{/if}}
+                            <i class="text-danger">*</i>
+                        </label>
+                        {{#if valueDescription}}
+                        <p class="description description-proposal-name">
+                            {{valueDescription}}
+                        </p>
+                        {{/if}}
+                        <input type="text" class="form-control" 
+                               id="proposalValue"
+                               placeholder="{{#if valuePlaceholder}}{{valuePlaceholder}}{{else}}Value{{/if}}" />
+                    </li>
+                    {{/if}}
+                    <li class="list-group-item">
+                        <label>
+                            {{#if expiryTitle}}
+                                {{expiryTitle}}
+                            {{else}}
+                                Expiry
+                            {{/if}}
+                            <i class="text-danger">*</i>
+                        </label>
+                        {{#if expiryDescription}}
+                        <p class="description description-proposal-name">
+                            {{expiryDescription}}
+                        </p>
+                        {{/if}}
+                         <div class="input-group datetimepicker">
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                             </span>
+                            <input class="set-due-date form-control"
+                                   id="proposalExpiry"
+                                   placeholder="expiry"
+                                   type="text"/>
+                        </div>
+                    </li>
+                {{/with}}
+            {{/with}}
+            <li class="list-group-item">
+                <hr />
+            </li>
+            <li class="list-group-item">
+                <ul class="list-group list-inline 
+                           list-menu-nav text-right">
+                    <li class="list-group-item">
+                        <button class="btn btn-default
+                                       btn-reset"
+                                id="proposalTable">
+                            Reset
+                        </button>
+                    </li>
+                    <li class="list-group-item">
+                        <button class="btn btn-default 
+                                       btn-table">
+                            <i class="glyphicon glyphicon-file"></i>
+                            Table Proposal
+                        </button>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</template>

@@ -1,0 +1,36 @@
+<template name="components_deploy">
+    {{#with TemplateVar.get 'state'}}
+        {{#if isUndeployed}}
+        <button class="btn btn-deploy btn-primary">
+            <i class="glyphicon glyphicon-download-alt"></i>
+            Deploy A BoardRoom
+        </button>
+        {{/if}}
+
+        {{#if isMining}}
+        <div class="alert alert-info">
+            Your BoardRoom is being deployed...
+            <i class="fa fa-spinner fa-pulse"></i>
+        </div>
+        {{/if}}
+
+        {{#if isError}}
+        <div class="alert alert-warning">
+            There was an error deploying your boardroom. The error was {{error}}
+        </div>
+        {{/if}}
+
+        {{#if isMined}}
+        <div class="alert alert-success">
+            Your boardroom has been deployed to this address: 
+            <input type="text" class="form-control" value="{{address}}">
+        </div>
+
+        <a href="/boardroom/{{address}}">
+            <button type="button" class="btn btn-primary btn-goto">
+                Goto your BoardRoom!
+            </button>
+        </a>
+        {{/if}}
+    {{/with}}
+</template>

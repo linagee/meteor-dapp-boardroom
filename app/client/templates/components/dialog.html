@@ -1,0 +1,28 @@
+<template name="components_dialog">
+    <div class="dialog-wrapper">
+        <div class="dialog">
+            {{#if title}}
+            <div class="dialog-header">{{title}}</div>
+            {{/if}}
+            <div class="dialog-body">
+                {{#if msg}}
+                <div class="dialog-message">{{msg}}</div>
+                {{/if}}
+                <div class="dialog-inputs"></div>
+            </div>
+            <div class="dialog-footer">
+                {{#if buttons.positive}}
+                <button class="dialog-button dialog-button-positive">
+                    {{buttons.positive}}
+                </button>
+                {{/if}}
+                
+                {{#if buttons.negative}}
+                <button class="dialog-button dialog-button-negative">
+                    {{buttons.negative}}
+                </button>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</template>

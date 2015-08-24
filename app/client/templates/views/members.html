@@ -1,0 +1,29 @@
+<template name="views_members">
+    <!-- to display all BoardRoom members -->
+    <h2>
+        <i class="glyphicon glyphicon-user 
+ text-member"></i>
+        Members
+    </h2>
+    
+    <p class="description description-members">Here you can view and manage boardroom members.</p>
+    
+    <ul class="list-group list-members-nav list-inline">
+        <li class="list-group-item">
+            <a href="/boardroom/{{boardroom.address}}/proposal/new/addMember" 
+               class=" btn btn-default">
+                <i class="glyphicon glyphicon-file 
+                          text-proposal"></i>
+                Add Member
+            </a>
+        </li>
+    </ul>
+    
+    <hr style="margin-bottom: 0px;" />
+    
+    <ul class="list-group list-members">
+    {{#each find 'Members' boardroom.boardroomFilter}}
+        {{> components_itemMember}}
+    {{/each}}
+    </ul>
+</template>

@@ -1,0 +1,170 @@
+// Bootstrap Mixins
+@import "./lib/bootstrap/mixins.import.less";
+
+// Custom Mixins
+.blur(@amount) {
+  -webkit-filter: blur(@amount);
+     -moz-filter: blur(@amount);
+       -o-filter: blur(@amount);
+      -ms-filter: blur(@amount);
+          filter: blur(@amount);
+}
+
+.hide {
+    display: none;
+}
+
+.bg-muted {
+    background-color: @text-muted;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.col-gutter {
+    padding-right: 30px;
+    
+    padding-left: 30px;
+}
+
+.height-100 {
+    height: 100vh;
+}
+    
+.list-group {
+    position: relative;
+
+    .list-item-remove {
+        position: absolute;
+
+        top: 20px;
+
+        right: 20px;
+    }
+}
+
+.a-no-style {
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.fa-circle-o-notch.fa-spin {
+    -webkit-transform-origin: 50% 48.9%;
+    -moz-transform-origin: 50% 48.9%;
+    -ms-transform-origin: 50% 48.9%;
+    -o-transform-origin: 50% 48.9%;
+    transform-origin: 50% 48.9%;
+}
+
+.spacer {
+    height: 1px;
+    
+    border: none;
+}
+
+.no-margin {
+    margin: 0px;
+}
+
+.no-margin-bottom {
+    margin-bottom: 0px;
+}
+
+.no-margin-top {
+    margin-top: 0px;
+}
+
+.no-margin-left {
+    margin-left: 0px;
+}
+
+.no-margin-right {
+    margin-right: 0px;
+}
+
+.list-naked {
+    border: 0px;
+    
+    .list-group-item {
+        padding: 0px;
+        
+        border: 0px;
+    }
+}
+
+.lay-table {
+    display: table;
+    
+    clear: both;
+}
+
+.lay-row {
+    display: table-row;
+    
+    clear: both;
+}
+
+.lay-cell {
+    display: table-cell;
+    
+    clear: both;
+}
+
+.list-group-item {
+    background-color: none !important;
+}
+
+.bs-callout {
+    padding: 20px;
+    
+    margin: 20px 0;
+    
+    border: 1px solid #eee;
+    
+    border-left-width: 5px;
+    
+    border-radius: 3px;
+}
+
+.bs-callout-danger {
+    border-left-color: #ce4844;
+}
+
+// custom BoardRoom text color classes
+.text-proposal {
+    color: @proposal-color;
+}
+
+.text-middleware {
+    color: @middleware-color;
+}
+
+.text-home {
+    color: @home-color;
+}
+
+.text-subcommittee {
+    color: @subcommittee-color;
+}
+
+.text-member {
+    color: @member-color;
+}
+
+.text-executive {
+    color: @executive-color;
+}
+
+.text-account {
+    color: @member-color;
+}
+
+.text-help {
+    color: @proposal-color;
+}
+
+.text-namereg {
+    color: @home-color;
+}

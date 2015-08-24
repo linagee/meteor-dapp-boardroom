@@ -1,0 +1,29 @@
+<template name="views_middlewares">
+    <div class="middleware-container middleware-fluid">
+        <h2>
+            <i class="glyphicon glyphicon-th-list 
+ text-middleware"></i>
+            Middleware
+        </h2>
+        
+        <p class="description description-middleware">Here you can use middleware with your boardroom.</p>
+    
+        <hr class="spacer" />
+        
+        <ul class="list-group list-middlewares-nav list-inline text-left">
+            <li class="list-group-item">
+                <a href="/boardroom/{{boardroom.address}}/middleware/registry">
+                    Middleware Registry
+                </a>
+            </li>
+        </ul>
+        
+        <ul class="list-group list-middleware no-margin-bottom">
+        {{#each find 'Middleware'}}
+            {{> components_itemMiddleware}}
+        {{/each}}
+        </ul>
+        
+        <hr class="no-margin-top" />
+    </div>
+</template>

@@ -1,0 +1,28 @@
+{
+    "production": {
+        "geth": {
+            "rpcaddr": "localhost",
+            "rpcport": 8545,
+            "minerthreads": 3,
+            "datadir": "/tmp/embark",
+            "rpccorsdomain": "*",
+            "gasprice": 10000000000000,
+            "unlock": 0,
+            "maxpeers": 0
+        }
+    },
+    "development": {
+        "geth": {
+            "rpcaddr": "localhost",
+            "rpcport": 8545,
+            "minerthreads": 3,
+            "datadir": "/tmp/embark",
+            "rpccorsdomain": "*",
+            "gasprice": 10000000000000,
+            "unlock": 0,
+            "maxpeers": 0
+        },
+        "name": "Boilerplate"
+    },
+    "public": {}
+}

@@ -1,0 +1,32 @@
+<template name="components_proposalHeader">
+    {{#with toKind kind}}
+    <i class="proposal-icon glyphicon glyphicon-{{glyphicon}}"></i>
+    {{/with}}
+    
+    <h1 class="proposal-header text-center">
+        {{#if name}}
+            {{name}}
+        {{else}}
+            {{#with toKind kind}}
+                {{title}}
+            {{/with}}
+        {{/if}}
+    </h1>
+
+    <h4 class="proposal-subheader text-center">
+        {{> dapp_identicon identity=0x000 class="dapp-small icon"}}
+        {{#with toMember from ../boardroom.address}}
+        <span class="member">
+            {{#if isChair}}
+                (Chair)
+            {{/if}}
+            {{> components_toName addr}}
+        </span>
+        {{/with}}
+        <span class="type">
+            {{#with toKind kind}}
+                • {{titleShort}}
+            {{/with}}
+        </span>
+    </h4>
+</template>

@@ -1,0 +1,183 @@
+<template name="components_proposalData">
+    <hr />
+    
+    <h3>Proposal Details</h3>
+    
+    <p class="description description-proposal-data">Here you can find information about the data attached to this proposal.</p>
+    
+    {{#if name}}
+    <div class="bs-callout bs-callout-danger proposal-data">
+        <h5 id="don't-mix-with-other-components" 
+            class="text-muted">
+            NAME
+        </h5>
+        <hr />
+        <h4 id="don't-mix-with-other-components" 
+            style="text-transform: none;">
+            {{name}}
+            <a class="anchorjs-link" href="#">
+                <span class="anchorjs-icon"></span>
+            </a>
+        </h4>
+        
+        <br />
+            
+        {{#with toKind kind}}
+            {{#if nameDescription}}
+                <p class="well">
+                {{nameDescription}}
+                </p>
+            {{/if}}
+        {{/with}}
+        
+        <p class="well">About: This is the 32 byte name value that is attached to this proposal.
+        </p>
+    </div>
+    {{/if}}
+    
+    
+    {{#if kind}}
+    <div class="bs-callout bs-callout-danger proposal-data">
+        {{#with toKind kind}}
+            <h5 id="don't-mix-with-other-components" 
+                class="text-muted">
+                KIND
+            </h5>
+            <hr />
+            <h4 id="don't-mix-with-other-components">
+                    {{title}}
+                <a class="anchorjs-link" href="#">
+                    <span class="anchorjs-icon"></span>
+                </a>
+            </h4>
+            <h5 id="don't-mix-with-other-components">
+                Specified as a type '{{../kind}}' proposal
+                <a class="anchorjs-link" href="#">
+                    <span class="anchorjs-icon"></span>
+                </a>
+            </h5>
+        
+            <br />
+
+            <p class="well">{{description}}</p>
+        {{/with}}
+    </div>
+    {{/if}}
+
+
+    {{#if isValidAddress addr}}
+    <div class="bs-callout bs-callout-danger proposal-data">
+        <h5 id="don't-mix-with-other-components" 
+            class="text-muted">
+            ADDRESS
+        </h5>
+        <hr />
+        <h4 id="don't-mix-with-other-components form-address" 
+            style="text-transform: none; overflow: hidden;">
+            {{#with toKind kind}}
+                {{addressTitle}}:
+            {{/with}}
+            
+            {{addr}}
+            <a class="anchorjs-link" href="#">
+                <span class="anchorjs-icon"></span>
+            </a>
+        </h4>
+        
+        <label>Balance</label>
+        
+        {{#with getBalance addr}}
+            {{fromWei balance 'ether'}} ether
+        {{/with}}
+        
+        <br />
+        <br />
+            
+        {{#with toKind kind}}
+            {{#if addressDescription}}
+                <p class="well">
+                {{addressDescription}}
+                </p>
+            {{/if}}
+        {{/with}}
+    
+        <p class="well">
+            <span class="text-muted">About: </span> 
+            This is the Ethereum address data that is attached to this proposal.
+        </p>
+    </div>
+    {{/if}}
+    
+    {{#with decompressURL data}}
+        {{#if raw}}
+        <h5 id="don't-mix-with-other-components" 
+            class="text-muted">
+            DATA
+        </h5>
+        <hr />
+        <div class="bs-callout bs-callout-danger proposal-data">
+            <h4 id="don't-mix-with-other-components">
+                {{#with toKind ../kind}}
+                    {{dataTitle}}:
+                {{/with}}
+                
+                {{raw}}
+                <a class="anchorjs-link" href="#">
+                    <span class="anchorjs-icon"></span>
+                </a>
+            </h4>
+        
+            <br />
+            
+            {{#with toKind ../kind}}
+                {{#if dataDescription}}
+                    <p class="well">
+                    {{dataDescription}}
+                    </p>
+                {{/if}}
+            {{/with}}
+
+            <p class="well">
+                <span class="text-muted">About: </span> 
+                This is the proposal bytes32 data that is attached to this proposal. The data can be a URL to a website, proposal or video. It can also be used for various middleware applications. The data attached may be compressed (e.g. UR somewebsite.com, or YT SOME_ID).
+            </p>
+        </div>
+        {{/if}}
+    {{/with}}
+
+
+    {{#if value}}
+    <div class="bs-callout bs-callout-danger proposal-data">
+        <h5 id="don't-mix-with-other-components" 
+            class="text-muted">
+            VALUE
+        </h5>
+        <hr />
+        <h4 id="don't-mix-with-other-components">
+            {{#with toKind kind}}
+                {{valueTitle}}:
+            {{/with}}
+            
+            {{value}}
+            <a class="anchorjs-link" href="#">
+                <span class="anchorjs-icon"></span>
+            </a>
+        </h4>
+        
+        <br />
+            
+        {{#with toKind kind}}
+            {{#if valueDescription}}
+                <p class="well">
+                    {{valueDescription}}
+                </p>
+            {{/if}}
+        {{/with}}
+        
+        <p class="well">
+            <span class="text-muted">About: </span> 
+            This is the uint256 value that is attahced to this proposal. The proposal value is often used to delete members, subcommittees or send ether from the board budget.
+        </p>
+    </div>
+    {{/if}}
+</template>

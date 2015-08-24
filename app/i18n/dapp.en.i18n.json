@@ -1,0 +1,553 @@
+{
+	"dapp": {
+		"app": {
+			"title": "BoardRoom"
+			, "buttons": {
+				"view1": "View1"
+				, "view2": "View2"
+			}
+			, "headers": {
+			}
+			, "copyright": "Copyright © BoardRoom 2015. All Rights Reserved"
+		}
+		, "components": {
+            "component": {
+                "header": "A Component Header"
+                , "body": "Body copy"
+            }
+		}
+		, "accounts": {
+			"title": "Accounts"
+			, "defaultName": "Accounts"
+		}
+        , "help": {
+            "title": "Help Page"
+            , "defaultName": "Help"
+            , "description": "This page contains help information and guides to using the BoardRoom apparatus."
+        }
+        , "proposalKinds": [
+            {
+                "id": 0
+                , "name": "unknown"
+                , "title": "Unknown Type"
+                , "titleShort": "Unknown"
+                , "descriptionShort": "Unknonw proposal type."
+                , "description": "If won, this proposal type may or may not complete some useful operations, however, these operations are currently unknown to BoardRoom."
+                , "addressTitle": ""
+                , "nameTitle": ""
+                , "expiryTitle": ""
+                , "valueTitle": ""
+                , "dataTitle": ""
+                , "addressPlaceholder": ""
+                , "namePlaceholder": ""
+                , "expiryPlaceholder": ""
+                , "valuePlaceholder": ""
+                , "dataPlaceholder": ""
+                , "requireAddress": 1
+                , "requireName": 1
+                , "requireExpiry": 1
+                , "requireValue": 1
+                , "requireData": 0
+                , "addressDescription": ""
+                , "nameDescription": ""
+                , "expiryDescription": ""
+                , "valueDescription": ""
+                , "dataDescription": ""
+                , "glyphicon": "question-sign"
+            }
+            , {
+                "id": 1
+                , "name": "allocateFunds"
+                , "title": "Allocate Board Funds"
+                , "titleShort": "Allocate Funds"
+                , "descriptionShort": "Allocate funds to a specified address."
+                , "description": "If won, a type 1 proposal will send a specified amount of funds from the board budget to the specified address. The address and fund amount are proposal specified."
+                , "addressTitle": "Recipiant Address"
+                , "nameTitle": ""
+                , "expiryTitle": ""
+                , "valueTitle": "Fund Amount"
+                , "dataTitle": ""
+                , "addressPlaceholder": "e.g. 0x000"
+                , "namePlaceholder": ""
+                , "expiryPlaceholder": ""
+                , "valuePlaceholder": "e.g. 3500 ether"
+                , "dataPlaceholder": ""
+                , "requireAddress": 1
+                , "requireName": 1
+                , "requireExpiry": 1
+                , "requireValue": 1
+                , "requireData": 0
+                , "glyphicon": "send"
+                , "addressDescription": "All allocated ether will be sent to this address."
+                , "nameDescription": ""
+                , "expiryDescription": ""
+                , "valueDescription": "The amount that will be deducted from the board balance. The default denomination is in 'ether'. Specify otherwise by stating the value and then the denomination like so: '4500 wei'."
+                , "dataDescription": ""
+            }
+            , {
+                "id": 2
+                , "name": "addMember"
+                , "title": "Add A Board Member"
+                , "titleShort": "Add Member"
+                , "descriptionShort": "Add board member at specified address."
+                , "description": "If won, a type 2 proposal will add a board member to the board with the proposal specified address."
+                , "addressTitle": "Member Address"
+                , "nameTitle": ""
+                , "expiryTitle": ""
+                , "valueTitle": ""
+                , "dataTitle": ""
+                , "addressPlaceholder": "e.g. 0x000"
+                , "namePlaceholder": ""
+                , "expiryPlaceholder": ""
+                , "valuePlaceholder": ""
+                , "dataPlaceholder": ""
+                , "requireAddress": 1
+                , "requireName": 1
+                , "requireExpiry": 1
+                , "requireValue": 0
+                , "requireData": 0
+                , "glyphicon": "user"
+                , "addressDescription": "This will be the address of the new member."
+                , "nameDescription": ""
+                , "expiryDescription": ""
+                , "valueDescription": ""
+                , "dataDescription": ""
+            }
+            , {
+                "id": 3
+                , "name": "removeMember"
+                , "title": "Remove Board Member"
+                , "titleShort": "Remove Member"
+                , "descriptionShort": "Remove a sitting board member."
+                , "description": "If won, a type 3 proposal will remove a sitting board member from the board. The member account id is proposal specified."
+                , "addressTitle": ""
+                , "nameTitle": ""
+                , "expiryTitle": ""
+                , "valueTitle": "Member ID Number"
+                , "dataTitle": ""
+                , "addressPlaceholder": ""
+                , "namePlaceholder": ""
+                , "expiryPlaceholder": ""
+                , "valuePlaceholder": "e.g. 1"
+                , "dataPlaceholder": ""
+                , "requireAddress": 0
+                , "requireName": 1
+                , "requireExpiry": 1
+                , "requireValue": 1
+                , "requireData": 0
+                , "glyphicon": "user"
+                , "addressDescription": ""
+                , "nameDescription": ""
+                , "expiryDescription": ""
+                , "valueDescription": "This value is the ID of the member that this proposal, if executed, will remove."
+                , "dataDescription": ""
+            }
+            , {
+                "id": 4
+                , "name": "electChair"
+                , "title": "Elect A New Chair"
+                , "titleShort": "Elect Chair"
+                , "descriptionShort": "Elect a new chair."
+                , "description": "If won, a type 4 proposal will elect a new board chair member. The proposed new chair account is proposal specified."
+                , "addressTitle": ""
+                , "nameTitle": ""
+                , "expiryTitle": ""
+                , "valueTitle": "Member ID Number"
+                , "dataTitle": ""
+                , "addressPlaceholder": ""
+                , "namePlaceholder": ""
+                , "expiryPlaceholder": ""
+                , "valuePlaceholder": "e.g. 1"
+                , "dataPlaceholder": ""
+                , "requireAddress": 0
+                , "requireName": 1
+                , "requireExpiry": 1
+                , "requireValue": 1
+                , "requireData": 0
+                , "glyphicon": "king"
+                , "addressDescription": ""
+                , "nameDescription": ""
+                , "expiryDescription": ""
+                , "valueDescription": ""
+                , "dataDescription": ""
+            }
+            , {
+                "id": 5
+                , "name": "addSubcommittee"
+                , "title": "Add A Subcommittee"
+                , "titleShort": "Add Subcommittee"
+                , "descriptionShort": "Add a submittee to the board."
+                , "description": "If won, a type 5 proposal will add a new subcommittee to the boards subcommittee roster. The address of the new subcommittee is proposal specified."
+                , "addressTitle": "Subcommittee Address"
+                , "nameTitle": ""
+                , "expiryTitle": ""
+                , "valueTitle": ""
+                , "dataTitle": ""
+                , "addressPlaceholder": "e.g. 0x000"
+                , "namePlaceholder": ""
+                , "expiryPlaceholder": ""
+                , "valuePlaceholder": ""
+                , "dataPlaceholder": ""
+                , "requireAddress": 1
+                , "requireName": 1
+                , "requireExpiry": 1
+                , "requireValue": 0
+                , "requireData": 0
+                , "glyphicon": "link"
+                , "addressDescription": "The address of the subcommittee's BoardRoom contract."
+                , "nameDescription": ""
+                , "expiryDescription": ""
+                , "valueDescription": ""
+                , "dataDescription": ""
+            }
+            , {
+                "id": 6
+                , "name": "removeSubcommittee"
+                , "title": "Remove A Subcommittee"
+                , "titleShort": "Remove Subcommittee"
+                , "descriptionShort": "Remove a subcommitee from the board."
+                , "description": "If won, a type 6 proposal will remove a subcommittee from the board subcommittee roster. The subcommittee ID is proposal specified."
+                , "addressTitle": ""
+                , "nameTitle": ""
+                , "expiryTitle": ""
+                , "valueTitle": "Subcommittee ID Number"
+                , "dataTitle": ""
+                , "addressPlaceholder": ""
+                , "namePlaceholder": ""
+                , "expiryPlaceholder": ""
+                , "valuePlaceholder": "e.g. 3"
+                , "dataPlaceholder": ""
+                , "requireAddress": 0
+                , "requireName": 1
+                , "requireExpiry": 1
+                , "requireValue": 1
+                , "requireData": 0
+                , "glyphicon": "link"
+                , "addressDescription": ""
+                , "nameDescription": ""
+                , "expiryDescription": ""
+                , "valueDescription": ""
+                , "dataDescription": ""
+            }
+            , {
+                "id": 7
+                , "name": "setParent"
+                , "title": "Set Executive Board"
+                , "titleShort": "Set Executive"
+                , "descriptionShort": "Set the parent or executive board."
+                , "description": "If won, a type 7 proposal will set an executive or parent board that will have ultimate powers over this boardroom. The parent board address is proposal specified."
+                , "addressTitle": "Parent Board Address"
+                , "nameTitle": ""
+                , "expiryTitle": ""
+                , "valueTitle": ""
+                , "dataTitle": ""
+                , "addressPlaceholder": "e.g. 0x000"
+                , "namePlaceholder": ""
+                , "expiryPlaceholder": ""
+                , "valuePlaceholder": ""
+                , "dataPlaceholder": ""
+                , "requireAddress": 1
+                , "requireName": 1
+                , "requireExpiry": 1
+                , "requireValue": 0
+                , "requireData": 0
+                , "glyphicon": "eye-open"
+                , "addressDescription": "The address of the parent board's BoardRoom contract."
+                , "nameDescription": ""
+                , "expiryDescription": ""
+                , "valueDescription": ""
+                , "dataDescription": ""
+            }
+            , {
+                "id": 8
+                , "name": "bytes32Call"
+                , "title": "Make A Bytes32 Call"
+                , "titleShort": "Bytes32 Call"
+                , "descriptionShort": "Make an outward bytes32 call."
+                , "description": "If won, a type 8 proposal will make an outward bytes32 transactual call to contract. The sha3 hash (32 bytes in length) of the call function and bytes32 data are proposal specified."
+                , "addressTitle": "Contract Address"
+                , "nameTitle": "Method Name"
+                , "expiryTitle": ""
+                , "valueTitle": ""
+                , "dataTitle": "Bytes32 Data"
+                , "addressPlaceholder": "e.g. 0x000"
+                , "namePlaceholder": "e.g. register"
+                , "expiryPlaceholder": ""
+                , "valuePlaceholder": ""
+                , "dataPlaceholder": "e.g. some data"
+                , "requireAddress": 1
+                , "requireName": 1
+                , "requireExpiry": 1
+                , "requireValue": 0
+                , "requireData": 1
+                , "glyphicon": "phone-alt"
+                , "addressDescription": ""
+                , "nameDescription": ""
+                , "expiryDescription": ""
+                , "valueDescription": ""
+                , "dataDescription": ""
+            }
+            , {
+                "id": 9
+                , "name": "uintCall"
+                , "title": "Make A Uint Call"
+                , "titleShort": "Uint Call"
+                , "descriptionShort": "Make an outward uint call."
+                , "description": "If won, a type 9 proposal will make an outward uint transactual call to a proposal specified contract. The sha3 hash (32 bytes in length) of the call function and uint data are proposal specified."
+                , "addressTitle": "Contract Address"
+                , "nameTitle": "Method Name"
+                , "expiryTitle": ""
+                , "valueTitle": "UINT256 Value"
+                , "dataTitle": ""
+                , "addressPlaceholder": "e.g. 0x000"
+                , "namePlaceholder": "e.g. multiply"
+                , "expiryPlaceholder": ""
+                , "valuePlaceholder": "e.g. 45"
+                , "dataPlaceholder": ""
+                , "requireAddress": 1
+                , "requireName": 1
+                , "requireExpiry": 1
+                , "requireValue": 1
+                , "requireData": 0
+                , "glyphicon": "phone-alt"
+                , "addressDescription": ""
+                , "nameDescription": ""
+                , "expiryDescription": ""
+                , "valueDescription": ""
+                , "dataDescription": ""
+            }
+            , {
+                "id": 10
+                , "name": "suicide"
+                , "title": "Suicide Board Contract"
+                , "titleShort": "Suicide Contract"
+                , "descriptionShort": "Suicide or delete this boardroom contract."
+                , "description": "If won, a type 10 proposal will suicide this BoardRoom contract, deleting the contract and all of it's contents from the Ethereum blockchain. There are no proposal specified variables for this proposal type."
+                , "addressTitle": ""
+                , "nameTitle": ""
+                , "expiryTitle": ""
+                , "valueTitle": ""
+                , "dataTitle": ""
+                , "addressPlaceholder": ""
+                , "namePlaceholder": ""
+                , "expiryPlaceholder": ""
+                , "valuePlaceholder": ""
+                , "dataPlaceholder": ""
+                , "requireAddress": 0
+                , "requireName": 1
+                , "requireExpiry": 1
+                , "requireValue": 0
+                , "requireData": 0
+                , "glyphicon": "fire"
+                , "addressDescription": ""
+                , "nameDescription": ""
+                , "expiryDescription": ""
+                , "valueDescription": ""
+                , "dataDescription": ""
+            }
+            , {
+                "id": 11
+                , "name": "changePermissions"
+                , "title": "Change Member Permissions"
+                , "titleShort": "Change Permissions"
+                , "descriptionShort": "Give or change a member's permissions"
+                , "description": "If won, a type 11 proposal will give or change a sitting board members special permissions. A special permission will allow a boardmember to complete a board task without having the board vote on it. Any proposals tabled with the permissions type granted to this member will automatically be won and executable. The member account ID and special permission ID are proposal specified."
+                , "addressTitle": "Member Address"
+                , "nameTitle": ""
+                , "expiryTitle": ""
+                , "valueTitle": "Permission Type"
+                , "dataTitle": ""
+                , "addressPlaceholder": "e.g. 0x000"
+                , "namePlaceholder": ""
+                , "expiryPlaceholder": ""
+                , "valuePlaceholder": "e.g. 3"
+                , "dataPlaceholder": ""
+                , "requireAddress": 1
+                , "requireName": 1
+                , "requireExpiry": 1
+                , "requireValue": 1
+                , "requireData": 0
+                , "glyphicon": "transfer"
+                , "addressDescription": ""
+                , "nameDescription": ""
+                , "expiryDescription": ""
+                , "valueDescription": ""
+                , "dataDescription": ""
+            }
+            , {
+                "id": 12
+                , "name": "changeAddress"
+                , "title": "Change A Member's Address"
+                , "titleShort": "Change Member Address"
+                , "descriptionShort": "Change a sitting members account address."
+                , "description": "If won, a type 12 proposal will change the proposal specified member's address to the new address specified in the proposal. The address and member account are proposal specified."
+                , "addressTitle": "New Address"
+                , "nameTitle": ""
+                , "expiryTitle": ""
+                , "valueTitle": "Member ID Number"
+                , "dataTitle": ""
+                , "addressPlaceholder": "e.g. 0x000"
+                , "namePlaceholder": ""
+                , "expiryPlaceholder": ""
+                , "valuePlaceholder": "e.g. 4"
+                , "dataPlaceholder": ""
+                , "requireAddress": 1
+                , "requireName": 1
+                , "requireExpiry": 1
+                , "requireValue": 1
+                , "requireData": 0
+                , "glyphicon": "transfer"
+                , "addressDescription": ""
+                , "nameDescription": ""
+                , "expiryDescription": ""
+                , "valueDescription": ""
+                , "dataDescription": ""
+            }
+            , {
+                "id": 13
+                , "name": "setConfig"
+                , "title": "Set The Boards Config Address"
+                , "titleShort": "Set Board Config"
+                , "descriptionShort": "Set the boardroom's configuration address."
+                , "description": "If won, a type 13 proposal will set the boardrooms configuration address to the address that is specified in the proposal. The configuration address can allow the board to connect with third-party contractual services."
+                , "addressTitle": "Config Contract Address"
+                , "nameTitle": ""
+                , "expiryTitle": ""
+                , "valueTitle": ""
+                , "dataTitle": ""
+                , "addressPlaceholder": "e.g. 0x0000"
+                , "namePlaceholder": ""
+                , "expiryPlaceholder": ""
+                , "valuePlaceholder": ""
+                , "dataPlaceholder": ""
+                , "requireAddress": 1
+                , "requireName": 1
+                , "requireExpiry": 1
+                , "requireValue": 0
+                , "requireData": 0
+                , "glyphicon": "sort"
+                , "addressDescription": ""
+                , "nameDescription": ""
+                , "expiryDescription": ""
+                , "valueDescription": ""
+                , "dataDescription": ""
+            }
+            , {
+                "id": 14
+                , "name": "executeMiddleware"
+                , "title": "Execute A Middleware Transaction"
+                , "titleShort": "Execute Middleware"
+                , "descriptionShort": "Execute a proposal specific middleware call."
+                , "description": "If won, a type 14 proposal will execute an outware transactional middleware contract call. The middleware address, and optional transactional value are proposal specified."
+                , "addressTitle": "Contract Address"
+                , "nameTitle": ""
+                , "expiryTitle": ""
+                , "valueTitle": "Fund Amount"
+                , "dataTitle": ""
+                , "addressPlaceholder": "e.g. 0x000"
+                , "namePlaceholder": ""
+                , "expiryPlaceholder": ""
+                , "valuePlaceholder": "e.g. 346 ether"
+                , "dataPlaceholder": ""
+                , "requireAddress": 1
+                , "requireName": 1
+                , "requireExpiry": 1
+                , "requireValue": 1
+                , "requireData": 1
+                , "glyphicon": "flash"
+                , "addressDescription": "The address of the middleware contract."
+                , "nameDescription": ""
+                , "expiryDescription": ""
+                , "valueDescription": "The amount removed from the board budget to be sent to the middleware."
+                , "dataDescription": ""
+            }
+            , {
+                "id": 15
+                , "name": "nameregRegister"
+                , "title": "Register Board Name"
+                , "titleShort": "Register Name"
+                , "descriptionShort": "Register this board with a NameReg contract."
+                , "description": "Register this board with a global name registry contract."
+                , "addressTitle": "Contract Address"
+                , "nameTitle": ""
+                , "expiryTitle": ""
+                , "valueTitle": ""
+                , "dataTitle": "Board Name"
+                , "addressPlaceholder": "e.g. 0x000"
+                , "namePlaceholder": ""
+                , "expiryPlaceholder": ""
+                , "valuePlaceholder": ""
+                , "dataPlaceholder": "e.g. my org name"
+                , "requireAddress": 1
+                , "requireName": 1
+                , "requireExpiry": 1
+                , "requireValue": 0
+                , "requireData": 1
+                , "glyphicon": "saved"
+                , "addressDescription": "The address of the NameReg registry contract."
+                , "nameDescription": ""
+                , "expiryDescription": ""
+                , "valueDescription": ""
+                , "dataDescription": "The board name."
+            }
+            , {
+                "id": 16
+                , "name": "nameregUnregister"
+                , "title": "Unregister Board Name"
+                , "titleShort": "Unregister Name"
+                , "descriptionShort": "Unregister this board's name with a NameReg contract."
+                , "description": "If won, a type 16 proposal will unregister this board's name from a global name registry contract."
+                , "addressTitle": "Contract Address"
+                , "nameTitle": ""
+                , "expiryTitle": ""
+                , "valueTitle": ""
+                , "dataTitle": ""
+                , "addressPlaceholder": "e.g. 0x0000"
+                , "namePlaceholder": ""
+                , "expiryPlaceholder": ""
+                , "valuePlaceholder": ""
+                , "dataPlaceholder": ""
+                , "requireAddress": 1
+                , "requireName": 0
+                , "requireExpiry": 1
+                , "requireValue": 0
+                , "requireData": 0
+                , "glyphicon": "open"
+                , "addressDescription": "The address of the NameReg registry contract."
+                , "nameDescription": ""
+                , "expiryDescription": ""
+                , "valueDescription": ""
+                , "dataDescription": ""
+            }
+            , {
+                "id": 17
+                , "name": "generalProposal"
+                , "title": "A General Proposal"
+                , "titleShort": "General Proposal"
+                , "descriptionShort": "A proposal that does not change the BoardRoom directly."
+                , "description": "If won, a type 17 proposal may change the BoardRoom, but it does not do it explicitly. This type of proposal can be used to table general documents or effect middleware."
+                , "addressTitle": ""
+                , "nameTitle": ""
+                , "expiryTitle": ""
+                , "valueTitle": ""
+                , "dataTitle": ""
+                , "addressPlaceholder": ""
+                , "namePlaceholder": ""
+                , "expiryPlaceholder": ""
+                , "valuePlaceholder": ""
+                , "dataPlaceholder": ""
+                , "requireAddress": 1
+                , "requireName": 1
+                , "requireExpiry": 1
+                , "requireValue": 1
+                , "requireData": 1
+                , "glyphicon": "th-list"
+                , "addressDescription": ""
+                , "nameDescription": ""
+                , "expiryDescription": ""
+                , "valueDescription": ""
+                , "dataDescription": ""
+            }
+        ]
+	}
+}

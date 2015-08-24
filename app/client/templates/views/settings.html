@@ -1,0 +1,74 @@
+<template name="views_settings">
+    <h2>
+        Settings
+    </h2>
+    
+    <p class="description description-setttings">
+        Here you can change things like the RPC provider and view the current connected node's information (i.e. version).
+    </p>
+    
+    <hr />
+    
+    <h3>Recommended Geth Settings</h3>
+    
+    <p class="description description-support-contact">
+    BoardRoom requires a working geth node in order to function. Below are the recommneded commandline settings for Ethereum's go implementation (i.e. "go-ethereum" or "geth"). Make sure you have at least one account unlocked for use with the accounts ether faucet.</p>
+    
+    <pre class="info info-geth">geth --rpc --rpccorsdomain "*" --shh --unlock 0</pre>
+    
+    <hr />
+    
+    <h3>RPC Provider</h3>
+    
+    <p class="description description-rpc-provider">
+        The RPC provider is the information provider and connection between the BoardRoom interface and the node. It services the calls to the Ethereum network. You can alter the rpc provider location, by changing the value below and selecting 'Update Provider'.
+    </p>
+    
+    <input type="text" 
+           class="form-control input-rpc-provider"
+           value="{{TemplateVar.get 'httpProvider'}}"/>
+    
+    <br>
+    
+    <button class="btn btn-default btn-rpc-provider">
+        Update Provider
+    </button>
+    
+    <hr />
+    
+    <h3>Node/Client Info</h3>
+    
+    <p class="description description-node">
+        The information below will outline your Ethereum node and client information. 
+    </p>
+    
+    {{#with TemplateVar.get 'nodeInfo'}}
+    <pre class="info info-node">API Version: <br>{{api}}
+    
+Client Info: <br>{{client}}</pre>
+    {{/with}}
+    
+    <hr />
+    
+    <h3>Seed Content</h3>
+    
+    <p class="description description-seed">You may want to see boardroom in action without connecting it directly to the Ethereum network. Here you can provide fake seed content to BoardRoom in order to view it in action.</p>
+    
+    <button class="btn btn-default btn-seed">Seed Content</button>
+    
+    <hr />
+    
+    <h3 class="text-danger">Clear Persistent Data</h3>
+    
+    <p class="description description-seed">Here you can clear all persisten data in BoardRoom, this means deleting all browser stored information, such as boards, proposals, and member data.</p>
+    
+    <button class="btn btn-danger btn-clear">Clear</button>
+    
+    <hr />
+    
+    <h3 class="text-danger">Remove this Board</h3>
+    
+    <p class="description description-seed">This will remove the board from local browser storage.</p>
+    
+    <button class="btn btn-danger btn-remove">Remove Board</button>
+</template>

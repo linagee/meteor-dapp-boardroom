@@ -1,0 +1,28 @@
+<template name="layout_proposals">    
+    <div class="navbar-global navbar-proposals">
+        {{> yield region="header"}}
+    </div>
+    
+    <!-- main -->
+	<main class="wrapper wrapper-proposals row">
+        <div class="sidebar sidebar-boards">
+            {{> components_sidebarBoards}}
+        </div>
+        
+        <div class="sidebar sidebar-proposals avalanche-content">
+            {{> components_sidebarProposals}}
+        </div>
+        
+        <div class="wrapper-container container-proposals
+                    container-proposals-max col-md-12">
+            
+            {{> yield region="subheader"}}
+
+            {{> yield}}
+            
+            {{> yield region="subfooter"}}
+        </div>
+	</main>
+    
+    {{update}}
+</template>

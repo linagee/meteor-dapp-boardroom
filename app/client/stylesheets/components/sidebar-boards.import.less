@@ -1,0 +1,113 @@
+// main wrapper containing the boards list
+.list-sidebar-boards-wrapper {
+    position: absolute;
+    
+    top: 0px;
+    
+    left: 0px;
+    
+    right: 0px;
+    
+    bottom: 200px;
+    
+    // the boards list containing the board icons
+    .list-sidebar-boards {        
+        .selected {
+            background: #555;
+            
+            color: #F1F1F1;
+        }
+        
+        .list-sidebar-boards-new {
+            color: #555;
+            
+            i {
+                font-size: 28px;
+
+                margin-bottom: 10px;
+            }
+        }
+        
+        .list-sidebar-boards-nav {
+            font-size: 28px;
+            
+            text-align: center;
+            
+            cursor: pointer;
+            
+            color: #F1F1F1;
+            
+            padding: 0px;
+            
+            line-height: 70px;
+            
+            text-align: center;
+            
+            &:hover {
+                background: #595959;
+            }
+        }
+        
+        .list-boards-modal {
+            padding-top: 20px;
+            
+            h6 {
+                margin-top: 10px;
+                
+                font-weight: bold;
+            }
+            
+            &:hover {
+                background-color: #595959;
+                
+                color: #F1F1F1;
+            }
+        }
+    }
+}
+
+// help and accounts global nav
+.list-sidebar-global {
+    position: absolute;
+    
+    background-color: #333;
+    
+    bottom: 0px;
+    
+    right: 0px;
+    
+    left: 0px;
+    
+    .list-group-item {
+        width: 100%;
+        
+        h6 {
+            font-weight: bold;
+        }
+        
+        i {
+            font-size: 28px;
+            
+            margin-bottom: 10px;
+        }   
+    }
+}
+    
+.sidebar-boards {
+    background-color: #333;
+    
+    hr {
+        border-color: #444;
+        
+        margin: 0px;
+    }
+    
+    a {
+        color: #ccc;
+    }
+    
+    .list-group {
+        .list-group-item {
+        }
+    }
+}

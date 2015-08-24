@@ -1,0 +1,74 @@
+<template name="components_sidebarBoardroom">
+    <!-- menu options for the boardroom -->
+    {{#with boardroom}}
+    <ul class="list-group list-boardroom-sidebar">     
+        {{> components_itemSelectedAccount}}  
+        <a class="list-group-item list-boardroom-home"
+           href="/boardroom/{{address}}">
+            <i class="glyphicon glyphicon-home 
+                      text-home"></i>
+            <span>Home</span>
+        </a>
+        <a class="list-group-item list-boardroom-proposals"
+           href="/boardroom/{{address}}/proposal/recent">
+            <i class="glyphicon glyphicon-file 
+                      text-proposal"></i>
+            <span>
+                Proposals 
+                <small class="glyphicon 
+                              glyphicon-chevron-right"
+                       style="color: #aaa;">
+                </small>
+            </span>
+        </a>
+        <!--<a class="list-group-item list-boardroom-middleware"
+            href="/boardroom/{{address}}/middleware">
+            <i class="glyphicon glyphicon-th-list 
+                      text-middleware"></i>
+            <span>Middleware</span>
+        </a>-->
+        <a class="list-group-item list-boardroom-members"
+            href="/boardroom/{{address}}/members">
+            <i class="glyphicon glyphicon-user 
+                      text-member"></i>
+            <span>Members</span>
+        </a>
+        <a class="list-group-item list-boardroom-parent"
+            href="/boardroom/{{address}}/parent">
+            <i class="glyphicon glyphicon-eye-open 
+                      text-executive"></i>
+            <span>Executive Board</span>
+        </a>
+        <a class="list-group-item list-boardroom-children"
+            href="/boardroom/{{address}}/children">
+            <i class="glyphicon glyphicon-link 
+                      text-subcommittee"></i>
+            <span>Subcommittes</span>
+        </a>
+    </ul>
+    
+    <ul class="list-group list-global-sidebar">
+        <a class="list-group-item"
+            href="/start">Boards
+        </a>
+        <a class="list-group-item list-boardroom-namereg"
+            href="/boardroom/{{address}}/namereg">NameReg
+        </a>
+        <a class="list-group-item list-boardroom-contract"
+            href="/boardroom/{{address}}/contract">Contract
+        </a>
+        <a class="list-group-item list-boardroom-settings"
+            href="/boardroom/{{address}}/settings">Settings
+        </a>
+        <a class="list-group-item list-boardroom-support"
+            href="/boardroom/{{address}}/support">Support
+        </a>
+        <a class="list-group-item list-boardroom-about"
+            href="/boardroom/{{address}}/about">About
+        </a>
+        <a class="list-group-item list-boardroom-license"
+            href="/boardroom/{{address}}/license">License
+        </a>
+    </ul>
+    {{/with}}
+</template>
