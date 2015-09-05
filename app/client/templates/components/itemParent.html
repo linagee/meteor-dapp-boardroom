@@ -1,6 +1,6 @@
 <template name="components_itemParent">
     {{#if address}}
-    <li class="list-group-item list-board-item row pointer">
+    <div class="item-parent">
         <div class="col-xs-2 col-sm-2 col-md-1">
         {{> dapp_identicon identity=address class="dapp-normal"}}
         </div>
@@ -19,6 +19,6 @@
                 Propose Destruction
             </a>
         </div>
-    </li>
+    </div>
     {{/if}}
 </template>

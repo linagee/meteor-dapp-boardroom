@@ -236,6 +236,10 @@ web3.eth.contractus = function(abi, code, options, methods){
         var callback = function(err, result){       
             options.callback(err, result, false);
 
+            if(_.isUndefined(result)
+              || !_.has(result, 'address'))
+                return;
+            
             if(result.address)
                 options.callback(err, return_object.at(result.address), true);
         },

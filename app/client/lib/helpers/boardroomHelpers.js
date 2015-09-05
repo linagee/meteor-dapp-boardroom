@@ -40,7 +40,7 @@ methods.parent = function(){
     return this.Instance.parent.apply(this.Instance, buildArgs);
 };
 
-methods.children = function(){
+/*methods.children = function(){
     var args = Array.prototype.slice.call(arguments),
         options = web3.getMethodDetails(args),
         callback = function(err, result){
@@ -48,7 +48,7 @@ methods.children = function(){
         },
         buildArgs = web3.buildMethodArray(args, {}, callback);
     return this.Instance.children.apply(this.Instance, buildArgs);
-};
+};*/
 
 methods.table = function(){
     var args = Array.prototype.slice.call(arguments),
@@ -415,7 +415,7 @@ var abi = [
     "name": "children",
     "outputs": [
       {
-        "name": "",
+        "name": "addr",
         "type": "address"
       }
     ],
@@ -789,7 +789,9 @@ var BoardroomMinimongoImport = function(methodName, filter, args, mongodb){
         }
         
         batch.execute();
-    }catch(e){}
+    }catch(e){
+        //console.log(e);
+    }
 };
 
 BoardRoom.ProposalsMinimongo = function(mongodb){
@@ -809,9 +811,12 @@ BoardRoom.ProposalsMinimongo = function(mongodb){
 
 BoardRoom.ChildrenMinimongo = function(mongodb){
     mongodb.import = function(){
-        var args = Array.prototype.slice.call(arguments);
-        var filter = function(id, member){
-            if(member.addr == web3.address(0))
+        var args = Array.prototype.slice.call(arguments),
+            filter = function(id, child){
+                
+            console.log(id, child);
+                
+            if(child.addr == web3.address(0))
                 return false;
             
             return true;

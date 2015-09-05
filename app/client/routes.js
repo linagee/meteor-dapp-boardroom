@@ -70,6 +70,18 @@ function handleData(){
             
             Members.import(paramsObject._boardroom, 0, numMembers.toNumber(10) - 1);
         });
+        
+        // Meta Title
+        namereg = NameReg.at(LocalStore.get("nameregAddress"));
+        namereg.nameOf(boardroomInstance.address, function(err, result){
+            if(err)             Meta.setTitle(TAPi18n.__(boardroomInstance.address.substr(0, 5) + '..' + ' ' + 'BoardRoom'));
+
+            if(!err)
+                Meta.setTitle(TAPi18n.__(result + ' ' + 'BoardRoom'));
+
+            if(!err && !result)
+                Meta.setTitle(TAPi18n.__('Unknown' + ' ' + 'BoardRoom'));
+        });
     
         // Watch for new proposals
         onProposal = boardroomInstance.onProposal(function(err, result){

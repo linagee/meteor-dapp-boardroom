@@ -1,7 +1,27 @@
 <template name="components_proposalData">
+    {{#if kind}}
+        {{#with toKind kind}}
+        <h3>{{title}}</h3>
+        <div class="bs-callout bs-callout-danger proposal-data">
+            <h4 id="don't-mix-with-other-components">
+                <a class="anchorjs-link" href="#">
+                    <span class="anchorjs-icon"></span>
+                </a>
+            </h4>
+            <p>
+                This proposal is a type {{../kind}} proposal, {{description}}
+            </p>
+        </div>
+        {{/with}}
+    {{/if}}
+    
+    <br />
+    
     <hr />
     
-    <h3>Proposal Details</h3>
+    <br />
+    
+    <h3>Proposal Data</h3>
     
     <p class="description description-proposal-data">Here you can find information about the data attached to this proposal.</p>
     
@@ -14,7 +34,9 @@
         <hr />
         <h4 id="don't-mix-with-other-components" 
             style="text-transform: none;">
+            <p class="well">
             {{name}}
+            </p>
             <a class="anchorjs-link" href="#">
                 <span class="anchorjs-icon"></span>
             </a>
@@ -24,43 +46,11 @@
             
         {{#with toKind kind}}
             {{#if nameDescription}}
-                <p class="well">
                 {{nameDescription}}
-                </p>
             {{/if}}
         {{/with}}
         
-        <p class="well">About: This is the 32 byte name value that is attached to this proposal.
-        </p>
-    </div>
-    {{/if}}
-    
-    
-    {{#if kind}}
-    <div class="bs-callout bs-callout-danger proposal-data">
-        {{#with toKind kind}}
-            <h5 id="don't-mix-with-other-components" 
-                class="text-muted">
-                KIND
-            </h5>
-            <hr />
-            <h4 id="don't-mix-with-other-components">
-                    {{title}}
-                <a class="anchorjs-link" href="#">
-                    <span class="anchorjs-icon"></span>
-                </a>
-            </h4>
-            <h5 id="don't-mix-with-other-components">
-                Specified as a type '{{../kind}}' proposal
-                <a class="anchorjs-link" href="#">
-                    <span class="anchorjs-icon"></span>
-                </a>
-            </h5>
-        
-            <br />
-
-            <p class="well">{{description}}</p>
-        {{/with}}
+        This is the 32 byte name value that is attached to this proposal.
     </div>
     {{/if}}
 
@@ -76,15 +66,20 @@
             style="text-transform: none; overflow: hidden;">
             {{#with toKind kind}}
                 {{addressTitle}}:
+                <br />
+                <br />
             {{/with}}
             
+            <p class="well">
             {{addr}}
+            </p>
+            
             <a class="anchorjs-link" href="#">
                 <span class="anchorjs-icon"></span>
             </a>
         </h4>
         
-        <label>Balance</label>
+        <label>Address Balance</label>
         
         {{#with getBalance addr}}
             {{fromWei balance 'ether'}} ether
@@ -95,16 +90,11 @@
             
         {{#with toKind kind}}
             {{#if addressDescription}}
-                <p class="well">
                 {{addressDescription}}
-                </p>
             {{/if}}
         {{/with}}
-    
-        <p class="well">
-            <span class="text-muted">About: </span> 
-            This is the Ethereum address data that is attached to this proposal.
-        </p>
+        
+        This is the Ethereum address data that is attached to this proposal.
     </div>
     {{/if}}
     

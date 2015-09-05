@@ -19,9 +19,11 @@ Template['views_children'].rendered = function(){
         Boards.update({address: boardroomInstance.address}, {$set: {numChildren: numChildren}}); 
         
     });
+    
+    console.log(Children.find({}).fetch());
 };
 
-Template['views_parent'].helpers({
+Template['views_children'].helpers({
     'children': function(){
         return Children.find({boardroom: boardroomInstance.address});
     }, 
