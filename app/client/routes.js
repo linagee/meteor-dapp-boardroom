@@ -73,14 +73,16 @@ function handleData(){
         // Meta Title
         nameregInstance = NameReg.Contract.at(LocalStore.get("nameregAddress"));
         nameregInstance.nameOf.call(boardroomInstance.address, function(err, result){
-            if(err)             Meta.setTitle(TAPi18n.__(boardroomInstance.address.substr(0, 5) + '..' + ' ' + 'BoardRoom'));
+            if(err) {
+                Meta.setTitle(TAPi18n.__(boardroomInstance.address.substr(0, 5) + '..' + ' ' + 'BoardRoom'));
+                return
+            }
             
             result = web3.clean(web3.toAscii(result));
 
-            if(!err)
-                Meta.setTitle(TAPi18n.__(result + ' ' + 'BoardRoom'));
+            Meta.setTitle(TAPi18n.__(result + ' ' + 'BoardRoom'));
 
-            if(!err && !result)
+            if(!result)
                 Meta.setTitle(TAPi18n.__('Unknown' + ' ' + 'BoardRoom'));
         });
     
