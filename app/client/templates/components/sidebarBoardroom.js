@@ -14,7 +14,7 @@ var updateSidebar = function(blocks, template){
         selected = 'home';
     
     $('.list-boardroom-sidebar').children().removeClass('selected');
-    $('.list-global-sidebar').children().removeClass('selected');
+    $('.list-boardroom-global').children().removeClass('selected');
     
     if(!$('.list-boardroom-' + selected).hasClass('selected'))
         $('.list-boardroom-' + selected).addClass('selected');
