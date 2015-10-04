@@ -26,8 +26,9 @@ Template['components_proposalVote'].events({
     'click .btn-vote-for': function(event, template){
         TemplateVar.set(template, 'state', {isMining: true});
         
-        boardroomInstance.vote(objects.proposal.id, 1,
+        boardroomInstance.vote.sendTransaction(objects.proposal.id, 1,
                                 {from: web3.eth.defaultAccount,
+                                gasPrice: LocalStore.get('gasPrice'),
                                 gas: 3040000}, 
                                 function(err, result){
             if(err)
@@ -38,8 +39,9 @@ Template['components_proposalVote'].events({
     'click .btn-vote-against': function(event, template){
         TemplateVar.set(template, 'state', {isMining: true});
         
-        boardroomInstance.vote(objects.proposal.id, 0,
+        boardroomInstance.vote.sendTransaction(objects.proposal.id, 0,
                                 {from: web3.eth.defaultAccount,
+                                gasPrice: LocalStore.get('gasPrice'),
                                 gas: 3040000}, 
                                function(err, result){
             if(err)
@@ -50,8 +52,9 @@ Template['components_proposalVote'].events({
     'click .btn-delegate': function(event, template){
         TemplateVar.set(template, 'state', {isMining: true});
         
-        boardroomInstance.delegate(0, objects.proposal.id,
+        boardroomInstance.delegate.sendTransaction(0, objects.proposal.id,
                                     {from: web3.eth.defaultAccount,
+                                    gasPrice: LocalStore.get('gasPrice'),
                                     gas: 3040000}, 
                                function(err, result){
             if(err)
@@ -62,8 +65,9 @@ Template['components_proposalVote'].events({
     'click .btn-execute': function(event, template){
         TemplateVar.set(template, 'state', {isMining: true});
         
-        boardroomInstance.execute(objects.proposal.id,
+        boardroomInstance.execute.sendTransaction(objects.proposal.id,
                                     {from: web3.eth.defaultAccount,
+                                    gasPrice: LocalStore.get('gasPrice'),
                                     gas: 3000000}, 
                                function(err, result){
             if(err)

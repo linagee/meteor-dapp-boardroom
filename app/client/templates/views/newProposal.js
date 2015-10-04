@@ -113,8 +113,9 @@ Template['views_newProposal'].events({
                 });
         });
         
-        boardroomInstance.table(name, data, kind
-    , address, value, expiry, {gas: 300000, from:  web3.eth.defaultAccount}, function(err, result){
+        boardroomInstance.table.sendTransaction(name, data, kind
+    , address, value, expiry, {gas: 300000, 
+                gasPrice: LocalStore.get('gasPrice'), from:  web3.eth.defaultAccount}, function(err, result){
             if(err) {
                 TemplateVar.set(template, 'state', {
                     isError: true, 
@@ -122,8 +123,6 @@ Template['views_newProposal'].events({
                 });
                 watcher.stopWatching();
             }
-        
-            console.log('dsfsdf');
         });
               
     },

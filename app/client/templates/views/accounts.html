@@ -21,6 +21,16 @@
         </li>
     </ul>
     
+    <h3>Node Accounts</h3>
+    
+    <ul class="list-group list-geth-accounts">
+    {{#each ethAccounts}}
+        {{> components_itemAccount}}
+    {{/each}}
+    </ul>
+    
+    <h3>Browser Accounts</h3>
+    
     <ul class="list-group list-accounts">
     {{#with accounts 'selected'}}
         {{#each accounts}}

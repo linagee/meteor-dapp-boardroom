@@ -1,10 +1,10 @@
 <template name="components_itemAccount">
     <li class="list-group-item pointer list-account-item row {{#if $eq address ../address}}list-account-selected{{/if}}"
         data-address="{{address}}">
-        <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+        <div class="col-xs-3 col-sm-2 col-md-1 col-lg-1">
         {{> dapp_identicon identity=address class="dapp-normal"}}
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-7 col-lg-7">
+        <div class="col-xs-5 col-sm-6 col-md-7 col-lg-7">
             <h2>
                 {{>components_toName address}}
             </h2>
@@ -23,6 +23,7 @@
                 {{/if}}
             </p>
         </div>
+        {{#if private}}
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
             <button class="btn btn-default accounts-faucet 
                            list-item-faucet">
@@ -41,5 +42,8 @@
                 <i class="visible-xs glyphicon glyphicon-minus"></i>
             </button>
         </div>
+        {{/if}}
     </li>
+    
+    {{load}}
 </template>

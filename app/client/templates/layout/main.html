@@ -1,20 +1,24 @@
 <template name="layout_main">    
     <!-- global wrapper -->
-    <div class="wrapper wrapper-main">
+    <div class="wrapper wrapper-boardroom">
         <div class="sidebar sidebar-boards">
             {{> components_sidebarBoards}}
         </div>
 
-        <!-- content -->
-        <main class="wrapper-container container-main">
-            <div class="col-gutter col-sm-12 col-xs-12 
-                        col-md-12 col-lg-8">                
+        <div class="sidebar sidebar-boardroom avalanche-content">
+            {{> components_sidebarMain}}
+        </div>
+
+        <div class="wrapper-container container-boardroom 
+                    container-boardroom-max 
+                    col-xs-12 col-sm-12 col-md-12 col-lg-10">
+            <div class="col-gutter">               
                 {{> yield region="subheader"}}
                 
                 {{> yield}}
                 
                 {{> yield region="subfooter"}}
             </div>
-        </main>
+        </div>
     </div>
 </template>

@@ -3,7 +3,9 @@ Template['views_parent'].rendered = function(){
 	Meta.setSuffix(TAPi18n.__("dapp.parent.title"));
     TemplateVar.set(template, 'parent', {address: ''});
     
-    boardroomInstance.parent(function(err, result){
+    boardroomInstance.parent.call(function(err, result){
+        result = BoardRoom.Contract.at(result);
+        
         if(err || result.address == web3.address(0))
             return;
         

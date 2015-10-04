@@ -26,13 +26,21 @@ Template['views_boardroom'].rendered = function(){
             }
         }
     }, 300);
+    
+    console.log(objects);
 };
 
 Template['views_boardroom'].events({
     'click .btn-faucet': function(event, template){
-        var etherValue = web3.toWei(3, 'ether');
+        //var etherValue = web3.toWei(3, 'ether');
         
-        web3.eth.getAccounts(function(err, result){
+        Helpers.post('http://testnet.consensys.net/faucet', {
+            address: String(boardroomInstance.address)
+        });
+        
+        Dialog.alert('You have fauceted a 1000 ether to account' + boardroomInstance.address + '. This may take a few minutes to process.');
+        
+        /*web3.eth.getAccounts(function(err, result){
             if(err)
                 Dialog.alert('There was an error getting ether, the error was: ' + String(err));
             
@@ -47,10 +55,15 @@ Template['views_boardroom'].events({
                                  ' ether has been sent to address: ' +
                                  boardroomInstance.address);
             });
-        });
+        });*/
     },
 });
 
 Template['views_boardroom'].helpers({
     'stats': Helpers.boardroomStats,
+    'chairMember': function(){
+        console.log( Members.findOne({id: objects.boardroom.chair, boardroom: objects.boardroom.address}));
+        
+        return Members.findOne({id: objects.boardroom.chair, boardroom: objects.boardroom.address});  
+    },
 });

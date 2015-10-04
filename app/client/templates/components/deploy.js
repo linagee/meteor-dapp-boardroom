@@ -21,15 +21,19 @@ Template['components_deploy'].events({
     'click .btn-deploy': function(event, template){
         TemplateVar.set(template, 'state', {isMining: true});
         
+        console.log(web3.eth.defaultAccount);
+        
         try {
-            console.log(web3.eth.defaultAccount);
-            BoardRoom.new({from: web3.eth.defaultAccount}, function(err, result, mined){
-                if(err) {
-                    TemplateVar.set(template, 'state', {isError: true, error: String(err)});
-                    return;
-                }
+            BoardRoom.Contract.new({
+                from: web3.eth.defaultAccount, 
+                data: BoardRoom.code, 
+                gasPrice: LocalStore.get('gasPrice'),
+                gas: 3000000
+            }, function(err, result){
+                if(err)
+                    return TemplateVar.set(template, 'state', {isError: true, error: String(err)});
 
-                if(mined) {
+                if(result.address) {
                     TemplateVar.set(template, 'state', {isMined: true, address: result.address});
                     Boards.import(result.address);
                 }

@@ -11,7 +11,11 @@ if(!LocalStore.get('etherUnit'))
 
 // Set the default unit to ether
 if(!LocalStore.get('httpProvider'))
-    LocalStore.set('httpProvider', "http://localhost:8545");
+    LocalStore.set('httpProvider', "http://104.236.65.136:8545/"); //"http://localhost:8545");
+
+// Set the Default NameReg Contract
+if(!LocalStore.get('nameregAddress'))
+    LocalStore.set('nameregAddress', '0xec5eabdc7d40f412726d937784e486ab3a4b037e');
 
 
 // Set Session default values for components
@@ -21,9 +25,16 @@ if (Meteor.isClient) {
 
 // Fired when Meteor boots
 Meteor.startup(function() {    
+    // Accounts
+    accounts = new Accounts();
+    
     // Set Provider
     // use Meteor.settings.public.httpProvider
-    web3.setProvider(new web3.providers.HttpProvider(LocalStore.get('httpProvider')));
+    var provider = new HookedWeb3Provider({
+      host: LocalStore.get('httpProvider'),
+      transaction_signer: accounts
+    });
+    web3.setProvider(provider);
 
     // SET default language
     if(Cookie.get('TAPi18next')) {
@@ -58,9 +69,6 @@ Meteor.startup(function() {
     BoardRoom.proposalKinds = TAPi18n.__("dapp.proposalKinds",
                                          {returnObjectTrees: true });
     
-    // Accounts
-    accounts = new Accounts();
-    
     // setup one unsecure account if no exist
     if(accounts.length == 0)
         accounts.new();
@@ -68,8 +76,12 @@ Meteor.startup(function() {
     // Loader
     loader = new Loader({injectElement: ".wrapper"});
     
-    // Extend Web3
-    accounts.extendWeb3();
+    web3.eth.getGasPrice(function(err, result){
+        LocalStore.set('gasPrice', result.toNumber(10)); 
+    });
+    
+    // EthAccounts
+    EthAccounts.init();
     
     // Set default account as the selected account
     web3.eth.defaultAccount = accounts.get('selected').address;

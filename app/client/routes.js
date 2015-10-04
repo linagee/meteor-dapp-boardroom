@@ -55,11 +55,10 @@ function handleData(){
         }
         
         Boards.import(this.params._boardroom);
-        boardroomInstance = BoardRoom.at(paramsObject._boardroom);
+        boardroomInstance = BoardRoom.Contract.at(paramsObject._boardroom);
         Balances.upsert({address: this.params._boardroom}, {$set: {address: this.params._boardroom}});
         
-        
-        boardroomInstance.info(function(err, result){
+        BoardRoom.info(boardroomInstance, function(err, result){
             //console.log(result); 
         });
         
@@ -72,9 +71,11 @@ function handleData(){
         });
         
         // Meta Title
-        namereg = NameReg.at(LocalStore.get("nameregAddress"));
-        namereg.nameOf(boardroomInstance.address, function(err, result){
+        nameregInstance = NameReg.Contract.at(LocalStore.get("nameregAddress"));
+        nameregInstance.nameOf.call(boardroomInstance.address, function(err, result){
             if(err)             Meta.setTitle(TAPi18n.__(boardroomInstance.address.substr(0, 5) + '..' + ' ' + 'BoardRoom'));
+            
+            result = web3.clean(web3.toAscii(result));
 
             if(!err)
                 Meta.setTitle(TAPi18n.__(result + ' ' + 'BoardRoom'));
@@ -90,9 +91,10 @@ function handleData(){
                 Proposals.import(boardroomInstance.address, pid);
                 Boards.update({address: boardroomInstance.address}, {$set: {numProposals: pid + 1}});
                  
-                 
                 var proposal = Proposals.findOne({id: pid});
-                Balances.upsert({address: proposal.addr}, {$set: {address: proposal.addr}});
+                 
+                if(!_.isUndefined(proposal))
+                    Balances.upsert({address: proposal.addr}, {$set: {address: proposal.addr}});
              });
         });
     

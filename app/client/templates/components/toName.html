@@ -2,6 +2,8 @@
     {{#if TemplateVar.get 'name'}}
         {{TemplateVar.get 'name'}}
     {{else}}
-        Unknown
+        Unknown {{address}}
     {{/if}}
+    
+    {{load}}
 </template>

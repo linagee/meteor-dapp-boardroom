@@ -33,6 +33,19 @@
                 <strong>0</strong> activated middleware 
             </li>
         </ul>
+        
+        <hr />
+    
+            <h3>Chair</h3>
+        
+            {{#with chairMember}} 
+                <label>{{> components_toName addr}} </label>
+        
+                <p class="info info-address">
+                    {{addr}}
+                </p>    
+            {{/with}}
+        
         {{/with}}
     </div>
     
@@ -86,6 +99,8 @@
             {{fromWei balance 'ether'}} ether
         {{/with}}
     </p>
+    
+    <br />
     
     <button class="btn btn-default btn-faucet">
         Faucet

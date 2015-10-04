@@ -11,6 +11,18 @@ The accounts template is an interface for managing Ethereum accounts in browser.
 @constructor
 */
 
+Template['views_accounts'].helpers({
+    /**
+    Get the name
+
+    @event (click #accounts-new)
+    */
+
+    'ethAccounts': function(){
+        return EthAccounts.find({});
+    },
+});
+
 Template['views_accounts'].events({
     /**
     Get the name
@@ -49,7 +61,7 @@ Template['views_accounts'].events({
         
         web3.eth.defaultAccount = data.address;
         accounts.select(data.address);
-        Balances.upsert({address: data.address}, {$set: {address: data.address}});
+        Balances.upsert({address: data.address}, {$set: {address: data.address}});  
     },
     
     /**
@@ -81,13 +93,19 @@ Template['views_accounts'].events({
         var data = element[0].dataset,
             etherValue = 3;
         
-        web3.eth.sendTransaction({from: web3.eth.accounts[0], to: data.address, value: web3.toWei(etherValue, 'ether'), gasPrice: 100000000000000}, function(err, result){
+        Helpers.post('http://testnet.consensys.net/faucet', {
+            address: String(data.address)
+        });
+        
+        Dialog.alert('You have fauceted a 1000 ether to account' + String(data.address) + '. This may take a few minutes to process.');
+        
+        /*web3.eth.sendTransaction({from: web3.eth.accounts[0], to: data.address, value: web3.toWei(etherValue, 'ether'), gasPrice: 100000000000000}, function(err, result){
             if(err)
                 Dialog.alert('There was an error getting ether, the error was: ' + String(err));
             
             if(!err)
                 Dialog.alert('Transaction successfull, ' + String(etherValue) + ' ether has been sent to address: ' + data.address);
-        });
+        });*/
     }
 });
 

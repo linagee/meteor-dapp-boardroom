@@ -34,9 +34,11 @@
         <hr />
         <h4 id="don't-mix-with-other-components" 
             style="text-transform: none;">
+            
             <p class="well">
-            {{name}}
+                {{name}}
             </p>
+            
             <a class="anchorjs-link" href="#">
                 <span class="anchorjs-icon"></span>
             </a>
@@ -71,7 +73,7 @@
             {{/with}}
             
             <p class="well">
-            {{addr}}
+                {{addr}}
             </p>
             
             <a class="anchorjs-link" href="#">
@@ -111,7 +113,6 @@
                     {{dataTitle}}:
                 {{/with}}
                 
-                {{raw}}
                 <a class="anchorjs-link" href="#">
                     <span class="anchorjs-icon"></span>
                 </a>
@@ -119,18 +120,17 @@
         
             <br />
             
+            <p class="well">
+                {{raw}}
+            </p>
+            
             {{#with toKind ../kind}}
                 {{#if dataDescription}}
-                    <p class="well">
                     {{dataDescription}}
-                    </p>
                 {{/if}}
             {{/with}}
 
-            <p class="well">
-                <span class="text-muted">About: </span> 
-                This is the proposal bytes32 data that is attached to this proposal. The data can be a URL to a website, proposal or video. It can also be used for various middleware applications. The data attached may be compressed (e.g. UR somewebsite.com, or YT SOME_ID).
-            </p>
+            This is the proposal bytes32 data that is attached to this proposal. The data can be a URL to a website, proposal or video. It can also be used for various middleware applications. The data attached may be compressed (e.g. UR somewebsite.com, or YT SOME_ID).
         </div>
         {{/if}}
     {{/with}}
@@ -148,26 +148,24 @@
                 {{valueTitle}}:
             {{/with}}
             
-            {{value}}
             <a class="anchorjs-link" href="#">
                 <span class="anchorjs-icon"></span>
             </a>
         </h4>
         
         <br />
+        
+        <p class="well">
+            {{value}}
+        </p>
             
         {{#with toKind kind}}
             {{#if valueDescription}}
-                <p class="well">
-                    {{valueDescription}}
-                </p>
+                {{valueDescription}}
             {{/if}}
         {{/with}}
         
-        <p class="well">
-            <span class="text-muted">About: </span> 
-            This is the uint256 value that is attahced to this proposal. The proposal value is often used to delete members, subcommittees or send ether from the board budget.
-        </p>
+        This is the uint256 value that is attahced to this proposal. The proposal value is often used to delete members, subcommittees or send ether from the board budget.
     </div>
     {{/if}}
 </template>

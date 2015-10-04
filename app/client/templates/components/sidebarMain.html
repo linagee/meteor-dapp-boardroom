@@ -1,0 +1,32 @@
+<template name="components_sidebarMain">
+    <!-- menu options for the boardroom -->
+    <ul class="list-group list-boardroom-sidebar">     
+        {{> components_itemSelectedAccount}}  
+    </ul>
+    
+    <ul class="list-group list-global-sidebar">
+        <a class="list-group-item list-global-start"
+            href="/start">Boards
+        </a>
+        <a class="list-group-item list-global-namereg"
+            href="/namereg">NameReg
+        </a>
+        <a class="list-group-item list-global-contract"
+            href="/contract">Contract
+        </a>
+        <a class="list-group-item list-global-settings"
+            href="/settings">Settings
+        </a>
+        <a class="list-group-item list-global-support"
+            href="/support">Support
+        </a>
+        <a class="list-group-item list-global-about"
+            href="/about">About
+        </a>
+        <a class="list-group-item list-global-license"
+            href="/license">License
+        </a>
+    </ul>
+    
+    {{load}}
+</template>
