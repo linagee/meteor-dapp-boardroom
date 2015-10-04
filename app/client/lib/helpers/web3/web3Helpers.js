@@ -14,7 +14,7 @@ web3.isBigNumber = function(value){
     if(_.isUndefined(value) || !_.isObject(value))
         return false;
     
-    return (value instanceof BigNumber) ? true : false;
+    return (value instanceof BigNumber) || value.constructor.name === 'BigNumber';
 };
 
 
@@ -90,7 +90,7 @@ web3.returnObject = function(method, resultArray, abi){
             return_object[item.name] = web3.toAscii(return_object[item.name]);
         }
         
-        if(resultArray[itemIndex] instanceof BigNumber) {
+        if(web3.isBigNumber(resultArray[itemIndex])) {
             //return_object[item.name + 'BN'] = return_object[item.name];
             
             return_object[item.name] = return_object[item.name]
@@ -122,7 +122,7 @@ web3.getMethodDetails = function(args){
     _.each(args, function(arg, argIndex){
          if(_.isObject(arg)
             && !_.isArray(arg)
-            && !(arg instanceof BigNumber)
+            && !(web3.isBigNumber(arg))
             && !_.isString(arg)
             && !_.isNumber(arg)
             && !_.isFunction(arg)
@@ -132,7 +132,7 @@ web3.getMethodDetails = function(args){
          }
         
         if(_.isFunction(arg)
-            && !(arg instanceof BigNumber)
+            && !(web3.isBigNumber(arg))
             && !_.isString(arg)
             && !_.isNumber(arg)
             && argIndex > length - 3) {
