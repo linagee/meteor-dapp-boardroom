@@ -16,7 +16,7 @@ BoardRoom.info = function(boardroomInstance, callObject, callback){
     
     _.each(properties, function(property, propertyIndex){
         batch.add(boardroomInstance[property](function(err, result){ //callObject
-            if(result instanceof BigNumber)
+            if(web3.isBigNumber(result))
                 result = result.toNumber(10);
                 
             return_object[property] = result;
