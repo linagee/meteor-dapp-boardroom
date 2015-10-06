@@ -312,6 +312,13 @@ Router.route('/boardroom/:_boardroom', {
     data: handleData,
 });
 
+// Route to the Board's calendar
+Router.route('/boardroom/:_boardroom/calendar', {
+    template: 'views_calendar',
+    layoutTemplate: 'layout_boardroom',
+    data: handleData,
+});
+
 // Route to a all related boardrooms (Parent/Children)
 Router.route('/boardroom/:_boardroom/children', {
     template: 'views_children',

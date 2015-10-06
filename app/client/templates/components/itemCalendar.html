@@ -1,0 +1,25 @@
+<template name="components_itemCalendar">
+    <a href="/boardroom/{{../boardroom.address}}/proposal/{{id}}" 
+       class="list-group-item list-calendar-item row">
+        <div class="col-sm-2 col-md-2 col-lg-1 text-proposal">
+            <h2>{{formatTime datetime "Do"}}</h2>
+            <h3>{{formatTime datetime "MMM"}}</h3>
+        </div>
+        <div class="col-sm-10 col-md-10 col-lg-11">
+            {{#if isExpiring}}
+                <h3>
+                    <i class="fa fa-clock-o text-executive"></i>
+                    Prop. {{name}} is expiring
+                </h3>
+                <strong>Expires </strong> {{formatTime datetime "h:mm a"}}
+            {{else}}
+                <h3>
+                    <i class="glyphicon glyphicon-calendar text-home"></i>
+                    {{name}} is happening
+                </h3>
+                <strong>Starts </strong> {{formatTime datetime "h:mm a"}}
+            {{/if}}
+        </div>
+    </a>
+    <hr />
+</template>

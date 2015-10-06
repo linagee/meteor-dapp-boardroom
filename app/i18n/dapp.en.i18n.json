@@ -176,7 +176,7 @@
                 , "name": "addSubcommittee"
                 , "title": "Add A Subcommittee"
                 , "titleShort": "Add Subcommittee"
-                , "descriptionShort": "Add a submittee to the board."
+                , "descriptionShort": "Add a subcommittee to the board."
                 , "description": "If won, a type 5 proposal will add a new subcommittee to the boards subcommittee roster. The address of the new subcommittee is proposal specified."
                 , "addressTitle": "Subcommittee Address"
                 , "nameTitle": ""
@@ -205,7 +205,7 @@
                 , "name": "removeSubcommittee"
                 , "title": "Remove A Subcommittee"
                 , "titleShort": "Remove Subcommittee"
-                , "descriptionShort": "Remove a subcommitee from the board."
+                , "descriptionShort": "Remove a subcommittee from the board."
                 , "description": "If won, a type 6 proposal will remove a subcommittee from the board subcommittee roster. The subcommittee ID is proposal specified."
                 , "addressTitle": ""
                 , "nameTitle": ""
@@ -264,7 +264,7 @@
                 , "title": "Make A Bytes32 Call"
                 , "titleShort": "Bytes32 Call"
                 , "descriptionShort": "Make an outward bytes32 call."
-                , "description": "If won, a type 8 proposal will make an outward bytes32 transactual call to contract. The sha3 hash (32 bytes in length) of the call function and bytes32 data are proposal specified."
+                , "description": "If won, a type 8 proposal will make an outward bytes32 transactional call to contract. The sha3 hash (32 bytes in length) of the call function and bytes32 data are proposal specified."
                 , "addressTitle": "Contract Address"
                 , "nameTitle": "Method Name"
                 , "expiryTitle": ""
@@ -293,7 +293,7 @@
                 , "title": "Make A Uint Call"
                 , "titleShort": "Uint Call"
                 , "descriptionShort": "Make an outward uint call."
-                , "description": "If won, a type 9 proposal will make an outward uint transactual call to a proposal specified contract. The sha3 hash (32 bytes in length) of the call function and uint data are proposal specified."
+                , "description": "If won, a type 9 proposal will make an outward uint transactional call to a proposal specified contract. The sha3 hash (32 bytes in length) of the call function and uint data are proposal specified."
                 , "addressTitle": "Contract Address"
                 , "nameTitle": "Method Name"
                 , "expiryTitle": ""
@@ -322,7 +322,7 @@
                 , "title": "Suicide Board Contract"
                 , "titleShort": "Suicide Contract"
                 , "descriptionShort": "Suicide or delete this boardroom contract."
-                , "description": "If won, a type 10 proposal will suicide this BoardRoom contract, deleting the contract and all of it's contents from the Ethereum blockchain. There are no proposal specified variables for this proposal type."
+                , "description": "If won, a type 10 proposal will suicide this BoardRoom contract, deleting the contract and all of its contents from the Ethereum blockchain. There are no proposal specified variables for this proposal type."
                 , "addressTitle": ""
                 , "nameTitle": ""
                 , "expiryTitle": ""
@@ -351,7 +351,7 @@
                 , "title": "Change Member Permissions"
                 , "titleShort": "Change Permissions"
                 , "descriptionShort": "Give or change a member's permissions"
-                , "description": "If won, a type 11 proposal will give or change a sitting board members special permissions. A special permission will allow a boardmember to complete a board task without having the board vote on it. Any proposals tabled with the permissions type granted to this member will automatically be won and executable. The member account ID and special permission ID are proposal specified."
+                , "description": "If won, a type 11 proposal will give or change a sitting board members special permissions. A special permission will allow a board member to complete a board task without having the board vote on it. Any proposals tabled with the permissions type granted to this member will automatically be won and executable. The member account ID and special permission ID are proposal specified."
                 , "addressTitle": "Member Address"
                 , "nameTitle": ""
                 , "expiryTitle": ""
@@ -438,7 +438,7 @@
                 , "title": "Execute A Middleware Transaction"
                 , "titleShort": "Execute Middleware"
                 , "descriptionShort": "Execute a proposal specific middleware call."
-                , "description": "If won, a type 14 proposal will execute an outware transactional middleware contract call. The middleware address, and optional transactional value are proposal specified."
+                , "description": "If won, a type 14 proposal will execute an outward transactional middleware contract call. The middleware address, and optional transactional value are proposal specified."
                 , "addressTitle": "Contract Address"
                 , "nameTitle": ""
                 , "expiryTitle": ""
@@ -547,6 +547,36 @@
                 , "expiryDescription": ""
                 , "valueDescription": ""
                 , "dataDescription": ""
+            }
+            , {
+                "id": 18
+                , "name": "eventProposal"
+                , "title": "An Event Proposal"
+                , "titleShort": "Event Proposal"
+                , "descriptionShort": "A proposal that specifies an event."
+                , "description": "If won, a type 18 proposal will add a date/time specific event to the Board's event calendar. The event start time will be specified by the proposals number value."
+                , "addressTitle": ""
+                , "nameTitle": "Event Name"
+                , "expiryTitle": ""
+                , "valueTitle": "Start Time"
+                , "dataTitle": "Page URL"
+                , "addressPlaceholder": ""
+                , "namePlaceholder": "My Great Event"
+                , "expiryPlaceholder": ""
+                , "valuePlaceholder": "e.g. (UNIX) 09304284323"
+                , "dataPlaceholder": ""
+                , "requireAddress": 0
+                , "requireName": 1
+                , "requireExpiry": 1
+                , "requireValue": 1
+                , "requireData": 1
+                , "valueIsDateTime": 1
+                , "glyphicon": "calendar"
+                , "addressDescription": ""
+                , "nameDescription": ""
+                , "expiryDescription": ""
+                , "valueDescription": "The start time of the event."
+                , "dataDescription": "This is the event page URL."
             }
         ]
 	}

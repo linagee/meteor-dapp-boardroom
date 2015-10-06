@@ -48,6 +48,16 @@ Template['views_newProposal'].events({
             expiry = new Date($('#proposalExpiry').val())
                     .getTime() / 1000;
         
+        if($('#proposalData').hasClass("set-due-date"))
+            value = new Date($('#proposalValue').val())
+                    .getTime() / 1000;
+        
+        if($('#proposalValue').hasClass("set-due-date"))
+            value = new Date($('#proposalValue').val())
+                    .getTime() / 1000;
+        
+        console.log(value);
+        
         if(_.isNaN(value))
             value = 0;
         

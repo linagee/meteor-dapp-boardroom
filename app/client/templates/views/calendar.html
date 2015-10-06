@@ -1,0 +1,19 @@
+<template name="views_calendar">
+    <h2>
+        <i class="glyphicon glyphicon-calendar text-calendar"></i>
+        Calendar
+    </h2>
+    
+    <p class="description description-children">
+        Here you can manage and view in calendar form all board related proposal expiries and events.
+    </p>
+    
+    <br />
+    <br />
+    
+    <ul class="list-group list-calendar">
+    {{#each proposals}}
+        {{> components_itemCalendar}}
+    {{/each}}
+    </ul>
+</template>
