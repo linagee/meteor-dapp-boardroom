@@ -455,16 +455,19 @@ contract BoardRoom is Chaired, Budgeted, Family, Democracy, ContractualVoting {
         if(p.kind == 16)
             NameReg(p.addr).unregister();
             
-        if(p.kind == 17)
-            StandardToken(p.addr).transfer(p.value, address(p.data));
-            
         if(p.kind == 18)
-            StandardToken(p.addr).transferFrom(this, p.value, address(p.data));
+            decisionMakerAddress = p.addr;
             
         if(p.kind == 19)
-            StandardToken(p.addr).approve(address(p.data));
+            StandardToken(p.addr).transfer(p.value, address(p.data));
             
         if(p.kind == 20)
+            StandardToken(p.addr).transferFrom(this, p.value, address(p.data));
+            
+        if(p.kind == 21)
+            StandardToken(p.addr).approve(address(p.data));
+            
+        if(p.kind == 22)
             StandardToken(p.addr).approveOnce(address(p.data), p.value);
         
         Democracy.execute(_pid);
