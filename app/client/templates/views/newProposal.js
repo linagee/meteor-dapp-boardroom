@@ -16,6 +16,19 @@ Template['views_newProposal'].rendered = function(){
 
 Template['views_newProposal'].helpers({
     'update': function(){
+        var query = Router.current().params.query;
+        
+        TemplateVar.set('proposalName', query.name);
+        TemplateVar.set('proposalAddress', query.address);
+        TemplateVar.set('proposalValue', query.value);
+        TemplateVar.set('proposalData', query.data);
+        TemplateVar.set('proposalExpiry', query.expiry);
+        
+        // NameReg helper
+        if(TemplateVar.get('kind') == '15'
+          || TemplateVar.get('kind') == '16')
+            TemplateVar.set('proposalAddress', LocalStore.get('nameregAddress'));
+        
         Meteor.setTimeout(function(){ //timeout hack.
             $('.datetimepicker').datetimepicker();
         }, 300);

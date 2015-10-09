@@ -89,7 +89,8 @@
                         {{/if}}
                         <input type="text" class="form-control" 
                                id="proposalName"
-                               placeholder="{{#if namePlaceholder}}{{namePlaceholder}}{{else}}name{{/if}}" />
+                               placeholder="{{#if namePlaceholder}}{{namePlaceholder}}{{else}}name{{/if}}"
+                               value="{{TemplateVar.get 'proposalName'}}" />
                     </li>
                     {{#if requireAddress}}
                     <li class="list-group-item">
@@ -108,7 +109,8 @@
                         {{/if}}
                         <input type="text" class="form-control"
                                id="proposalAddress"
-                               placeholder="{{#if addressPlaceholder}} {{addressPlaceholder}}{{else}}Address{{/if}}" />
+                               placeholder="{{#if addressPlaceholder}} {{addressPlaceholder}}{{else}}Address{{/if}}"
+                               value="{{TemplateVar.get 'proposalAddress'}}" />
                     </li>
                     {{/if}}
                     {{#if requireData}}
@@ -134,7 +136,9 @@
                         </div>
                         <input type="text" class="form-control" 
                                id="proposalData"
-                               placeholder="{{#if dataPlaceholder}}{{dataPlaceholder}}{{else}}Data{{/if}}" />
+                               placeholder="{{#if dataPlaceholder}}{{dataPlaceholder}}{{else}}Data{{/if}}"
+                               value="{{TemplateVar.get 'proposalData'}}"
+                               />
                     </li>
                     {{/if}}
                     {{#if requireValue}}
@@ -161,12 +165,14 @@
                             <input class="set-due-date form-control"
                                    id="proposalValue"
                                    placeholder="{{#if valuePlaceholder}}{{valuePlaceholder}}{{else}}Value{{/if}}"
-                                   type="text"/>
+                                   type="text"
+                                   value="{{TemplateVar.get 'proposalValue'}}"  />
                         </div>
                         {{else}}
                             <input type="text" class="form-control" 
                                id="proposalValue"
-                               placeholder="{{#if valuePlaceholder}}{{valuePlaceholder}}{{else}}Value{{/if}}" />
+                               placeholder="{{#if valuePlaceholder}}{{valuePlaceholder}}{{else}}Value{{/if}}"
+                               value="{{TemplateVar.get 'proposalValue'}}" />
                         {{/if}}
                     </li>
                     {{/if}}
@@ -190,8 +196,9 @@
                              </span>
                             <input class="set-due-date form-control"
                                    id="proposalExpiry"
+                                   type="text"
                                    placeholder="expiry"
-                                   type="text"/>
+                                   value="{{TemplateVar.get 'proposalExpiry'}}" />
                         </div>
                     </li>
                 {{/with}}

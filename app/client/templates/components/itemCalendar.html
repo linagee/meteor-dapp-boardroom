@@ -18,6 +18,14 @@
                     {{name}} is happening
                 </h3>
                 <strong>Starts </strong> {{formatTime datetime "h:mm a"}}
+                
+                {{#if data}}
+                    {{#with decompressURL data}}
+                        {{#if isURL}}
+                            . <a href="{{url}}" target="_blank">{{url}}</a>
+                        {{/if}}
+                    {{/with}}
+                {{/if}}
             {{/if}}
         </div>
     </a>

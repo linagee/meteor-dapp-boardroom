@@ -62,7 +62,7 @@
                 , "titleShort": "Allocate Funds"
                 , "descriptionShort": "Allocate funds to a specified address."
                 , "description": "If won, a type 1 proposal will send a specified amount of funds from the board budget to the specified address. The address and fund amount are proposal specified."
-                , "addressTitle": "Recipiant Address"
+                , "addressTitle": "Recipient Address"
                 , "nameTitle": ""
                 , "expiryTitle": ""
                 , "valueTitle": "Fund Amount"
