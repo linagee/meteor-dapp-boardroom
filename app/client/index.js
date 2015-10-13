@@ -77,6 +77,7 @@ Meteor.startup(function() {
     loader = new Loader({injectElement: ".wrapper"});
     
     web3.eth.getGasPrice(function(err, result){
+        if (err) return console.error(err)
         LocalStore.set('gasPrice', result.toNumber(10)); 
     });
     
