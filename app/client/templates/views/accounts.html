@@ -23,16 +23,18 @@
     
     <h3>Node Accounts</h3>
     
-    <ul class="list-group list-geth-accounts">
-    {{#each ethAccounts}}
-        {{> components_itemAccount}}
-    {{/each}}
+    <ul class="list-group list-accounts">
+    {{#with selected}}
+        {{#each ethAccounts}}
+            {{> components_itemAccount}}
+        {{/each}}
+    {{/with}}
     </ul>
     
     <h3>Browser Accounts</h3>
     
     <ul class="list-group list-accounts">
-    {{#with accounts 'selected'}}
+    {{#with selected}}
         {{#each accounts}}
             {{> components_itemAccount}}
         {{/each}}

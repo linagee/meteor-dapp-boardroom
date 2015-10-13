@@ -21,6 +21,11 @@ Template['views_accounts'].helpers({
     'ethAccounts': function(){
         return EthAccounts.find({});
     },
+
+    'selected': function(){
+        var selected = LocalStore.get('selectedAddress');
+        return { address: selected };
+    },
 });
 
 Template['views_accounts'].events({
@@ -60,7 +65,7 @@ Template['views_accounts'].events({
         var data = element[0].dataset;
         
         web3.eth.defaultAccount = data.address;
-        accounts.select(data.address);
+        LocalStore.set('selectedAddress', data.address);
         Balances.upsert({address: data.address}, {$set: {address: data.address}});  
     },
     
@@ -118,6 +123,4 @@ Template['views_accounts'].created = function(){
 Template['views_accounts'].rendered = function(){
     // Load
     //loader.finish();
-    
-    web3.eth.defaultAccount = accounts.get('selected').address;
 };
