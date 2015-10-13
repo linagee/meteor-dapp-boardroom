@@ -1,0 +1,25 @@
+<template name="components_itemListProposal">
+    <a class="list-group-item row
+               list-proposals-proposal pointer"
+        href="/boardroom/{{boardroom}}/proposal/{{id}}"
+        data-id="{{id}}">
+        <div class="col-xs-2 col-md-2">
+            {{#with toKind kind}}
+                <i class="glyphicon glyphicon-{{glyphicon}} 
+                          glyphicon-round"></i>
+            {{/with}}
+        </div>
+        <div class="col-xs-10 col-md-10">
+            <h4>
+                {{#if name}}
+                    {{name}}
+                {{else}}
+                    {{#with toKind kind}}
+                        {{title}}
+                    {{/with}}
+                {{/if}}
+            </h4>
+            <small>{{numVotes}} votes</small>
+        </div>
+    </a>
+</template>
