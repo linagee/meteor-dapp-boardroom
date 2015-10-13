@@ -121,30 +121,20 @@ Template['views_newProposal'].events({
                 error: 'Invalid member attempting to table proposal'
             });
         
-        var watcher = boardroomInstance.onProposal({_kind: kind, _from: member.id}, function(err, result){
-            if(err) {
-                TemplateVar.set(template, 'state', {
-                    isError: true, 
-                    error: String(err)
-                });
-                watcher.stopWatching();
-            }
-            
-            if(!err)
-                TemplateVar.set(template, 'state', {
-                    isMined: true
-                });
-        });
-        
         boardroomInstance.table.sendTransaction(name, data, kind
     , address, value, expiry, {gas: 300000, 
                 gasPrice: LocalStore.get('gasPrice'), from:  web3.eth.defaultAccount}, function(err, result){
+
             if(err) {
                 TemplateVar.set(template, 'state', {
                     isError: true, 
                     error: String(err)
                 });
                 watcher.stopWatching();
+            } else {
+                TemplateVar.set(template, 'state', {
+                    isMined: true
+                });
             }
         });
               
