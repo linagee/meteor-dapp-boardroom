@@ -84,7 +84,12 @@ Meteor.startup(function() {
     EthAccounts.init();
     
     // Set default account as the selected account
-    web3.eth.defaultAccount = accounts.get('selected').address;
+    web3.eth.defaultAccount = LocalStore.get('selectedAddress');
+    // default to ethereum-accounts' selected account
+    if (!web3.eth.defaultAccount) {
+        web3.eth.defaultAccount = accounts.get('selected').address;
+        LocalStore.set('selectedAddress', web3.eth.defaultAccount);
+    }
     
     // add accounts to balance tracker
     _.each(accounts.list(), function(account, accountIndex){
