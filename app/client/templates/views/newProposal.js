@@ -62,7 +62,7 @@ Template['views_newProposal'].events({
                     .getTime() / 1000;
         
         if($('#proposalData').hasClass("set-due-date"))
-            value = new Date($('#proposalValue').val())
+            value = new Date($('#proposalData').val())
                     .getTime() / 1000;
         
         if($('#proposalValue').hasClass("set-due-date"))
