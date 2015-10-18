@@ -72,12 +72,17 @@ contract Membered {
             return m.permission;
     }
     
+    function isMember(address _addr) public returns (bool) {
+        Member m = members[toMember[msg.sender]]; 
+        if(m.joined != 0) return true;        
+    }
+    
     modifier isMid (uint _mid)  {
         Member m = members[_mid];
         if(m.addr != address(0)) _
     }
     
-    modifier isMember { 
+    modifier isMembership { 
         Member m = members[toMember[msg.sender]]; 
         if(m.addr == msg.sender) _
     }
@@ -266,7 +271,7 @@ contract Delegatable is Membered, Proposable {
 
     event onDelegate(uint indexed _pid, uint _from, uint _to);
     
-    function delegate(uint _to, uint _pid) isMember isMid(_to) {
+    function delegate(uint _to, uint _pid) isMembership isMid(_to) {
         uint memberId = toMember[msg.sender];
         Delegation d = delegations[_pid][memberId];
         
@@ -303,12 +308,12 @@ contract Democracy is Membered, Proposable, Delegatable {
     }
 
     function table(bytes32 _name, bytes32 _data, uint _kind
-    , address _addr, uint _value, uint _expiry) isMember {
+    , address _addr, uint _value, uint _expiry) isMembership {
         uint memberId = toMember[msg.sender];
         addProposal(_name,  _data, _kind, _addr, memberId, _value, numMembersActive, _expiry);
     }
     
-    function vote(uint _pid, bool _type) isMember notExecuted(_pid) {
+    function vote(uint _pid, bool _type) isMembership notExecuted(_pid) {
         uint memberId = toMember[msg.sender];
         Proposal p = proposals[_pid];
         Delegation d = delegations[_pid][memberId];
@@ -317,7 +322,7 @@ contract Democracy is Membered, Proposable, Delegatable {
             addVote(_pid, memberId, _type, 1 + d.numDelegations);
     }
     
-    function execute(uint _pid) isMember notExecuted(_pid){
+    function execute(uint _pid) isMembership notExecuted(_pid){
         Proposable.execute(_pid);
     }
 }
@@ -373,7 +378,7 @@ contract BoardRoom is Chaired, Budgeted, Family, Democracy, ContractualVoting {
     //    NameReg(nameregAddr).register(name);
     //}
 
-    function hasWon(uint _pid) isMember isProposal(_pid) returns (bool) {
+    function hasWon(uint _pid) isMembership isProposal(_pid) returns (bool) {
         Proposal p = proposals[_pid];
         Member m = members[p.from];
         
@@ -401,7 +406,7 @@ contract BoardRoom is Chaired, Budgeted, Family, Democracy, ContractualVoting {
         addMember(_addr, 0);
     }
     
-    function execute(uint _pid) isMember notExecuted(_pid){
+    function execute(uint _pid) isMembership notExecuted(_pid){
         Proposal p = proposals[_pid];
         
         if(!hasWon(_pid))
