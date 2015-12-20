@@ -184,7 +184,7 @@ Template['views_namereg'].events({
     'click .btn-deploy': function(event, template){
         TemplateVar.set(template, 'state', {isMining: true, isDeploying: true});
         
-        NameReg.Contract.new(_.extend(transactionObject, {code: NameReg.code}),
+        NameReg.Contract.new(_.extend(transactionObject, {data: NameReg.code}),
                     function(err, result){
             
             if(err)
