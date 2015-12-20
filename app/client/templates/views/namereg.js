@@ -43,7 +43,7 @@ Template['views_namereg'].events({
 
     'click .btn-register': function(event, template){
         var value = web3.clean($('#nameregValue').val()),
-            account = accounts.get('selected').address,
+            account = LocalStore.get('selectedAddress'),
             transactionCallback = function(err, result){
                 if(err)
                     return TemplateVar.set(template, 'state', {
@@ -85,7 +85,7 @@ Template['views_namereg'].events({
     */
 
     'click .btn-unregister': function(event, template){
-        var account = accounts.get('selected').address,
+        var account = LocalStore.get('selectedAddress'),
             transactionCallback = function(err, result){
                 if(err) 
                     return TemplateVar.set(template, 'state', {
@@ -128,7 +128,7 @@ Template['views_namereg'].events({
 
     'click .btn-lookup': function(event, template){
         var value = web3.clean($('#nameregValue').val()),
-            account = accounts.get('selected').address,
+            account = LocalStore.get('selectedAddress'),
             nameOfCallback = function(err, result){
                 if(err)
                     return;
