@@ -30,12 +30,12 @@ contract ProposalSystem {
 }
 
 contract DelegationSystem {
-	event Delegated(address _board, uint _pid, address _from);
+    event Delegated(address _board, uint _pid, address _from);
 
     function init(){}
     function delegate(address _board, address _from, address _to, uint _pit) public {}
-	function delegatedTo(address _board, uint _pid, address _delegator) returns (address) {}
-	function hasDelegated(address _board, uint _pid, address _delegator) returns (bool) {}	
+    function delegatedTo(address _board, uint _pid, address _delegator) returns (address) {}
+    function hasDelegated(address _board, uint _pid, address _delegator) returns (bool) {}	
 }
 
 contract FamilySystem {
@@ -43,10 +43,10 @@ contract FamilySystem {
 	event MemberRemoved(address _board, address _member, uint _memberID);
 
     function init(){}
-	function addMember(address _board, address _member, uint _position) {}
-	function removeMember(address _board, address _member) {}
-	function memberPosition(address _board, uint _memberID) returns (uint) {}
-	function memberAddress(address _board, uint _memberID) returns (address) {}
+    function addMember(address _board, address _member, uint _position) {}
+    function removeMember(address _board, address _member) {}
+    function memberPosition(address _board, uint _memberID) returns (uint) {}
+    function memberAddress(address _board, uint _memberID) returns (address) {}
 }
 
 contract StandardToken {
@@ -61,8 +61,8 @@ contract StandardToken {
 }
 
 contract Board {
-	function chair() returns (address) {}
-	function addressOfArticle(uint _article) returns (address) {}
+    function chair() returns (address) {}
+    function addressOfArticle(uint _article) returns (address) {}
     function membershipSystem() returns (address) {}
     function familySystem() returns (address) {}
     function proposalSystem() returns (address) {}
@@ -70,9 +70,9 @@ contract Board {
     function delegationSystem() returns (address) {}
     function votingSystem() returns (address) {}
     function configSystem() returns (address) {}
-	function controller() returns (address) {}
-	function ammendConstitution(uint _article, address _addr){}
-	function disolve();
+    function controller() returns (address) {}
+    function ammendConstitution(uint _article, address _addr){}
+    function disolve();
 }
 
 contract MembershipSystem {
@@ -142,43 +142,43 @@ contract BoardRoomController is Budgeted {
             send(addr, value);
 			
 		if(kind == 3)
-			BoardRoom(board).disolve();
-			
+		    BoardRoom(board).disolve();
+				
 		if(kind == 4)
-            suicide(this);
-			
+	        suicide(this);
+				
 		if(kind == 5)
-            NameReg(addr).register(data);
-            
-        if(kind == 6)
-            NameReg(addr).unregister();
-			
+	        NameReg(addr).register(data);
+	        
+	    if(kind == 6)
+	        NameReg(addr).unregister();
+				
 		if(kind == 7)
-            StandardToken(addr).transfer(value, addr1);
-            
-        if(kind == 8)
-            StandardToken(addr).transferFrom(addr, value, addr1);
-            
-        if(kind == 9)
-            StandardToken(addr).approve(addr1);
-            
-        if(kind == 10)
-            StandardToken(addr).approveOnce(addr1, value);
-			
+	        StandardToken(addr).transfer(value, addr1);
+	        
+	    if(kind == 8)
+	        StandardToken(addr).transferFrom(addr, value, addr1);
+	        
+	    if(kind == 9)
+	        StandardToken(addr).approve(addr1);
+	        
+	    if(kind == 10)
+	        StandardToken(addr).approveOnce(addr1, value);
+				
 		if(kind == 11)
-			FamilySystem(BoardRoom(board).familySystem()).addMember(board, addr, value);
-			
+	        FamilySystem(BoardRoom(board).familySystem()).addMember(board, addr, value);
+				
 		if(kind == 12)
-			FamilySystem(BoardRoom(board).familySystem()).removeMember(board, addr);
-			
+		    FamilySystem(BoardRoom(board).familySystem()).removeMember(board, addr);
+				
 		if(kind == 13)  // make bytes32 call (used for namereg)
-            addr.call(bytes4(data), data1);
-            
-        if(kind == 14)  // make uint call (used for value calls)
-            addr.call(bytes4(data), value);
-			
+	        addr.call(bytes4(data), data1);
+	            
+	    if(kind == 14)  // make uint call (used for value calls)
+	        addr.call(bytes4(data), value);
+				
 		if(kind == 15)
-            Middleware(addr).execute.value(value)(_pid);
+	       Middleware(addr).execute.value(value)(_pid);
 	}
 }
 
@@ -186,17 +186,18 @@ contract BoardRoom is Board, Constituted {
     enum DefaultArticles {Chair, Membership, Proposals, Voting, Delegation, Token, Family, Executive, Controller}
     
     function BoardRoom (address _chair
-					, address _votingSystem
-                    , address _membershipSystem
-                    , address _proposalSystem
-                    , address _delegationSystem
-                    , address _tokenSystem
-                    , address _familySystem
-					, address _executive) {
+		, address _votingSystem
+        , address _membershipSystem
+        , address _proposalSystem
+        , address _delegationSystem
+        , address _tokenSystem
+        , address _familySystem
+		, address _executive) {
+	
 		if(_chair == address(0))
-        	constitution[0] = msg.sender;
+			constitution[0] = msg.sender;
 		else
-        	constitution[0] = _chair;
+			constitution[0] = _chair;
 		
         constitution[1] = _membershipSystem;
         constitution[2] = _proposalSystem;
@@ -228,39 +229,39 @@ contract BoardRoom is Board, Constituted {
 		suicide(this);
 	}
     
-    function chair() public returns (address) {
-        return constitution[uint(DefaultArticles.Chair)];
-    }
-    
-    function membershipSystem() public returns (address) {
-        return constitution[uint(DefaultArticles.Membership)];
-    }
-    
-    function familySystem() public returns (address) {
-        return constitution[uint(DefaultArticles.Family)];
-    }
-    
-    function proposalSystem() public returns (address) {
-        return constitution[uint(DefaultArticles.Proposals)];
-    }
-    
-    function delegationSystem() public returns (address) {
-        return constitution[uint(DefaultArticles.Delegation)];
-    }
-    
-    function votingSystem() public returns (address) {
-        return constitution[uint(DefaultArticles.Voting)];
-    }
-    
-    function tokenSystem() public returns (address) {
-        return constitution[uint(DefaultArticles.Token)];
-    }
-    
-    function controller() public returns (address) {
-        return constitution[uint(DefaultArticles.Controller)];
-    }
-    
-    function executive() public returns (address) {
-        return constitution[uint(DefaultArticles.Executive)];
-    }
+	function chair() public returns (address) {
+		return constitution[uint(DefaultArticles.Chair)];
+	}
+	
+	function membershipSystem() public returns (address) {
+		return constitution[uint(DefaultArticles.Membership)];
+	}
+	
+	function familySystem() public returns (address) {
+		return constitution[uint(DefaultArticles.Family)];
+	}
+	
+	function proposalSystem() public returns (address) {
+		return constitution[uint(DefaultArticles.Proposals)];
+	}
+	
+	function delegationSystem() public returns (address) {
+		return constitution[uint(DefaultArticles.Delegation)];
+	}
+	
+	function votingSystem() public returns (address) {
+		return constitution[uint(DefaultArticles.Voting)];
+	}
+	
+	function tokenSystem() public returns (address) {
+		return constitution[uint(DefaultArticles.Token)];
+	}
+	
+	function controller() public returns (address) {
+		return constitution[uint(DefaultArticles.Controller)];
+	}
+	
+	function executive() public returns (address) {
+		return constitution[uint(DefaultArticles.Executive)];
+	}
 }
