@@ -1,8 +1,3 @@
-contract MembershipSystem {
-    function init(){}
-    function isMember(address _board, address _addr) returns (bool) {}
-}
-
 contract ProposableConfig { 
     function onExecute(uint _pid) {} 
     function onProposal(uint _pid) {} 
@@ -13,35 +8,13 @@ contract BoardRoom {
 	function execute(uint _pid) {}
 	function chair() returns (address) {}
 	function addressOfArticle(uint _article) returns (address) {}
-    function membershipSystem() returns (address) {}
-    function familySystem() returns (address) {}
-    function proposalSystem() returns (address) {}
-    function budgetSystem() returns (address) {}
-    function delegationSystem() returns (address) {}
-    function votingSystem() returns (address) {}
+	function membershipSystem() returns (address) {}
+	function familySystem() returns (address) {}
+	function proposalSystem() returns (address) {}
+	function delegationSystem() returns (address) {}
+	function votingSystem() returns (address) {}
 	function tokenSystem() returns (address){}
 	function controller() returns (address){}
-}
-
-contract StandardToken {
-    function isApprovedOnceFor(address _target, address _proxy) constant returns (uint _maxValue) {}
-    function isApprovedFor(address _target, address _proxy) constant returns (bool _r) {}
-    function balanceOf(address _addr) constant returns (uint _r) {}
-    function transfer(uint _value, address _to) returns (bool _success) {}
-    function transferFrom(address _from, uint _value, address _to) returns (bool _success) {}
-    function approve(address _addr) returns (bool _success) {}
-    function unapprove(address _addr) returns (bool _success) {}
-    function approveOnce(address _addr, uint256 _maxValue) returns (bool _success) {}
-}
-
-contract FamilySystem {
-	event MemberAdded(address _board, address _member, uint _memberID);
-	event MemberRemoved(address _board, address _member, uint _memberID);
-	
-	function addMember(address _board, address _member, uint _type) returns (uint memberID) {}
-	function removeMember(address _board, address _member) {}
-	function memberPosition(address _board, uint _memberID) returns (uint) {}
-	function memberAddress(address _board, uint _memberID) returns (address) {}
 }
 
 contract NameReg {
@@ -56,35 +29,34 @@ contract VotingSystem {
     
     function init(){}
     function hasWon(address _board, uint _pid) returns (bool) {}
+	function canTable(address _board, address _member) returns (bool) {}
 	function canVote(address _board, uint _pid, address _member) returns (bool) {}
+	function canExecute(address _board, uint _pid) returns (bool) {}
 }
 
 contract BoardRoomController {
 	function board() returns (address){}
-	function execute(uint _pid) {}
+	function execute(uint _pid, bytes _transactionData) {}
 }
 
 contract ProposalSystem is VotingSystem, ProposableConfig {
-	struct Proposal {
-        bytes32 name;
-        bytes32[] data;
-        address[] addr;
-        uint[] value;
-        address from;
-        uint kind;	
-        uint expiry;
-        bool executed;
-        uint created;
-		
-        Vote[] votes;
-        uint numVoters;
-        mapping(uint => uint) voteTotal;
-        mapping(address => bool) voted;
-		mapping(address => uint) toID;
-		
-        uint numFor;
-        uint numAgainst;
-        uint totalVotes;
+    struct Proposal {
+	string name;
+	address from;
+	uint kind;
+	bytes32 hash;
+	
+	bytes32[] data;
+	address[] addr;
+	uint[] value;
+	
+	Vote[] votes;
+	uint totalVotes;
+	mapping(address => bool) voted;
+	mapping(address => uint) toID;
+	
+	bool executed;
+	uint created;
     }
 	
 	struct Vote {
@@ -102,7 +74,7 @@ contract ProposalSystem is VotingSystem, ProposableConfig {
 	
 	function vote(address _board, uint _pid, uint _position) public returns (uint voteID) {
 		if(!VotingSystem(BoardRoom(_board).votingSystem()).canVote(_board, _pid, msg.sender))
-			return;
+			throw;
 			
         Proposal p = proposals[_board][_pid];
 			
@@ -110,17 +82,16 @@ contract ProposalSystem is VotingSystem, ProposableConfig {
 		voteID = p.votes.length++;
 		p.votes[voteID] = Vote({position: _position, member: msg.sender});
 		p.voted[msg.sender] = true;
-		p.numVoters += 1;
+		p.toID[msg.sender] = voteID;
+		
 		Voted(_pid, msg.sender, _position);
 	}
 	
-	function table(address _board, bytes32 _name, bytes32[] _data, 
-					uint _kind, uint[] _value, address[] _addr, uint _expiry) public {		
-		if(!MembershipSystem(BoardRoom(_board).membershipSystem()).isMember(_board, msg.sender))
-			return;
-    
-		if(_expiry != 0 && _expiry < now) // invalid expiry
-            return;
+	function table(address _board, string _name, uint _kind,
+				bytes32[] _data, uint[] _value, address[] _addr, 
+				bytes _transactionData) public {			
+		if(!VotingSystem(BoardRoom(_board).votingSystem()).canTable(_board, msg.sender))
+			throw;
 			
 		uint pid = numProposals[_board]++;
         Proposal p = proposals[_board][pid];
@@ -131,48 +102,38 @@ contract ProposalSystem is VotingSystem, ProposableConfig {
         p.from = msg.sender;
         p.value = _value;
         p.created = now;
-        p.expiry = _expiry;
+		p.hash = sha3(_board, pid, _transactionData);
+		
         Tabled(_kind, msg.sender, pid);
     }
 	
-	function execute(address _board, uint _pid) public {
+	function execute(address _board, uint _pid, bytes _transactionData) public {
         Proposal p = proposals[_board][_pid];
-            
-        if(!VotingSystem(BoardRoom(_board).votingSystem()).hasWon(_board, _pid))
-            return;
-		
-		if(p.executed || p.expiry < now)
-			return;
+		    
+        if(!VotingSystem(BoardRoom(_board).votingSystem()).canExecute(_board, _pid))
+            throw;
 			
-		/*for(uint i = 0; i < p.votes.length; i++) {
-			if(p.votes[i].position == 0)
-				p.voteTotal[0] += StandardToken(BoardRoom(_board).tokenSystem()).balanceOf(p.votes[i].member);
-			else
-				p.voteTotal[1] += StandardToken(BoardRoom(_board).tokenSystem()).balanceOf(p.votes[i].member);
-		}*/
+		if(p.hash != sha3(_board, _pid, _transactionData))
+			throw;
         
-        Executed(_pid);
 		p.executed = true;
         numExecuted[_board] += 1;
 		
 		if(p.kind == 0)
-			return;
+			throw;
 			
 		if(p.kind >= 1)
-			BoardRoomController(BoardRoom(_board).controller()).execute(_pid);		
+			BoardRoomController(BoardRoom(_board).controller()).execute(_pid, _transactionData);	
+
+        Executed(_pid);
 	}
+	
     
-    function isProposal(address _board, uint _pid) public returns (bool) {
+    function isProposal(address _board, uint _pid) public constant returns (bool) {
         Proposal p = proposals[_board][_pid];
         
         if(p.created != 0)
             return true;
-    }
-    
-    function proposalName(address _board, uint _pid) public returns (bytes32) {
-        Proposal p = proposals[_board][_pid];
-        
-        return p.name;
     }
     
     function proposalKind(address _board, uint _pid) public returns (uint) {
@@ -198,12 +159,12 @@ contract ProposalSystem is VotingSystem, ProposableConfig {
         
         return p.value[_index];
     }
-    
-    function proposalExpiry(address _board, uint _pid) public returns(uint) {
-        Proposal p = proposals[_board][_pid];
+	
+	function proposalCreated(address _board, uint _pid) public returns (uint) {
+		Proposal p = proposals[_board][_pid];
         
-        return p.expiry;
-    }
+        return p.created;
+	}
 	
 	function proposalExecuted(address _board, uint _pid) public returns(bool) {
         Proposal p = proposals[_board][_pid];
@@ -240,15 +201,28 @@ contract ProposalSystem is VotingSystem, ProposableConfig {
         
         return p.voted[_member];
     }
-    
-    function proposalVoteTotal(address _board, uint _pid, uint _position) public returns (uint voteTotal) {
+	
+	function proposalNumValues(address _board, uint _pid) constant returns (uint) {
         Proposal p = proposals[_board][_pid];
 		
-		for(uint i = 0; i < p.votes.length; i++) {
-			if(p.votes[i].position == _position)
-				voteTotal += StandardToken(BoardRoom(_board).tokenSystem()).balanceOf(p.votes[i].member);
-		}
-        
-        return voteTotal;
-    }
+		return p.value.length;	
+	}
+	
+	function proposalNumData(address _board, uint _pid) constant returns (uint) {
+        Proposal p = proposals[_board][_pid];
+		
+		return p.data.length;
+	}
+	
+	function proposalNumAddress(address _board, uint _pid) constant returns (uint) {
+        Proposal p = proposals[_board][_pid];
+		
+		return p.addr.length;
+	}
+	
+	function proposalHash(address _board, uint _pid) constant returns (bytes32) {
+        Proposal p = proposals[_board][_pid];
+		
+		return p.hash;
+	}
 }
