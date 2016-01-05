@@ -1,15 +1,15 @@
 contract Constituted {
 	event Amended(uint indexed _article, address indexed _addr); 
-    mapping(uint => address) public constitution;
+	mapping(uint => address) public constitution;
 	
 	function amendConstitution(uint _article, address _addr){ 
 		constitution[_article] = _addr;
 		Amended(_article, _addr);
 	}
-    
-    function addressOfArticle(uint _article) public constant returns (address) {
-        return constitution[_article];
-    }
+	
+	function addressOfArticle(uint _article) public constant returns (address) {
+		return constitution[_article];
+	}
 }
 
 contract Proxy {
