@@ -1,15 +1,15 @@
 contract Constituted {
 	event Amended(uint indexed _article, address indexed _addr); 
-	mapping(uint => address) public constitution;
+    mapping(uint => address) public constitution;
 	
 	function amendConstitution(uint _article, address _addr){ 
 		constitution[_article] = _addr;
 		Amended(_article, _addr);
 	}
-	
-	function addressOfArticle(uint _article) public constant returns (address) {
-		return constitution[_article];
-	}
+    
+    function addressOfArticle(uint _article) public constant returns (address) {
+        return constitution[_article];
+    }
 }
 
 contract Proxy {
@@ -19,7 +19,7 @@ contract Proxy {
 	address public implementer;
 	
 	function transfer_ownership(address _new_implementer) public {
-		if (msg.sender == implementer) {
+		if (msg.sender == this || msg.sender == implementer) {
 			implementer = _new_implementer;
 			TransferOwnership(_new_implementer);
 		}
@@ -50,7 +50,7 @@ contract BoardRoom is Proxy, Constituted {
 	}
 	
 	function amendConstitution(uint _article, address _addr){
-		if(msg.sender == implementer) {
+		if(msg.sender == this || msg.sender == implementer) {
 			if(_article == 0)
 				transfer_ownership(_addr);
 				
@@ -59,7 +59,7 @@ contract BoardRoom is Proxy, Constituted {
 	}
 	
 	function disolve(address _addr){
-		if (msg.sender == implementer)
+		if (msg.sender == this || msg.sender == implementer)
 			suicide(_addr);
 	}
 }
