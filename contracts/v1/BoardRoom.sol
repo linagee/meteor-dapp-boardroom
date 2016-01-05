@@ -19,7 +19,7 @@ contract Proxy {
 	address public implementer;
 	
 	function transfer_ownership(address _new_implementer) public {
-		if (msg.sender == this || msg.sender == implementer) {
+		if (msg.sender == address(this) || msg.sender == implementer) {
 			implementer = _new_implementer;
 			TransferOwnership(_new_implementer);
 		}
@@ -50,7 +50,7 @@ contract BoardRoom is Proxy, Constituted {
 	}
 	
 	function amendConstitution(uint _article, address _addr){
-		if(msg.sender == this || msg.sender == implementer) {
+		if(msg.sender == address(this) || msg.sender == implementer) {
 			if(_article == 0)
 				transfer_ownership(_addr);
 				
@@ -59,7 +59,7 @@ contract BoardRoom is Proxy, Constituted {
 	}
 	
 	function disolve(address _addr){
-		if (msg.sender == this || msg.sender == implementer)
+		if (msg.sender == address(this) || msg.sender == implementer)
 			suicide(_addr);
 	}
 }
