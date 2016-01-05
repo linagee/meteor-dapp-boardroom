@@ -16,50 +16,50 @@ contract VotingSystem {
 }
 
 contract ProcessingSystem {
-    function methodName(uint _kind) public constant returns (bytes4) {}
-    function expectedDataLength(uint _kind) public constant returns (uint) {}
+  function methodName(uint _kind) public constant returns (bytes4) {}
+  function expectedDataLength(uint _kind) public constant returns (uint) {}
 }
 
 contract ProposalSystem {
 	enum DefaultArticles {Proposals, Processor, Voting, Membership, Delegation, Token, Family, Chair, Executive}
 	
 	struct Proposal {
-        string name;
-        address from;
-        uint kind;
+		string name;
+		address from;
+		uint kind;
 		bytes32 hash;
 		
-        bytes32[] data;
-        address[] addr;
-        uint[] value;
+		bytes32[] data;
+		address[] addr;
+		uint[] value;
 		
-        Vote[] votes;
+		Vote[] votes;
 		uint totalVotes;
-        mapping(address => bool) voted;
+		mapping(address => bool) voted;
 		mapping(address => uint) toID;
 		
-        bool executed;
-        uint created;
-    }
+		bool executed;
+		uint created;
+	}
 	
 	struct Vote {
 		uint position;
 		address member;
 	}
-    
-    event Tabled(uint _kind, address _member, uint indexed _proposalID);
-    event Executed(uint indexed _proposalID);
-    event Voted(uint indexed _proposalID, address _member, uint _position);
-    
-    mapping(address => uint) public numExecuted;
-    mapping(address => uint) public numProposals;
-    mapping(address => mapping(uint => Proposal)) public proposals;
+	
+	event Tabled(uint _kind, address _member, uint indexed _proposalID);
+	event Executed(uint indexed _proposalID);
+	event Voted(uint indexed _proposalID, address _member, uint _position);
+	
+	mapping(address => uint) public numExecuted;
+	mapping(address => uint) public numProposals;
+	mapping(address => mapping(uint => Proposal)) public proposals;
 	
 	function vote(address _board, uint _proposalID, uint _position) public returns (uint voteID) {
 		if(!VotingSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Voting))).canVote(_board, _proposalID, msg.sender))
 			throw;
 			
-        Proposal p = proposals[_board][_proposalID];
+      	Proposal p = proposals[_board][_proposalID];
 			
 		p.totalVotes++;
 		voteID = p.votes.length++;
