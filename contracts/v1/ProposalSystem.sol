@@ -16,8 +16,8 @@ contract VotingSystem {
 }
 
 contract ProcessingSystem {
-  function methodName(uint _kind) public constant returns (bytes4) {}
-  function expectedDataLength(uint _kind) public constant returns (uint) {}
+	function methodName(uint _kind) public constant returns (bytes4) {}
+	function expectedDataLength(uint _kind) public constant returns (uint) {}
 }
 
 contract ProposalSystem {
