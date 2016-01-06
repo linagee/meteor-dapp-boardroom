@@ -59,7 +59,7 @@ contract ProposalSystem {
 		if(!VotingSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Voting))).canVote(_board, _proposalID, msg.sender))
 			throw;
 			
-        Proposal p = proposals[_board][_proposalID];
+        	Proposal p = proposals[_board][_proposalID];
 			
 		p.totalVotes++;
 		voteID = p.votes.length++;
@@ -71,8 +71,8 @@ contract ProposalSystem {
 	}
 	
 	function table(address _board, string _name, uint _kind,
-				bytes32[] _data, uint[] _value, address[] _addr, 
-				bytes _transactionBytecode) public {			
+			bytes32[] _data, uint[] _value, address[] _addr, 
+			bytes _transactionBytecode) public {			
 		if(!VotingSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Voting))).canTable(_board, _kind, msg.sender)
 			|| _addr.length != _value.length)
 			throw;
@@ -92,14 +92,14 @@ contract ProposalSystem {
 	}
 	
 	function execute(address _board, uint _proposalID, bytes _transactionBytecode) public {
-     	Proposal p = proposals[_board][_proposalID];
+     		Proposal p = proposals[_board][_proposalID];
 		    
-        if(!VotingSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Voting))).canExecute(_board, _proposalID, msg.sender)
-		|| p.hash != sha3(_board, _proposalID, _transactionBytecode))
+        	if(!VotingSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Voting))).canExecute(_board, _proposalID, msg.sender)
+			|| p.hash != sha3(_board, _proposalID, _transactionBytecode))
 			throw;
         
 		p.executed = true;
-        numExecuted[_board] += 1;
+        	numExecuted[_board] += 1;
 		
 		uint d = 0;
 		uint length;
@@ -140,9 +140,9 @@ contract ProposalSystem {
 	}
 	
 	function tabledBy(address _board, uint _proposalID) public constant returns (address) {
-    	Proposal p = proposals[_board][_proposalID];
+    		Proposal p = proposals[_board][_proposalID];
     
-    	return p.from;
+    		return p.from;
 	}
     
 	function kindOf(address _board, uint _proposalID) public constant returns (uint) {
@@ -221,19 +221,19 @@ contract ProposalSystem {
 	
 	
 	function numValuesIn(address _board, uint _proposalID) public constant returns (uint) {
-        Proposal p = proposals[_board][_proposalID];
+        	Proposal p = proposals[_board][_proposalID];
 		
 		return p.value.length;	
 	}
 	
 	function numDataIn(address _board, uint _proposalID) public constant returns (uint) {
-        Proposal p = proposals[_board][_proposalID];
+        	Proposal p = proposals[_board][_proposalID];
 		
 		return p.data.length;
 	}
 	
 	function numAddressesIn(address _board, uint _proposalID) public constant returns (uint) {
-        Proposal p = proposals[_board][_proposalID];
+        	Proposal p = proposals[_board][_proposalID];
 		
 		return p.addr.length;
 	}
