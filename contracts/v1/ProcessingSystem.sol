@@ -1,10 +1,10 @@
 contract ProcessingSystem {
-	function methodName(uint _kind) returns (bytes4) {
+	function methodName(uint _kind) public constant returns (bytes4) {
 		string memory name;
 			
 		// BOARDROOM & EXECUTION
 		if(_kind == 1)
-			name = "amendConstituion(uint256,address)";
+			name = "amendConstitution(uint256,address)";
 			
 		if(_kind == 2)
 			name = "transfer_ownership(address)";
@@ -48,10 +48,10 @@ contract ProcessingSystem {
 		return bytes4(sha3(name));
 	}
 	
-	function expectedDataLength(uint _kind) returns (uint) {
+	function expectedDataLength(uint _kind) public constant returns (uint) {
 		// BOARDROOM & EXECUTION
 		if(_kind == 1)
-			return 2; //name = "amendConstituion(uint256,address)";
+			return 2; //name = "amendConstitution(uint256,address)";
 			
 		if(_kind == 2)
 			return 1; //name = "transfer_ownership(address)";
