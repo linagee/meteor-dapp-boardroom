@@ -46,9 +46,9 @@ contract ProposalSystem {
 		uint position;
 		address member;
 	}
-	
+    
 	event Tabled(uint _kind, address _member, uint indexed _proposalID);
-	event Executed(uint indexed _proposalID);
+	event Executed(uint indexed _proposalID, uint _length, bytes4 _name);
 	event Voted(uint indexed _proposalID, address _member, uint _position);
 	
 	mapping(address => uint) public numExecuted;
@@ -59,7 +59,7 @@ contract ProposalSystem {
 		if(!VotingSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Voting))).canVote(_board, _proposalID, msg.sender))
 			throw;
 			
-      	Proposal p = proposals[_board][_proposalID];
+        Proposal p = proposals[_board][_proposalID];
 			
 		p.totalVotes++;
 		voteID = p.votes.length++;
@@ -78,29 +78,28 @@ contract ProposalSystem {
 			throw;
 			
 		uint pid = numProposals[_board]++;
-        Proposal p = proposals[_board][pid];
-        p.name = _name;
-        p.data = _data;
-        p.kind = _kind;
-        p.addr = _addr;
-        p.from = msg.sender;
-        p.value = _value;
-        p.created = now;
+		Proposal p = proposals[_board][pid];
+		p.name = _name;
+		p.data = _data;
+		p.kind = _kind;
+		p.addr = _addr;
+		p.from = msg.sender;
+		p.value = _value;
+		p.created = now;
 		p.hash = sha3(_board, pid, _transactionBytecode);
 		
-        Tabled(_kind, msg.sender, pid);
-    }
+		Tabled(_kind, msg.sender, pid);
+	}
 	
 	function execute(address _board, uint _proposalID, bytes _transactionBytecode) public {
-        Proposal p = proposals[_board][_proposalID];
+        	Proposal p = proposals[_board][_proposalID];
 		    
-        if(!VotingSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Voting))).canExecute(_board, _proposalID, msg.sender)
-			|| p.hash != sha3(_board, _proposalID, _transactionBytecode)
-			|| p.kind == 0)
+	        if(!VotingSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Voting))).canExecute(_board, _proposalID, msg.sender)
+			|| p.hash != sha3(_board, _proposalID, _transactionBytecode))
 			throw;
         
 		p.executed = true;
-        numExecuted[_board] += 1;
+        	numExecuted[_board] += 1;
 		
 		uint d = 0;
 		uint length;
@@ -111,67 +110,69 @@ contract ProposalSystem {
 			name = ProcessingSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Processor))).methodName(p.kind);
 		}
 		
-		for(uint a = 0; a < p.addr.length; a ++) {
+		for(uint a = 0; a < p.addr.length; a++) {
 			if(p.kind == 0)
 				BoardRoom(_board).forward(p.addr[a], p.value[a], _transactionBytecode);
 			
 			if(p.kind >= 1) {
-				bytes32[] memory assembly;
+				bytes32[] memory assembly = new bytes32[](length);
+				uint k = 0;
 				
 				for(uint i = d; i < (a + 1) * length; i++) {
-					assembly[d] = p.data[d];
-					d += i;
+					assembly[k] = p.data[i];
+					d += 1;
+					k += 1;
 				}
 			
-				BoardRoom(_board).forward_method(p.addr[a], p.value[a], name, assembly);
+				BoardRoom(_board).forward_method(p.addr[a], p.value[0], name, assembly);
 			}
 		}
 			
-        Executed(_proposalID);
+        	Executed(_proposalID, length, name);
 	}
 	
     
-    function checkProposalCode(address _board, uint _proposalID, bytes _transactionBytecode) public constant returns (bool) {
-        Proposal p = proposals[_board][_proposalID];
-        
-        if(p.hash == sha3(_board, _proposalID, _transactionBytecode))
-            return true;
-    }
+	function checkProposalCode(address _board, uint _proposalID, bytes _transactionBytecode) public constant returns (bool) {
+		Proposal p = proposals[_board][_proposalID];
+		
+		if(p.hash == sha3(_board, _proposalID, _transactionBytecode))
+			return true;
+	}
 	
 	function tabledBy(address _board, uint _proposalID) public constant returns (address) {
-        Proposal p = proposals[_board][_proposalID];
+        	Proposal p = proposals[_board][_proposalID];
         
-        return p.from;
+        	return p.from;
 	}
     
-    function kindOf(address _board, uint _proposalID) public constant returns (uint) {
-        Proposal p = proposals[_board][_proposalID];
-        
-        return p.kind;
-    }
+	function kindOf(address _board, uint _proposalID) public constant returns (uint) {
+		Proposal p = proposals[_board][_proposalID];
 	
-    
-    function dataAt(address _board, uint _proposalID, uint _index) public constant returns (bytes32) {
-        Proposal p = proposals[_board][_proposalID];
-        
-        return p.data[_index];
-    }
-    
-    function addressAt(address _board, uint _proposalID, uint _index) public constant returns (address) {
-        Proposal p = proposals[_board][_proposalID];
-        
-        return p.addr[_index];
-    }
-    
-    function valueAt(address _board, uint _proposalID, uint _index) public constant returns (uint) {
-        Proposal p = proposals[_board][_proposalID];
-        
-        return p.value[_index];
-    }
+		return p.kind;
+	}
+	
+	
+	function dataAt(address _board, uint _proposalID, uint _index) public constant returns (bytes32) {
+		Proposal p = proposals[_board][_proposalID];
+	
+		return p.data[_index];
+	}
+	
+	function addressAt(address _board, uint _proposalID, uint _index) public constant returns (address) {
+		Proposal p = proposals[_board][_proposalID];
+	
+		return p.addr[_index];
+	}
+	
+	function valueAt(address _board, uint _proposalID, uint _index) public constant returns (uint) {
+		Proposal p = proposals[_board][_proposalID];
+	
+		return p.value[_index];
+	}
 	
 	
 	function hashOf(address _board, uint _proposalID) public constant returns (bytes32) {
-        Proposal p = proposals[_board][_proposalID];
+        	Proposal p = proposals[_board][_proposalID];
 		
 		return p.hash;
 	}
@@ -179,13 +180,13 @@ contract ProposalSystem {
 	function createdAt(address _board, uint _proposalID) public constant returns (uint) {
 		Proposal p = proposals[_board][_proposalID];
         
-        return p.created;
+        	return p.created;
 	}
 	
 	function isExecuted(address _board, uint _proposalID) public constant returns(bool) {
-        Proposal p = proposals[_board][_proposalID];
+		Proposal p = proposals[_board][_proposalID];
         
-        return p.executed;
+        	return p.executed;
 	}
     
 	function voteCountOf(address _board, uint _proposalID) public constant returns (uint){
@@ -194,45 +195,45 @@ contract ProposalSystem {
 		return p.totalVotes;
 	}
 	
-    function positionOf(address _board, uint _proposalID, uint _voteID) public constant returns (uint) {
-        Proposal p = proposals[_board][_proposalID];
-        
-        return p.votes[_voteID].position;
-    }
-    
-    function memberOf(address _board, uint _proposalID, uint _voteID) public constant returns (address) {
-        Proposal p = proposals[_board][_proposalID];
-        
-        return p.votes[_voteID].member;
-    }
-    
-    function idOf(address _board, uint _proposalID, address _member) public constant returns (uint) {
-        Proposal p = proposals[_board][_proposalID];
-        
-        return p.toID[_member];
-    }
-    
-    function hasVoted(address _board, uint _proposalID, address _member) public constant returns (bool) {
-        Proposal p = proposals[_board][_proposalID];
-        
-        return p.voted[_member];
-    }
+	function positionOf(address _board, uint _proposalID, uint _voteID) public constant returns (uint) {
+		Proposal p = proposals[_board][_proposalID];
+	
+		return p.votes[_voteID].position;
+	}
+	
+	function memberOf(address _board, uint _proposalID, uint _voteID) public constant returns (address) {
+		Proposal p = proposals[_board][_proposalID];
+	
+		return p.votes[_voteID].member;
+	}
+	
+	function idOf(address _board, uint _proposalID, address _member) public constant returns (uint) {
+		Proposal p = proposals[_board][_proposalID];
+	
+		return p.toID[_member];
+	}
+	
+	function hasVoted(address _board, uint _proposalID, address _member) public constant returns (bool) {
+		Proposal p = proposals[_board][_proposalID];
+	
+		return p.voted[_member];
+	}
 	
 	
 	function numValuesIn(address _board, uint _proposalID) public constant returns (uint) {
-        Proposal p = proposals[_board][_proposalID];
+        	Proposal p = proposals[_board][_proposalID];
 		
 		return p.value.length;	
 	}
 	
 	function numDataIn(address _board, uint _proposalID) public constant returns (uint) {
-        Proposal p = proposals[_board][_proposalID];
+        	Proposal p = proposals[_board][_proposalID];
 		
 		return p.data.length;
 	}
 	
 	function numAddressesIn(address _board, uint _proposalID) public constant returns (uint) {
-        Proposal p = proposals[_board][_proposalID];
+        	Proposal p = proposals[_board][_proposalID];
 		
 		return p.addr.length;
 	}
