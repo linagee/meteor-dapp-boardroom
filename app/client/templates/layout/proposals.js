@@ -26,13 +26,14 @@ Template['layout_proposals'].rendered = function(){
 
 Template['layout_proposals'].helpers({
     'update': function(){
-        // Load most recent proposals
-        boardroomInstance.numProposals(function(err, numProposals){
-            if(err)
-                return;
-
-            numProposals = numProposals.toNumber(10);
-            Proposals.import(boardroomInstance.address, 0, numProposals);
-        });  
+		var board = Boards.findOne({address: boardroomInstance.address});
+		
+		if(!_.isUndefined(board)) {
+			for(var proposalID = 0; proposalID < board.numProposals; proposalID++){
+				console.log(proposalID);
+				
+				BoardRoom.importProposal(boardroomInstance.address, proposalID);
+			}
+		}
     },
 });

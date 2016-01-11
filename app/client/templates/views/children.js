@@ -1,7 +1,8 @@
 Template['views_children'].rendered = function(){
+	var template = this;
 	Meta.setSuffix(TAPi18n.__("dapp.parent.title"));
     
-    boardroomInstance.numChildren(function(err, numChildren){
+    /*boardroomInstance.numChildren(function(err, numChildren){
         if(err)
             return;
         
@@ -20,11 +21,15 @@ Template['views_children'].rendered = function(){
         
     });
     
-    console.log(Children.find({}).fetch());
+    console.log(Children.find({}).fetch());*/
+	
+	objects.defaultComponents.Family.totalMembers(boardroomInstance.address, function(err, totalMembers){
+		TemplateVar.set(template, 'totalMembers', totalMembers.toNumber(10));
+	});
 };
 
 Template['views_children'].helpers({
     'children': function(){
-        return Children.find({boardroom: boardroomInstance.address});
+        //return Children.find({boardroom: boardroomInstance.address});
     }, 
 });

@@ -50,6 +50,29 @@ Client Info: <br>{{client}}</pre>
     
     <hr />
     
+    <h3>Deploy Systems</h3>
+    
+    <p class="description description-seed">Deploy all default component systems.</p>
+    
+    <button class="btn btn-default btn-deploy-systems">Deploy Board Systems</button>
+	
+	<p class="info">
+		<br />
+		<br />	
+		{{TemplateVar.get 'systemsDeploymentMessage'}}
+	</p>
+	
+	<br />
+	<br />
+	
+	<p>
+		{{#each TemplateVar.get 'systemsDeployment'}}
+			<b>{{name}}</b> {{receipt.gasUsed}} {{contract.address}} <br /><br />
+		{{/each}}
+	</p>
+    
+    <hr />
+    
     <h3>Seed Content</h3>
     
     <p class="description description-seed">You may want to see boardroom in action without connecting it directly to the Ethereum network. Here you can provide fake seed content to BoardRoom in order to view it in action.</p>

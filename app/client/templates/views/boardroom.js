@@ -1,20 +1,25 @@
 Template['views_boardroom'].rendered = function(){
 	Meta.setSuffix(TAPi18n.__("dapp.boardroom.title"));
-
+	
     Meteor.setInterval(function(){
-    
-        var stats = Helpers.boardroomStats();
         var sum = function(a, b) { return a + b };     
+		var board = Boards.findOne({address: boardroomInstance.address});
+		
+		if(_.isUndefined(board)
+		  || !_.has(board, "numProposals")
+		  || !_.has(board, "numExecuted"))
+			return;
+		
         var data = {
-            series: [stats.numExecuted, stats.numUnexecuted]
+            series: [board.numExecuted, (board.numProposals - board.numExecuted)]
         };
         
-        if(stats.numProposals == 0)
+        if(board.numProposals == 0)
             data = {
-                series: [stats.numProposals]
+                series: [board.numProposals]
             };
 
-        if(stats.numProposals) {
+        if(board.numProposals) {
             if($('#proposalsChart').length > 0) {
                 new Chartist.Pie('#proposalsChart', data, {
                   donut: true,
@@ -22,25 +27,21 @@ Template['views_boardroom'].rendered = function(){
                   labelInterpolationFnc: function(value) {
                     return Math.round(value / data.series.reduce(sum) * 100) + '%';
                   }
-                }); 
+                });
             }
         }
     }, 300);
-    
-    console.log(objects);
 };
 
 Template['views_boardroom'].events({
     'click .btn-faucet': function(event, template){
-        //var etherValue = web3.toWei(3, 'ether');
-        
-        Helpers.post('http://testnet.consensys.net/faucet', {
+        /*Helpers.post('http://testnet.consensys.net/faucet', {
             address: String(boardroomInstance.address)
         });
         
         Dialog.alert('You have fauceted a 1000 ether to account' + boardroomInstance.address + '. This may take a few minutes to process.');
         
-        /*web3.eth.getAccounts(function(err, result){
+        web3.eth.getAccounts(function(err, result){
             if(err)
                 Dialog.alert('There was an error getting ether, the error was: ' + String(err));
             
@@ -60,10 +61,13 @@ Template['views_boardroom'].events({
 });
 
 Template['views_boardroom'].helpers({
-    'stats': Helpers.boardroomStats,
+	'board': function(){		
+		return Boards.findOne({address: boardroomInstance.address});	
+	},
+    'stats': {}, //Helpers.boardroomStats,
     'chairMember': function(){
-        console.log( Members.findOne({id: objects.boardroom.chair, boardroom: objects.boardroom.address}));
+        //console.log( Members.findOne({id: objects.boardroom.chair, boardroom: objects.boardroom.address}));
         
-        return Members.findOne({id: objects.boardroom.chair, boardroom: objects.boardroom.address});  
+        //return Members.findOne({id: objects.boardroom.chair, boardroom: objects.boardroom.address});  
     },
 });

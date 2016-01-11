@@ -11,7 +11,7 @@ if(!LocalStore.get('etherUnit'))
 
 // Set the default unit to ether
 if(!LocalStore.get('httpProvider'))
-    LocalStore.set('httpProvider', "http://104.236.65.136:8545/"); //"http://localhost:8545");
+    LocalStore.set('httpProvider', "http://104.236.65.136:8545/"); //"http://localhost:8545"); //http://104.236.65.136:8545/
 
 // Set the Default NameReg Contract
 if(!LocalStore.get('nameregAddress'))
@@ -66,8 +66,9 @@ Meteor.startup(function() {
 	Meta.setTitle(TAPi18n.__("dapp.app.title"));
     
     // Set BoardRoom proposal kinds from i18n
-    BoardRoom.proposalKinds = TAPi18n.__("dapp.proposalKinds",
-                                         {returnObjectTrees: true });
+    BoardRoom.kinds = TAPi18n.__("kinds", {returnObjectTrees: true });
+    
+    //accounts.clear();
     
     // setup one unsecure account if no exist
     if(accounts.length == 0)

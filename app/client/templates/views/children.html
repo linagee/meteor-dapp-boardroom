@@ -8,6 +8,15 @@
     <p class="description description-children">
         Here you can create, remove and manage subcommittees to this board. If no subcommittees exist, propose one here.
     </p>
+	
+	<label>Total Subcommittees</label>
+	{{#if TemplateVar.get 'totalMembers'}}
+		{{TemplateVar.get 'totalMembers'}}
+	{{else}}
+		0
+	{{/if}}
+	
+	<hr />
     
     <ul class="list-group list-children-nav list-inline">
         <li class="list-group-item">

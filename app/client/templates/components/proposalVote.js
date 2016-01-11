@@ -2,76 +2,80 @@ var transactionObject;
 
 Template['components_proposalVote'].rendered = function(){
     TemplateVar.set(this, 'state', {});
+	var proposal = Proposals.findOne({boardroom: boardroomInstance.address, id: objects.params._proposal});
 
     Meteor.setInterval(function(){
-        var sum = function(a, b) { return a + b };     
+        var sum = function(a, b) { return a + b };  
+		
+		if(_.isUndefined(proposal) || !_.has(proposal, 'numFor'))
+			return;
+		
         var data = {
-                series: [objects.proposal.numFor, objects.proposal.numAgainst, (objects.proposal.numMembers - objects.proposal.numVotes)]
+                series: [proposal.numFor, proposal.numAgainst]
             };
+		
+		if(proposal.numFor == 0 && proposal.numAgainst == 0)
+			data.series.push(1);
         
-        if(objects.proposal.numMembers) {
-            if ($("#proposalChart").length > 0){
-                new Chartist.Pie('#proposalChart', data, {
-                  labelInterpolationFnc: function(value) {
-                    return Math.round(value / data.series.reduce(sum) * 100) 
-                        + '%';
-                  }
-                });
-            }
-        }
+		if ($("#proposalChart").length > 0){
+			new Chartist.Pie('#proposalChart', data, {
+			  labelInterpolationFnc: function(value) {
+				return Math.round(value / data.series.reduce(sum) * 100) 
+					+ '%';
+			  }
+			});
+		}
     }, 300);
 };
 
 Template['components_proposalVote'].events({
     'click .btn-vote-for': function(event, template){
-        TemplateVar.set(template, 'state', {isMining: true});
-        
-        boardroomInstance.vote.sendTransaction(objects.proposal.id, 1,
+        objects.defaultComponents.Proposals.vote.sendTransaction(boardroomInstance.address, objects.params._proposal, 1,
                                 {from: web3.eth.defaultAccount,
-                                gasPrice: LocalStore.get('gasPrice'),
-                                gas: 3040000}, 
+                                gas: 3000000}, 
                                 function(err, result){
             if(err)
-                TemplateVar.set(template, 'state', {isError: true, error: String(err)});
+                return TemplateVar.set(template, 'state', {isError: true, error: String(err)});
+			
+        	TemplateVar.set(template, 'state', {isMining: true});
         });
     },
     
     'click .btn-vote-against': function(event, template){
-        TemplateVar.set(template, 'state', {isMining: true});
-        
-        boardroomInstance.vote.sendTransaction(objects.proposal.id, 0,
+        objects.defaultComponents.Proposals.vote.sendTransaction(boardroomInstance.address, objects.params._proposal, 0,
                                 {from: web3.eth.defaultAccount,
-                                gasPrice: LocalStore.get('gasPrice'),
-                                gas: 3040000}, 
-                               function(err, result){
+                                gas: 3000000}, 
+                                function(err, result){
             if(err)
-                TemplateVar.set(template, 'state', {isError: true, error: String(err)});
+                return TemplateVar.set(template, 'state', {isError: true, error: String(err)});
+			
+        	TemplateVar.set(template, 'state', {isMining: true});
         });
     },
     
     'click .btn-delegate': function(event, template){
-        TemplateVar.set(template, 'state', {isMining: true});
+		var delegationAddress = $('#delegation-address').val();
         
-        boardroomInstance.delegate.sendTransaction(0, objects.proposal.id,
+        objects.defaultComponents.Delegation.delegate.sendTransaction(boardroomInstance.address, objects.params._proposal, delegationAddress, 
                                     {from: web3.eth.defaultAccount,
-                                    gasPrice: LocalStore.get('gasPrice'),
-                                    gas: 3040000}, 
+									 gas: 3000000}, 
                                function(err, result){
             if(err)
-                TemplateVar.set(template, 'state', {isError: true, error: String(err)});
+                return TemplateVar.set(template, 'state', {isError: true, error: String(err)});
+			
+        	TemplateVar.set(template, 'state', {isMining: true});
         });
     },
     
     'click .btn-execute': function(event, template){
-        TemplateVar.set(template, 'state', {isMining: true});
-        
-        boardroomInstance.execute.sendTransaction(objects.proposal.id,
+        objects.defaultComponents.Proposals.execute.sendTransaction(boardroomInstance.address, objects.params._proposal,
                                     {from: web3.eth.defaultAccount,
-                                    gasPrice: LocalStore.get('gasPrice'),
-                                    gas: 3000000}, 
+									 gas: 3000000}, 
                                function(err, result){
             if(err)
-                TemplateVar.set(template, 'state', {isError: true, error: String(err)});
+                return TemplateVar.set(template, 'state', {isError: true, error: String(err)});
+			
+        	TemplateVar.set(template, 'state', {isMining: true});
         });
     },
 });
@@ -80,7 +84,7 @@ Template['components_proposalVote'].helpers({
     'refresh': function(){
         TemplateVar.set('state', {});
         
-        Proposals.import(boardroomInstance.address, objects.proposal.id);
+        /*Proposals.import(boardroomInstance.address, objects.proposal.id);
         
         boardroomInstance.hasWon.call(objects.proposal.id, function(err, hasWon){
             if(err)
@@ -92,39 +96,7 @@ Template['components_proposalVote'].helpers({
             })._id, {
                 $set: {hasWon: hasWon}
             });
-        });
-    },
-    
-    'numAbstains': function(){
-        return objects.proposal.numMembers - objects.proposal.numVotes;
-    },
-    
-    'isExecutable': function(){
-        var proposal = Proposals.findOne({
-                boardroom: boardroomInstance.address, 
-                id: objects.proposal.id
-            });
-        
-        if(_.has(proposal, 'hasWon')
-           && proposal.hasWon
-           && !proposal.executed)
-            return true;
-        else
-            return false;
-    },
-    
-    'isVotable': function(){
-        var proposal = Proposals.findOne({
-                boardroom: boardroomInstance.address, 
-                id: objects.proposal.id
-            });
-        
-        if(!proposal.executed
-          && (_.has(proposal, 'hasWon') && !proposal.hasWon) 
-          && proposal.expiry > moment().unix())
-            return true;
-        else
-            return false;
+        });*/
     },
     
     'update': function(){   

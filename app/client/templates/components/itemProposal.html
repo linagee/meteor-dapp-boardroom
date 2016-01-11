@@ -1,11 +1,12 @@
 <template name="components_itemProposal">
     <a class="list-group-item row
+			   list-proposals-{{id}}
                list-proposals-proposal pointer"
         href="/boardroom/{{boardroom}}/proposal/{{id}}"
         data-id="{{id}}">
         <div class="col-xs-2 col-md-2">
             {{#with toKind kind}}
-                <i class="glyphicon glyphicon-{{glyphicon}} 
+                <i class="{{icon}} 
                           glyphicon-round"></i>
             {{/with}}
         </div>

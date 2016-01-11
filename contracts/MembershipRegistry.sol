@@ -30,6 +30,7 @@ contract MembershipRegistry {
 	event Unregistered(address _board, address _member, uint _memberID);
 
 	mapping(address => Member[]) public members;
+	mapping(address => uint) public numMembers;
 	mapping(address => mapping(address => uint)) public toID;
 	
 	function register(address _board) public returns (uint memberID){
@@ -37,6 +38,7 @@ contract MembershipRegistry {
 			return;
 			
 		memberID = members[_board].length++;
+		numMembers[_board] += 1;
 		members[_board][memberID] = Member({addr: msg.sender, joined: now});
 		toID[_board][msg.sender] = memberID;
 		Registered(_board, msg.sender, memberID);
@@ -54,6 +56,7 @@ contract MembershipRegistry {
 		
 		m.joined = 0;
 		m.addr = address(0);
+		numMembers[_board] -= 1;
 		delete toID[_board][_member];
 		Unregistered(_board, _member, memberID);
 	}

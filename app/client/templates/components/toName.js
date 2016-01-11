@@ -13,22 +13,24 @@ A NameReg toName async template for loading names from NameReg on the fly.
 
 Template['components_toName'].helpers({
     'load': function(){
-        var address = String(this),
-            account = Names.findOne({address: address}),
-            namereg = NameReg.Contract.at(LocalStore.get("nameregAddress")),
-            callback = function(err, result){
-                if(err)
-                    return;
+		try {
+			var address = String(this),
+				account = Names.findOne({address: address}),
+				nameregInstance = objects.defaultComponents.NameReg,
+				callback = function(err, result){
+					if(err)
+						return;
 
-                Names.upsert({address: address}, 
-                             {address: address, 
-                              name: String(web3.toAscii(result)).trim()});
-            };
+					Names.upsert({address: address}, 
+					             {address: address, 
+					             name: String(web3.toAscii(result)).trim()});
+				};
 
-        if(_.isUndefined(account))
-            account = {};
+			if(_.isUndefined(account))
+				account = {};
 
-        TemplateVar.set('name', account.name);
-        namereg.nameOf.call(address, callback);
+			TemplateVar.set('name', account.name);
+			nameregInstance.nameOf.call(address, callback);
+		}catch(e){}
     },
 });

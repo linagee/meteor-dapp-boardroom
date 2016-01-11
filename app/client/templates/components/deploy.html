@@ -1,6 +1,18 @@
 <template name="components_deploy">
     {{#with TemplateVar.get 'state'}}
         {{#if isUndeployed}}
+		<label>Standard Token Address</label>
+		<input type="text" class="form-control" id="token-address" value="0x78bfb8805c985cabeadf05694fa38c30b41cf2cc" placeholder="i.e. 0xfe23948..." />
+	
+		<label>Board Chair</label>
+		<input type="text" class="form-control" id="chair-address" value="{{defaultAccount}}" placeholder="i.e. 0xfe23948..." />
+	
+		<label>Executive</label>
+		<input type="text" class="form-control" id="executive-address" value="{{defaultAccount}}" placeholder="i.e. 0xfe23948..." />
+
+		<br />
+		<br />
+
         <button class="btn btn-deploy btn-primary">
             <i class="glyphicon glyphicon-download-alt"></i>
             Deploy A BoardRoom

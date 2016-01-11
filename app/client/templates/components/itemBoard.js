@@ -8,6 +8,6 @@ The board list item.
 
 Template['components_itemBoard'].helpers({
     'isParent': function(){
-        console.log(Boards.findOne({address: boardroomInstance.address}));
+        //console.log(Boards.findOne({address: boardroomInstance.address}));
     },
 });

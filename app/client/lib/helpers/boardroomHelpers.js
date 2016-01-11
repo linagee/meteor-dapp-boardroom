@@ -1,5 +1,3 @@
-BoardRoom = {};
-
 BoardRoom.info = function(boardroomInstance, callObject, callback){
     if(_.isFunction(callObject))
         callback = callObject;
@@ -173,3 +171,172 @@ BoardRoom.BoardsMinimongo = function(mongodb){
         });
     };
 };
+
+BoardRoom.importProposal = function(board, proposalID){
+	if(!_.isNumber(proposalID)
+	   || _.isUndefined(proposalID)
+	   || isNaN(proposalID)
+	   || proposalID == NaN)
+		return;
+	
+	objects.defaultComponents.Proposals.proposals.call(board, proposalID, function(err, result){	
+		var proposalObject = Proposals.findOne({boardroom: board, id: proposalID});
+		
+		if(_.isUndefined(proposalObject)) {
+			proposalObject = {boardroom: board, id: proposalID, value: {}, data: {}, addr: {}, votes: {}};
+			proposalObject['numValues'] = 0;
+			proposalObject['numAddresses'] = 0;
+			proposalObject['numData'] = 0;
+			proposalObject['numVotes'] = 0;
+			proposalObject['numFor'] = 0;
+			proposalObject['numAgainst'] = 0;
+			proposalObject['numAbstains'] = 0;
+			proposalObject["isExecutable"] = false;
+			proposalObject["isVotable"] = true;
+			proposalObject["hasWon"] = false;
+			proposalObject["expiry"] = proposalObject.created + (30*24*3600);
+			
+			if(proposalObject["expiry"] < moment().unix()
+			   || proposalObject["executed"] == true) {
+				proposalObject["isExecutable"] = false;
+				proposalObject["isVotable"] = false;
+			} else {
+				proposalObject["isVotable"] = true;
+			}
+		}
+		
+		var proposalObjectParsed = web3.returnObject('proposals', result, objects.defaultComponents.Proposals.abi);
+		proposalObject = _.extend(proposalObject, proposalObjectParsed);		
+		
+		if(proposalObject.created == 0
+		  || proposalObject.from == web3.address(0)
+		  || !_.isNumber(proposalID)
+		  || proposalID == 'NaN'
+		  || proposalID == NaN
+		  || _.isUndefined(proposalID)
+		  || _.isUndefined(proposalObject.id)
+		  || isNaN(proposalID)
+		  || isNaN(proposalObject.id)
+		  || !_.isNumber(proposalObject.id)
+		  || proposalObject.id == NaN)
+			return;
+
+		objects.defaultComponents.Proposals.numValuesIn(board, proposalID, function(err, valueCount){
+			objects.defaultComponents.Proposals.numAddressesIn(board, proposalID, function(err, addressCount){
+				objects.defaultComponents.Proposals.numDataIn(board, proposalID, function(err, dataCount){
+					objects.defaultComponents.Proposals.voteCountOf(board, proposalID, function(err, voteCount){
+						proposalObject['numValues'] = valueCount.toNumber(10);
+						proposalObject['numAddresses'] = addressCount.toNumber(10);
+						proposalObject['numData'] = dataCount.toNumber(10);
+						proposalObject['numVotes'] = voteCount.toNumber(10);
+						
+						Proposals.upsert({boardroom: board, id: proposalID}, proposalObject);
+
+						objects.defaultComponents.Voting.hasWon(board, proposalID, function(err, hasWon){
+							var updateObject = {hasWon: hasWon};
+							
+							if(hasWon && proposalObject["expiry"] > moment().unix()) {
+								updateObject.isExecutable = true;
+								updateObject.isVotable = false;
+							}
+							
+							Proposals.update({boardroom: board, id: proposalID}, {$set: updateObject});
+						});
+						
+						objects.defaultComponents.Voting.canExecute(board, proposalID, web3.eth.defaultAccount, function(err, canExecute){
+							var updateObject = {canExecute: canExecute};
+							
+							Proposals.update({boardroom: board, id: proposalID}, {$set: updateObject});
+						});
+						
+						objects.defaultComponents.Voting.canVote(board, proposalID, web3.eth.defaultAccount, function(err, isVotable){
+							var updateObject = {isVotable: isVotable};
+							
+							Proposals.update({boardroom: board, id: proposalID}, {$set: updateObject});
+						});
+
+						function insertValue(v){
+							objects.defaultComponents.Proposals.valueAt(board, proposalID, v, function(err, value){
+								var updateObject = {};
+								updateObject["value." + v] = value.toNumber(10);
+
+								Proposals.update({boardroom: board, id: proposalID}, {$set: updateObject});
+							});
+						}
+
+						function insertAddress(a){
+							objects.defaultComponents.Proposals.addressAt(board, proposalID, a, function(err, value){
+								var updateObject = {};
+								updateObject["addr." + a] = value;
+
+								Proposals.update({boardroom: board, id: proposalID}, {$set: updateObject});
+							});
+						}
+
+						function insertData(d){
+							objects.defaultComponents.Proposals.dataAt(board, proposalID, d, function(err, value){
+								var updateObject = {};
+								updateObject["data." + d] = value;
+
+								Proposals.update({boardroom: board, id: proposalID}, {$set: updateObject});
+							});
+						}
+
+						// UNTESTED!!!
+						function insertVote(voteID){
+							objects.defaultComponents.Proposals.memberOf(board, proposalID, voteID, function(err, member){
+								objects.defaultComponents.Proposals.positionOf(board, proposalID, voteID, function(err, position){
+									var updateObject = {};
+									updateObject["votes." + voteID] = {weight: 0, member: member, position: position.toNumber(10)};
+									
+									Proposals.update({boardroom: board, id: proposalID}, {$set: updateObject});
+									
+									var token = Standard_Token.at(boardroomInstance.addressOfArticle(objects.defaultArticles.Token));
+									
+									token.balanceOf.call(member, function(err, tokenBalance){
+										var updateObject = {};
+										updateObject["votes." + voteID + '.weight'] = tokenBalance.toNumber(10);
+
+										Proposals.update({boardroom: board, id: proposalID}, {$set: updateObject});
+										
+										if(voteID == proposalObject['numVotes'] - 1){
+											var proposal = Proposals.findOne({boardroom: board, id: proposalID});
+											var numWeightFor = 0, numWeightAgainst = 0, numFor = 0, numAgainst = 0;
+
+											for(var voterID = 0; voterID < proposalObject['numVotes']; voterID++){
+												if(proposal.votes[voterID].position == 1) {
+													numWeightFor += proposal.votes[voterID].weight;
+													numFor += 1;
+												}
+
+												if(proposal.votes[voterID].position == 0) {
+													numWeightAgainst += proposal.votes[voterID].weight;
+													numAgainst += 1;
+												}
+											}
+
+											Proposals.update({boardroom: boardroomInstance.address, id: objects.params._proposal}, {$set: {numWeightFor: numWeightFor, numWeightAgainst: numWeightAgainst, numFor: numFor, numAgainst: numAgainst}});	
+										}
+									});
+								});
+							});
+						}
+
+						for(var v = 0; v < proposalObject['numValues']; v++){
+							insertValue(v);
+							insertAddress(v);
+						}
+
+						for(var voteID = 0; voteID < proposalObject['numVotes']; voteID++){
+							insertVote(voteID);
+						}
+
+						for(var d = 0; d < proposalObject['numData']; d++){
+							insertData(d);
+						}
+					});
+				});
+			});
+		});
+	});
+}

@@ -86,8 +86,8 @@ web3.returnObject = function(method, resultArray, abi){
         return_object[item.name] = resultArray[itemIndex];
         
         if(item.type == 'bytes32') {
-            return_object[item.name + 'Bytes'] = return_object[item.name];
-            return_object[item.name] = web3.toAscii(return_object[item.name]);
+            return_object[item.name + 'Ascii'] = web3.toAscii(return_object[item.name]);
+            return_object[item.name] = return_object[item.name];
         }
         
         if(web3.isBigNumber(resultArray[itemIndex])) {

@@ -230,8 +230,8 @@ Use Mongo.find to get Mongo DB data entries.
 @return {Array} An array of collection data
 **/
 
-Template.registerHelper('toMember', function(memberId, boardroomAddress){
-    return Members.findOne({id: memberId, boardroom: boardroomAddress});
+Template.registerHelper('toMember', function(memberAddress, boardroomAddress){
+    return Members.findOne({id: memberAddress, boardroom: boardroomAddress});
 });
 
 /**
@@ -245,7 +245,7 @@ Get a boardroom proposal kind.
 **/
 
 Template.registerHelper('toKind', function(kindId){    
-    return BoardRoom.proposalKinds[kindId];
+    return BoardRoom.kinds[kindId];
 });
 
 /**

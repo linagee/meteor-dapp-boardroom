@@ -1,0 +1,22 @@
+<template name="components_itemEquity">
+    <li class="list-group-item list-member-item row">
+        <div class="col-xs-2 col-sm-1 col-md-1">
+        	{{> dapp_identicon identity=address class="dapp-normal"}}
+        </div>
+        <div class="col-xs-7 col-sm-8 col-md-6 col-gutter">
+            <h2>{{> components_toName address}}</h2>
+            <p>
+                <input type="text" class="web3-address" 
+                       value="{{address}}" style="width: 100px;">
+                #{{id}} 
+				<strong>{{tokenBalance}}</strong> voting shares
+            </p>
+        </div>
+        <div class="col-xs-3 col-sm-3 col-md-3">
+			<h2><strong>{{tokenBalance}}</strong> voting shares</h2>
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-1">
+			<h2><strong>{{percent}}</strong>%</h2>
+        </div>
+    </li>
+</template>

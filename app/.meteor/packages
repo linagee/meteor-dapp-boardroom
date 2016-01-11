@@ -29,6 +29,7 @@ chuangbo:cookie
 markdown
 silentcicero:string.js
 silentcicero:ethereumjs-accounts
+silentcicero:solc
 pascoual:pdfjs
 gromo:jquery.scrollbar
 tsega:bootstrap3-datetimepicker
@@ -52,3 +53,4 @@ random
 ejson
 spacebars
 check
+fortawesome:fontawesome

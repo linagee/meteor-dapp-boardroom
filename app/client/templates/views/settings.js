@@ -17,12 +17,7 @@ Template['views_settings'].rendered = function(){
     TemplateVar.set('httpProvider',
                     LocalStore.get('httpProvider'));
     TemplateVar.set('nodeInfo', {api: web3.version.api});
-    
-    web3.version.getClient(function(err, result){
-        var info = TemplateVar.get(template, 'nodeInfo');
-        info.client = JSON.stringify(result);
-        TemplateVar.set(template, 'nodeInfo', info);
-    });
+	TemplateVar.set('systemsDeployment', []);
     
     web3.version.getEthereum(function(err, result){
         var info = TemplateVar.get(template, 'nodeInfo');
@@ -42,6 +37,85 @@ Template['views_settings'].rendered = function(){
         TemplateVar.set(template, 'nodeInfo', info);
     });
 };
+
+function deploySystems(callback) {
+	var txObject = {
+		from: web3.eth.defaultAccount,
+		gas: 3000000,
+	};
+
+	ProcessingSystem.new(_.extend(txObject, {data: ProcessingSystem.bytecode}), function(err, result){
+		if(result.address) {
+			web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+				callback(err, {name: 'processing', contract: result, receipt: txResult});
+			});
+		}					
+	});
+
+	NameReg.new(_.extend(txObject, {data: NameReg.bytecode}), function(err, result){
+		if(result.address) {
+			web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+				callback(err, {name: 'name registry', contract: result, receipt: txResult});
+			});
+		}
+	});
+
+	MembershipRegistry.new(_.extend(txObject, {data: MembershipRegistry.bytecode}), function(err, result){
+		if(result.address) {
+			web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+				callback(err, {name: 'membership registry', contract: result, receipt: txResult});
+			});
+		}
+	});
+
+	MembershipSystem.new(_.extend(txObject, {data: MembershipSystem.bytecode}), function(err, result){
+		if(result.address) {
+			web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+				callback(err, {name: 'membership', contract: result, receipt: txResult});
+			});
+		}
+	});
+
+	ProposalSystem.new(_.extend(txObject, {data: ProposalSystem.bytecode}), function(err, result){
+		if(result.address) {
+			web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+				callback(err, {name: 'proposals', contract: result, receipt: txResult});
+			});
+		}
+	});
+
+	DelegationSystem.new(_.extend(txObject, {data: DelegationSystem.bytecode}), function(err, result){
+		if(result.address) {
+			web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+				callback(err, {name: 'delegation', contract: result, receipt: txResult});
+			});
+		}
+	});
+
+	VotingSystem.new(_.extend(txObject, {data: VotingSystem.bytecode}), function(err, result){
+		if(result.address) {
+			web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+				callback(err, {name: 'voting', contract: result, receipt: txResult});
+			});
+		}
+	});
+
+	FamilySystem.new(_.extend(txObject, {data: FamilySystem.bytecode}), function(err, result){
+		if(result.address) {
+			web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+				callback(err, {name: 'family', contract: result, receipt: txResult});
+			});
+		}
+	});
+
+	BytesUTIL.new(_.extend(txObject, {data: BytesUTIL.bytecode}), function(err, result){
+		if(result.address) {
+			web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+				callback(err, {name: 'bytesutil', contract: result, receipt: txResult});
+			});
+		}
+	});
+}
 
 Template['views_settings'].events({
     /**
@@ -64,6 +138,25 @@ Template['views_settings'].events({
     @event (click .btn-remove)
     */
 
+    'click .btn-deploy-systems': function(event, template){		
+		TemplateVar.set(template, 'systemsDeploymentMessage', 'Deploying your BoardRoom default constitutional components. This may take a minute or two...');
+		
+		deploySystems(function(err, result){
+			var getVar = TemplateVar.get(template, 'systemsDeployment');
+			
+			getVar.push(result);
+			
+			TemplateVar.set(template, 'systemsDeployment', getVar);
+		});
+    },
+    
+    
+    /**
+    When clicked, this will upsert seed content.
+
+    @event (click .btn-remove)
+    */
+
     'click .btn-remove': function(event, template){
         Boards.remove({address: boardroomInstance.address});
     },
@@ -76,7 +169,6 @@ Template['views_settings'].events({
     */
 
     'click .btn-seed-content': function(event, template){
-        alert('Yes');
     },
     
     

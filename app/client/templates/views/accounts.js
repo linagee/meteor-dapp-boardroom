@@ -98,7 +98,7 @@ Template['views_accounts'].events({
         var data = element[0].dataset,
             etherValue = 3;
         
-        Helpers.post('http://testnet.consensys.net/faucet', {
+        Helpers.post('http://ethfaucet.cloudapp.net/faucet', {
             address: String(data.address)
         });
         

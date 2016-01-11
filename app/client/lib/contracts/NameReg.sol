@@ -17,15 +17,16 @@ contract NameReg is service(1), owned {
 		if (toName[msg.sender] != "")
 			toAddress[toName[msg.sender]] = 0;
 			
+		AddressRegistered(msg.sender);
 		toName[msg.sender] = name;
 		toAddress[name] = msg.sender;
-		AddressRegistered(msg.sender);
 	}
 
 	function unregister() public {
 		bytes32 n = toName[msg.sender];
 		if (n == "")
 			return;
+			
 		AddressDeregistered(toAddress[n]);
 		toName[msg.sender] = "";
 		toAddress[n] = address(0);
@@ -33,4 +34,12 @@ contract NameReg is service(1), owned {
 	
 	mapping (address => bytes32) public toName;
 	mapping (bytes32 => address) public toAddress;
+	
+	function addressOf(bytes32 _name) public constant returns (address){
+		return toAddress[_name];
+	}
+	
+	function nameOf(address _addr) public constant returns (bytes32){
+		return toName[_addr];
+	}
 }

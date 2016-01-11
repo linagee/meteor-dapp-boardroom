@@ -4,8 +4,8 @@ Template['views_calendar'].rendered = function(){
 Template['views_calendar'].helpers({
     'proposals': function(){
         // Gather unexpired and event proposals, doubles are fine
-        var proposals_by_expiry = Proposals.find({expiry: {$gt: moment().unix()}}, {$sort: {expiry : -1}}).fetch(),
-            proposals_by_event = Proposals.find({kind: 18, expiry: {$gt: moment().unix()}}, {$sort: {value : 1}}).fetch();
+        var proposals_by_expiry = Proposals.find({boardroom: boardroomInstance.address, expiry: {$gt: moment().unix()}}, {$sort: {expiry : -1}}).fetch(),
+            proposals_by_event = Proposals.find({boardroom: boardroomInstance.address, kind: 18, expiry: {$gt: moment().unix()}}, {$sort: {value : 1}}).fetch();
         
         // process all unexpired proposals, add datetime
         _.each(proposals_by_expiry, function(proposal, proposalIndex){
@@ -24,8 +24,6 @@ Template['views_calendar'].helpers({
         proposals_array.sort(function(a, b) {
             return a.datetime - b.datetime;
         });
-        
-        console.log(proposals_array);
         
         return proposals_array;
     }, 

@@ -11,7 +11,163 @@
                 <hr class="spacer" />
                 <hr class="spacer" />
                 <hr class="spacer" />
-                
+				
+				{{#with toKind kind}}
+				<li class="list-group-item">
+					<h4>
+						<i class="{{icon}}"></i>
+						{{name}}
+					</h4>
+					<p class="well no-margin-bottom">
+						<span>Type</span>
+						<span class="badge">
+							#{{id}}
+						</span>
+						<span>Caution Level</span>
+						<span class="badge {{#if $eq cautionLevel 5}}bg-danger{{/if}} {{#if $eq cautionLevel 4}}bg-warning{{/if}} {{#if $eq cautionLevel 3}}bg-info{{/if}}">
+							{{cautionLevel}}
+						</span>
+						<br />
+						<br />
+						{{description}}
+						{{#if method}}
+							<br />
+							<label>API Method</label>
+							{{method}}
+							<br />
+							<small><strong>L:</strong> {{methodHash method}} <strong>R:</strong> {{methodProcessorHash id}}</small>
+							{{#if methodHashesMatch}}
+								<i class="glyphicon glyphicon-check text-success"></i>
+							{{else}}
+								<i class="glyphicon glyphicon-remove text-warning"></i>
+							{{/if}}
+						{{/if}}
+					</p>
+				</li>
+				{{/with}}
+				
+                <hr class="spacer" />
+				
+				<div class="list-group-item proposal-vote">
+                    {{> components_proposalVote}}
+                </div>
+				
+				{{#each chunks}}
+                <hr class="spacer" />
+				<li class="list-group-item" style="border-radius: 4px; border: 1px solid #F1F1F1;">
+					<h2>
+						Transaction Block: #{{id}}
+					</h2>
+					
+					{{#each data}}
+						{{#if raw}}
+						<label>
+							{{#if kind.name}}
+								{{kind.name}}
+							{{else}}
+								Data
+							{{/if}}
+						</label>
+					
+						<p>{{kind.description}}</p>
+					
+						<p class="msg" style="padding: 20px; border-radius: 4px; background-color: #F1F1F1;">
+							<h4 style="margin-bottom: 0px;">
+								{{#if kind.isAddress}}
+        							{{> dapp_identicon identity=ascii class="dapp-small icon proposal-member-icon" style="width: 20px; height: 20px;"}}
+								{{/if}}
+								
+								{{ascii}}
+							</h4>
+						</p>
+					
+						<p>
+							<small>
+								type: <strong>{{kind.type}}</strong> raw: {{raw}}
+							</small>
+						</p>
+						{{/if}}
+					{{/each}}
+			
+					<label>
+						{{#if address.kind.name}}
+							{{address.kind.name}}
+						{{else}}
+							Address
+						{{/if}}
+					</label>
+					<p>
+						{{#if address.kind.description}}
+							{{address.kind.description}}
+						{{else}}
+							The address that the transaction will be sent too.
+						{{/if}}
+					</p>
+					<p  style="padding: 20px; border-radius: 4px; background-color: #F1F1F1;">
+						<h4 style="margin-bottom: 0px;">
+        					{{> dapp_identicon identity=address.raw class="dapp-small icon proposal-member-icon" style="width: 20px; height: 20px;"}}
+							{{address.raw}}
+						</h4>
+					</p>
+					
+					<label>
+						{{#if value.kind.name}}
+							{{value.kind.name}}
+						{{else}}
+							Transaction Value
+						{{/if}}
+					</label>
+					<p>
+						{{#if value.kind.description}}
+							{{value.kind.description}}
+						{{else}}
+							This is the value that will be paired with the transaciton.
+						{{/if}}
+					</p>
+					<p style="padding: 20px; border-radius: 4px; background-color: #F1F1F1;">
+						<h4 style="margin-bottom: 0px;">
+						{{value.ether}} ether
+						</h4>
+					</p>
+				</li>
+				{{/each}}
+				
+                <hr class="spacer" />
+				<li class="list-group-item" style="border-radius: 4px; border: 1px solid #F1F1F1;">
+					<label>Proposal Hash</label>
+					
+					<p>This is the proposal hash that is used to verify the proposal.</p>
+					
+					<p style="padding: 20px; border-radius: 4px; background-color: #F1F1F1;">{{hash}}</p>
+				</li>
+				
+				{{#with toKind kind}}
+				<li class="list-group-item">
+					<label>
+						Estimate Gas Costs
+					</label>
+					<p class="description description-proposal-name">
+						The approximate gas costs per address provided to table and execute this kind of proposal.
+					</p>
+					<p>Tabling Fee</p>
+					<h4>{{estimateGas.tabling}} wei</h4>
+
+					<p>Execution Fee</p>
+					<h4>{{estimateGas.executing}} wei</h4>
+				</li>
+
+				<li class="list-group-item">
+					<label>
+						Disclaimer
+					</label>
+
+					<p class="text-warning description description-proposal-name">
+						{{warning}}
+					</p>
+				</li>
+				{{/with}}
+				
+                <!--
                 {{> components_proposalContent}}
                 
                 <div class="proposal-vote">
@@ -20,7 +176,7 @@
                 
                 <hr class="spacer" />
 
-                {{> components_proposalData}}
+                {{> components_proposalData}}-->
             </div> 
             <!--
             <div class="col-xs-12 col-sm-12 
@@ -38,9 +194,9 @@
         <hr class="spacer" />
     {{/with}}
     
-    {{#unless proposal}}
+    <!--{{#unless proposal}}
         {{> layout_noProposals}}
-    {{/unless}}
+    {{/unless}}-->
     
     <a class="btn-new-proposal"
        href="/boardroom/{{boardroom.address}}/proposal/new">

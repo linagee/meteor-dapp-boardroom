@@ -4,11 +4,11 @@
         
         <div class="btn-group group-proposals-nav" role="group">
             <button type="button" class="btn btn-default">
-                <strong>{{stats.numUnexecuted}}</strong> 
+                <strong>{{board.numOpen}}</strong> 
                 Open
             </button>
             <button type="button" class="btn btn-default">
-                <strong>{{stats.numExecuted}}</strong> 
+                <strong>{{board.numExecuted}}</strong> 
                 Executed
             </button>
         </div>
@@ -24,8 +24,8 @@
                     <h4> Loading proposals...</h4>
                 </div>
             </li>-->
-            {{#each find 'Proposals' boardroom.boardroomFilter}}
-                {{> components_itemProposal}}
+            {{#each proposals}}
+				{{> components_itemProposal}}
             {{/each}}
             <a class="list-group-item row pointer list-proposals-new"
                  href="/boardroom/{{boardroom.address}}/proposal/new">

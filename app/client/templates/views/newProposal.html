@@ -1,5 +1,5 @@
 <template name="views_newProposal">
-    <div class="new-proposal col-md-6 col-gutter">
+    <div class="new-proposal col-md-9 col-lg-6 col-sm-12 col-gutter">
         <h2 class="new-proposal-header">
             <i class="glyphicon glyphicon-file 
  text-proposal"></i>
@@ -38,171 +38,169 @@
                     <option value="0">
                         Proposal Kind
                     </option>
-                    {{#each br 'proposalKinds'}}
-                        {{#unless $eq id 0}}
-                            {{#if $eq ../kind.name name}}
-                            <option value="{{id}}" selected>
-                                {{titleShort}}
-                            </option>
-                            {{else}}
-                            <option value="{{id}}">
-                                {{titleShort}}
-                            </option>
-                            {{/if}}
-                        {{/unless}}
+                    {{#each proposalKinds}}
+						{{#if $eq TemplateVar.get 'selectedKind' name}}
+						<option value="{{id}}" selected>
+							{{name}}
+						</option>
+						{{else}}
+						<option value="{{id}}">
+							{{name}}
+						</option>
+						{{/if}}
                     {{/each}}
                 </select>
             </li>
-            {{#with TemplateVar.get 'kind'}}
-                {{#with toKind this}}
-                    {{update}}
-                    <li class="list-group-item"></li>
-                    <li class="list-group-item">
-                        <h4>
-                            <i class="glyphicon 
-                                      glyphicon-{{glyphicon}}"></i>
-                            {{title}}
-                        </h4>
-                        <p class="well no-margin-bottom">
-                            <span>Type</span>
-                            <span class="badge">
-                                {{this.id}}
-                            </span>
-                            <br />
-                            <br />
-                            {{description}}
-                        </p>
-                    </li>
-                    <li class="list-group-item"></li>
-                    <li class="list-group-item">
-                        <label>
-                            {{#if nameTitle}}
-                                {{nameTitle}}
-                            {{else}}
-                                Proposal Name
-                            {{/if}}
-                        </label>
-                        {{#if nameDescription}}
-                        <p class="description description-proposal-name">
-                            {{nameDescription}}
-                        </p>
-                        {{/if}}
-                        <input type="text" class="form-control" 
-                               id="proposalName"
-                               placeholder="{{#if namePlaceholder}}{{namePlaceholder}}{{else}}name{{/if}}"
-                               value="{{TemplateVar.get 'proposalName'}}" />
-                    </li>
-                    {{#if requireAddress}}
-                    <li class="list-group-item">
-                        <label>
-                            {{#if addressTitle}}
-                                {{addressTitle}}
-                            {{else}}
-                                Address
-                            {{/if}}
-                            <i class="text-danger">*</i>
-                        </label>
-                        {{#if addressDescription}}
-                        <p class="description description-proposal-name">
-                            {{addressDescription}}
-                        </p>
-                        {{/if}}
-                        <input type="text" class="form-control"
-                               id="proposalAddress"
-                               placeholder="{{#if addressPlaceholder}} {{addressPlaceholder}}{{else}}Address{{/if}}"
-                               value="{{TemplateVar.get 'proposalAddress'}}" />
-                    </li>
-                    {{/if}}
-                    {{#if requireData}}
-                    <li class="list-group-item list-new-proposal-data">
-                        <label>
-                            {{#if dataTitle}}
-                                {{dataTitle}}
-                            {{else}}
-                                Data
-                            {{/if}}
-                            <i class="text-danger">*</i>
-                        </label>
-                        {{#if dataDescription}}
-                        <p class="description description-proposal-name">
-                            {{dataDescription}}
-                        </p>
-                        {{/if}}
-                        <div class="info info-char-count">
+		</ul>
+		
+		{{#with TemplateVar.get 'selectedKind'}}
+			<li class="list-group-item">
+				<h4>
+					<i class="{{icon}}"></i>
+					{{name}}
+				</h4>
+				<p class="well no-margin-bottom">
+					<span>Type</span>
+					<span class="badge">
+						#{{id}}
+					</span>
+					<span>Caution Level</span>
+					<span class="badge {{#if $eq cautionLevel 5}}bg-danger{{/if}} {{#if $eq cautionLevel 4}}bg-warning{{/if}} {{#if $eq cautionLevel 3}}bg-info{{/if}}">
+						{{cautionLevel}}
+					</span>
+					<br />
+					<br />
+					{{description}}
+					{{#if method}}
+						<br />
+						<label>API Method</label>
+						{{method}}
+						<br />
+						<small><strong>L:</strong> {{methodHash method}} <strong>R:</strong> {{methodProcessorHash id}}</small>
+						{{#if methodHashesMatch}}
+							<i class="glyphicon glyphicon-check text-success"></i>
+						{{else}}
+							<i class="glyphicon glyphicon-remove text-warning"></i>
+						{{/if}}
+					{{/if}}
+				</p>
+			</li>
+			<li class="list-group-item">
+				<label>
+					Title
+				</label>
+				<p class="description description-proposal-name">
+					Let other Board members know what this proposal will do.
+				</p>
+				<input type="text" class="form-control" 
+					   id="proposalName"
+					   placeholder="i.e. Send Funds to Bob"/>
+			</li>
+			
+			{{#each TemplateVar.get 'dataChunks'}}
+			<div class="list-group-item chunk">
+				<div  style="border-radius: 5px; border: 1px solid #bbb;">
+					{{#if ../data}}
+						<li class="list-group-item">
+						{{#each ../data}}
+							<label>{{name}}</label>
+							<p>{{description}}</p>
 
-                        </div>
-                        <div class="btn-data-compress pointer">
-                            compress
-                        </div>
-                        <input type="text" class="form-control" 
-                               id="proposalData"
-                               placeholder="{{#if dataPlaceholder}}{{dataPlaceholder}}{{else}}Data{{/if}}"
-                               value="{{TemplateVar.get 'proposalData'}}"
-                               />
-                    </li>
-                    {{/if}}
-                    {{#if requireValue}}
-                    <li class="list-group-item">
-                        <label>
-                            {{#if valueTitle}}
-                                {{valueTitle}}
-                            {{else}}
-                                Value
-                            {{/if}}
-                            <i class="text-danger">*</i>
-                        </label>
-                        {{#if valueDescription}}
-                        <p class="description description-proposal-name">
-                            {{valueDescription}}
-                        </p>
-                        {{/if}}
-                        
-                        {{#if valueIsDateTime}}
-                         <div class="input-group datetimepicker">
-                            <span class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
-                             </span>
-                            <input class="set-due-date form-control"
-                                   id="proposalValue"
-                                   placeholder="{{#if valuePlaceholder}}{{valuePlaceholder}}{{else}}Value{{/if}}"
-                                   type="text"
-                                   value="{{TemplateVar.get 'proposalValue'}}"  />
-                        </div>
-                        {{else}}
-                            <input type="text" class="form-control" 
-                               id="proposalValue"
-                               placeholder="{{#if valuePlaceholder}}{{valuePlaceholder}}{{else}}Value{{/if}}"
-                               value="{{TemplateVar.get 'proposalValue'}}" />
-                        {{/if}}
-                    </li>
-                    {{/if}}
-                    <li class="list-group-item">
-                        <label>
-                            {{#if expiryTitle}}
-                                {{expiryTitle}}
-                            {{else}}
-                                Expiry
-                            {{/if}}
-                            <i class="text-danger">*</i>
-                        </label>
-                        {{#if expiryDescription}}
-                        <p class="description description-proposal-name">
-                            {{expiryDescription}}
-                        </p>
-                        {{/if}}
-                         <div class="input-group datetimepicker">
-                            <span class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
-                             </span>
-                            <input class="set-due-date form-control"
-                                   id="proposalExpiry"
-                                   type="text"
-                                   placeholder="expiry"
-                                   value="{{TemplateVar.get 'proposalExpiry'}}" />
-                        </div>
-                    </li>
-                {{/with}}
-            {{/with}}
+							{{#if isUint}}
+								<input type="number" class="form-control" 
+									   id="proposalData_{{id}}_{{../chunkID}}"
+									   placeholder="i.e. 34" />
+							{{/if}}
+
+							{{#if isAddress}}
+								<input type="text" class="form-control" 
+									   id="proposalData_{{id}}_{{../chunkID}}"
+									   placeholder="i.e. 0xfd7387e829..." />
+							{{/if}}
+						{{/each}}
+						</li>
+					{{/if}}
+
+					<li class="list-group-item">
+						<label>
+							Address
+						</label>
+						<p class="description description-proposal-name">
+							The account the transaction will be sent to.
+						</p>
+						<input type="text" class="form-control" 
+							   id="proposalAddress_{{chunkID}}"
+							   placeholder="i.e. 0xfd7387e829..."/>
+					</li>
+
+					<li class="list-group-item">
+						<label>
+							Value
+						</label>
+						<p class="description description-proposal-name">
+							The amount of ether that will be widthrawn from the Boards budget.
+						</p>
+						<input type="text" class="form-control" 
+							   id="proposalValue_{{chunkID}}"
+							   placeholder="i.e. 4500"/>
+					</li>
+					
+					<br class="clear" />
+				</div>
+			</div>
+			{{/each}}
+		
+			<li class="list-group-item">
+				<button class="btn btn-default 
+							   btn-remove-chunk">
+					<i class="glyphicon glyphicon-minus"></i>
+					Remove Address
+				</button>
+				<button class="btn btn-default 
+							   btn-add-chunk">
+                    <i class="glyphicon glyphicon-plus text-info"></i>
+					Add Address
+				</button>
+			</li>
+		
+			{{#unless id}}
+			<li class="list-group-item">
+				<label>
+					Transaction Bytecode
+				</label>
+				<p class="description description-proposal-name">
+					This will inject transaction bytecode into each of the outgoing Ethereum standard transactions. Transaction bytecode can do almost anything, but you must make sure the bytecode is valid and saved somewhere aside from BoardRoom, as you may need to provide it again for execution.
+				</p>
+				<textarea class="form-control" 
+					   id="proposalBytecode"
+					    placeholder="0xF0300090293000..."></textarea>
+			</li>
+			{{/unless}}
+		
+			<li class="list-group-item">
+				<label>
+					Estimate Gas Costs
+				</label>
+				<p class="description description-proposal-name">
+					The approximate gas costs per address provided to table and execute this kind of proposal.
+				</p>
+				<p>Tabling Fee</p>
+				<h4>{{estimateGas.tabling}} wei</h4>
+				
+				<p>Execution Fee</p>
+				<h4>{{estimateGas.executing}} wei</h4>
+			</li>
+		
+			<li class="list-group-item">
+				<label>
+					Disclaimer
+				</label>
+				
+				<p class="text-warning description description-proposal-name">
+					{{warning}}
+				</p>
+			</li>
+		
             <li class="list-group-item">
                 <hr />
             </li>
@@ -225,6 +223,6 @@
                     </li>
                 </ul>
             </li>
-        </ul>
-    </div>
+		{{/with}}
+	</div>
 </template>

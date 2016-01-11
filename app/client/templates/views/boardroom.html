@@ -1,58 +1,58 @@
 <template name="views_boardroom">
-    <div class="row">
-        {{#with accounts 'selected'}}
-            <h3>Welcome, {{> components_toName address}}</h3>
-        {{/with}}
+    {{#with board}}
+		<div class="row">
+			{{#with accounts 'selected'}}
+				<h3>Welcome, {{> components_toName address}}</h3>
+			{{/with}}
 
-        <small class="description description-stats">
-            Here you can get an overview of the boardrooms statistics.
-        </small>
+			<small class="description description-stats">
+				Here you can get an overview of the boardrooms statistics.
+			</small>
+
+			<ul class="list-group list-inline list-board-stats">
+				<li class="list-group-item">
+					<strong>{{numMembersRegistered}}</strong> registered members
+				</li>
+				<li class="list-group-item">
+					<strong>{{numSubcommittees}}</strong> subcommittees
+				</li>
+				<li class="list-group-item">
+					<strong>{{numProposals}}</strong> proposals
+				</li>
+				<li class="list-group-item">
+					<strong>{{numExecuted}}</strong> 
+					<span>Executed</span>
+				</li>
+				<li class="list-group-item">
+					<strong>{{tokenSupply}}</strong> 
+					<span>Total Voting Shares</span>
+				</li>
+			</ul>
+		</div>
         
-        {{#with boardroom}}
-        <ul class="list-group list-inline list-board-stats">
-            <li class="list-group-item">
-                <strong>{{numMembersActive}}</strong> members
-            </li>
-            <li class="list-group-item">
-                <strong>{{numChildrenActive}}</strong> subcommittees
-            </li>
-            <li class="list-group-item">
-                {{#if $eq parent '0x0000000000000000000000000000000000000000'}}
-                no exec board
-                {{else}}
-                 executive board
-                <strong>
-                    {{> components_toName parent}}
-                </strong>
-                {{/if}}
-            </li>
-            <li class="list-group-item">
-                <strong>{{numProposals}}</strong> proposals
-            </li>
-            <li class="list-group-item">
-                <strong>0</strong> activated middleware 
-            </li>
-        </ul>
-        
-        <hr />
+		<hr />
+
+		<h3>Chair</h3>
+
+		<label>{{> components_toName chair}} </label>
+
+		<p class="info info-address">
+			{{chair}}
+		</p>
+
+		<hr />
+
+		<h3>Executive</h3>
+
+		<label>{{> components_toName executive}} </label>
+
+		<p class="info info-address">
+			{{executive}}
+		</p>
+
+		<hr />
     
-            <h3>Chair</h3>
-        
-            {{#with chairMember}} 
-                <label>{{> components_toName addr}} </label>
-        
-                <p class="info info-address">
-                    {{addr}}
-                </p>    
-            {{/with}}
-        
-        {{/with}}
-    </div>
-    
-    {{#with stats}}
-        {{#if numProposals}}
-        <hr />
-    
+		{{#if numProposals}}
         <h3>Proposal Stats</h3>
 
         <br>
@@ -68,10 +68,6 @@
                     <strong>{{numExecuted}}</strong> 
                     <span>Executed</span>
                 </li>
-                <li class="list-group-item">
-                    <strong>{{numUnexecuted}}</strong> 
-                    <span>Unexected</span>
-                </li>
                 <hr class="list-group-item" />
                 <li class="list-group-item">
                     of <strong>{{numProposals}}</strong> 
@@ -79,31 +75,36 @@
                 </li>
             </ul>
         </div>
-        {{/if}}
-    {{/with}}
     
-    <hr />
-    
-    <h3>Details</h3>
-    
-    <label>Address</label>
-    
-    <p class="info info-address">
-        {{boardroom.address}}
-    </p>
-    
-    <label>Balance</label>
-    
-    <p class="info info-address">
-        {{#with getBalance boardroom.address}}
-            {{fromWei balance 'ether'}} ether
-        {{/with}}
-    </p>
-    
-    <br />
-    
-    <button class="btn btn-default btn-faucet">
-        Faucet
-    </button>
-    
+		<hr />
+		{{/if}}
+
+		<h3>Details</h3>
+
+		<label>Board Address</label>
+
+		<p class="info info-address">
+			{{address}}
+		</p>
+
+		<label>Equity Token Address</label>
+
+		<p class="info info-address">
+			{{tokenAddress}}
+		</p>
+
+		<label>Balance</label>
+
+		<p class="info info-address">
+			{{#with getBalance address}}
+				{{fromWei balance 'ether'}} ether
+			{{/with}}
+		</p>
+
+		<br />
+
+		<button class="btn btn-default btn-faucet">
+			Faucet
+		</button>
+	{{/with}}
 </template>

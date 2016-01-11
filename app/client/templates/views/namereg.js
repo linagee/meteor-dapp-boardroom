@@ -17,17 +17,16 @@ var nameregInstance,
 Template['views_namereg'].created = function(){
 	Meta.setSuffix(TAPi18n.__("dapp.namereg.title"));
     
-    nameregInstance = NameReg.Contract.at(LocalStore.get('nameregAddress'));
+    nameregInstance = objects.defaultComponents.NameReg;
     transactionObject = {
         from: web3.eth.defaultAccount,
-        gasPrice: LocalStore.get('gasPrice'), 
-        gas: 506600
+        gas: 3000000
     };
 };
 
 Template['views_namereg'].helpers({
     'nameregAddress': function(){
-        return LocalStore.get('nameregAddress');
+        return nameregInstance.address;
     },
     'selectedAccount': function(){
         return web3.eth.defaultAccount;  
@@ -43,7 +42,7 @@ Template['views_namereg'].events({
 
     'click .btn-register': function(event, template){
         var value = web3.clean($('#nameregValue').val()),
-            account = accounts.get('selected').address,
+            account = web3.eth.defaultAccount,
             transactionCallback = function(err, result){
                 if(err)
                     return TemplateVar.set(template, 'state', {
@@ -73,8 +72,8 @@ Template['views_namereg'].events({
             isRegistering: true
         });
         
-        nameregInstance.register.sendTransaction(web3.fromAscii(value, 32), transactionObject, transactionCallback);
         nameregInstance.AddressRegistered(eventFilter, eventCallback);
+        nameregInstance.register.sendTransaction(web3.fromAscii(value, 32), transactionObject, transactionCallback);
     },
     
     
@@ -85,7 +84,7 @@ Template['views_namereg'].events({
     */
 
     'click .btn-unregister': function(event, template){
-        var account = accounts.get('selected').address,
+        var account = web3.eth.defaultAccount,
             transactionCallback = function(err, result){
                 if(err) 
                     return TemplateVar.set(template, 'state', {
@@ -115,8 +114,8 @@ Template['views_namereg'].events({
             isUnregistering: true
         });
         
-        nameregInstance.unregister.sendTransaction(transactionObject, transactionCallback);
         nameregInstance.AddressDeregistered(eventFilter, eventCallback);
+        nameregInstance.unregister.sendTransaction(transactionObject, transactionCallback);
     },
     
     
@@ -128,7 +127,7 @@ Template['views_namereg'].events({
 
     'click .btn-lookup': function(event, template){
         var value = web3.clean($('#nameregValue').val()),
-            account = accounts.get('selected').address,
+            account = web3.eth.defaultAccount,
             nameOfCallback = function(err, result){
                 if(err)
                     return;
@@ -184,7 +183,7 @@ Template['views_namereg'].events({
     'click .btn-deploy': function(event, template){
         TemplateVar.set(template, 'state', {isMining: true, isDeploying: true});
         
-        NameReg.Contract.new(_.extend(transactionObject, {code: NameReg.code}),
+        NameReg.new(_.extend(transactionObject, {data: NameReg.bytecode}),
                     function(err, result){
             
             if(err)

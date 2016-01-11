@@ -1,0 +1,805 @@
+//console.log({code: ArrayTest.bytecode, from: web3.eth.defaultAccount, gas: 30000});
+	
+		/*ArrayTest.new({data: ArrayTest.bytecode, from: web3.eth.defaultAccount, gas: 300000}, function(err, result){
+			console.log(err, result);		
+		});*/
+		
+		/*var arrTestInstance = ArrayTest.at("0xe6cba75e9cda2f0396cc2861371f888b36c8cece");
+		
+		arrTestInstance.get(function(err, result){
+			console.log(err, result);
+		});*/
+		
+		function deploySystems(callback) {
+			var txObject = {
+				from: web3.eth.accounts[0],
+				gas: 3000000,
+			};
+			
+			ProcessingSystem.new(_.extend(txObject, {data: ProcessingSystem.bytecode}), function(err, result){
+				if(result.address) {
+					web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+						console.log('Processor System', err, result.address);
+						console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+					});
+				}					
+			});
+			
+			/*MembershipSystem.new(_.extend(txObject, {data: MembershipSystem.bytecode}), function(err, result){
+				if(result.address) {
+					web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+						console.log('Membership System', err, result.address);
+						console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+					});
+				}
+			});*/
+			
+			ProposalSystem.new(_.extend(txObject, {data: ProposalSystem.bytecode}), function(err, result){
+				if(result.address) {
+					web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+						console.log('Proposal System', err, result.address);
+						console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+					});
+				}
+			});
+			
+			/*DelegationSystem.new(_.extend(txObject, {data: DelegationSystem.bytecode}), function(err, result){
+				if(result.address) {
+					web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+						console.log('Delegation System', err, result.address);
+						console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+					});
+				}
+			});*/
+			
+			VotingSystem.new(_.extend(txObject, {data: VotingSystem.bytecode}), function(err, result){
+				if(result.address) {
+					web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+						console.log('Voting System', err, result.address);
+						console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+					});
+				}
+			});
+			
+			/*FamilySystem.new(_.extend(txObject, {data: FamilySystem.bytecode}), function(err, result){
+				if(result.address) {
+					web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+						console.log('Family System', err, result.address);
+						console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+					});
+				}
+			});
+			
+			Standard_Token.new(1000, _.extend(txObject, {data: Standard_Token.bytecode}), function(err, result){
+				if(result.address) {
+					web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+						console.log('Token system', err, result.address);
+						console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+					});
+				}
+			});*/
+			
+			
+				
+			var board = BoardRoom.at('0x4af20ee14277e2f0f759700ed372463de19fe539');
+
+			board.addressOfArticle.call(12, function(err, result){
+				console.log('What is the address of article 12: ', err, result);
+			});
+		}
+		
+		//deploySystems(function(){});
+		
+		function deployToken() {
+			var txObject = {
+				from: web3.eth.accounts[0],
+				gas: 3000000,
+			};
+			
+			Standard_Token.new(1000, _.extend(txObject, {data: Standard_Token.bytecode}), function(err, result){
+				console.log('Token system', err, result);
+			});
+		}
+		
+		function tokenSystemTests() {
+			var token = Standard_Token.at('0x999f1abb68a99ec2a6d00405894d1b9c7ef05766');
+			
+			token.balanceOf.call(web3.eth.accounts[0], function(err, result){
+				console.log('Master token balance', err, result);
+			});
+		}
+		
+		function deployBytesUTIL() {
+			var txObject = {
+				from: web3.eth.accounts[0],
+				gas: 3000000,
+			};
+			
+			BytesUTIL.new(_.extend(txObject, {data: BytesUTIL.bytecode}), function(err, result){
+				console.log('Bytes UTIL deployed', err, result);
+			});
+		}
+		
+		function testBytesUTIL() {
+			var util = BytesUTIL.at('0x58147e45202af892035572378522b6d88bea3fd8');
+			
+			util.numToBytes(12, function(err, result){
+				console.log('num to bytes', err, result);
+			});
+			
+			util.addressToBytes('0x91cabbe1ab659d82f37e444b1246412a31599986', function(err, result){
+				console.log('address to bytes', err, result);
+			});
+		}
+		
+		//deployBytesUTIL();
+		//testBytesUTIL();
+		
+		var boardroomAddress = '0x91cabbe1ab659d82f37e444b1246412a31599986',
+			defaultArticles = {
+				"Proposals": 0,
+				"Processor": 1,
+				"Voting": 2, 
+				"Membership": 3, 
+				"Delegation": 4,
+				"Token": 5,
+				"Family": 6,
+				"Chair": 7,
+				"Executive": 8
+			};
+		
+		function deployBoardRoom(){
+			var txObject = {
+				from: web3.eth.accounts[0],
+				gas: 3000000,
+			};
+			
+			/*enum DefaultArticles {
+					Proposals, 
+					Processor, 
+					Voting, 
+					Membership, 
+					Delegation, 
+					Token, 
+					Family, 
+					Chair, 
+					Executive}}*/
+			
+			/*
+			Processor System null 0xfbb865ecbfc55fd7947fa1465b97949a04de3bca
+			deploy.js:46 327395 327395
+			deploy.js:72 Delegation System null 0xb71676e3624d318000ad9e9cb0f49879db7404ca
+			deploy.js:73 512721 512721
+			Proposal System null 0x4e873bbb986f373a93c1ddc67d4378adbabad39b
+			deploy.js:64 1435619 1435619
+			deploy.js:54 Membership System null 0xf68eec949890f5b3bdd29de0a368adcf551afb21
+			deploy.js:55 120947 120947
+			deploy.js:81 Voting System null 0x2a983fbd9a303df72bf18931b3cd35a79e332e37
+			deploy.js:82 1071007 950060
+			deploy.js:99 Token system null 0x78bfb8805c985cabeadf05694fa38c30b41cf2cc
+			deploy.js:100 326190 326190
+			deploy.js:90 Family System null 0x82eb7387d31a7e9e348c7d1f04651fef004e6f01
+			deploy.js:91 364124 364124
+			*/
+			
+			BoardRoom.new(['0x4e873bbb986f373a93c1ddc67d4378adbabad39b',
+						  '0xfbb865ecbfc55fd7947fa1465b97949a04de3bca',
+						  '0x2a983fbd9a303df72bf18931b3cd35a79e332e37',
+						  '0xf68eec949890f5b3bdd29de0a368adcf551afb21',
+						  '0xb71676e3624d318000ad9e9cb0f49879db7404ca',
+						  '0x78bfb8805c985cabeadf05694fa38c30b41cf2cc',
+						  '0x82eb7387d31a7e9e348c7d1f04651fef004e6f01',
+						  web3.eth.accounts[0],
+						  web3.eth.accounts[0]],
+						  _.extend(txObject, {data: BoardRoom.bytecode}), 
+						  function(err, result){
+				if(result.address) {
+					web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+						console.log('BoardRoom Instance', err, result.address);
+						console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+						
+						boardroomAddress = result.address;
+						
+						testBoardRoom();
+					});
+				}
+			});
+			
+			/*
+			BoardRoom Instance null 0x080ccd20d37d6548b1961bc5bf27d4f0e9160bce
+			deploy.js:177 865397 865397
+			
+			865397
+			2289904
+			*/
+			
+			// Proposal tabled for...
+			// 241960 241960
+			
+			// Proposal voted on for..
+			// 136759
+			
+			// Membership registry 0x7b08f12205ba18727a344915278f8e3d3b6f7290
+			// 421385 421385
+		}
+		
+		//console.log(web3.toDecimal(32));
+		
+		deployBoardRoom();
+		
+		function testBoardRoom(){
+			var board = BoardRoom.at(boardroomAddress);
+			
+			var txObject = {
+				from: web3.eth.accounts[0],
+				gas: 3000000,
+			};
+			
+			board.addressOfArticle.call(defaultArticles.Chair, function(err, result){
+				console.log('Boardroom Chair', err, result);
+			});
+			
+			board.addressOfArticle.call(defaultArticles.Voting, function(err, result){
+				console.log('Boardroom Voting System', err, result);
+			});
+			
+			board.addressOfArticle.call(defaultArticles.Membership, function(err, result){
+				console.log('Boardroom Membership System', err, result);
+			});
+			
+			board.addressOfArticle.call(defaultArticles.Processor, function(err, result){
+				console.log('Boardroom Processor System', err, result);
+			});
+			
+			board.addressOfArticle.call(defaultArticles.Controller, function(err, result){
+				console.log('Boardroom Controller System', err, result);
+			});
+			
+			board.addressOfArticle.call(defaultArticles.Proposal, function(err, result){
+				console.log('Boardroom Proposal System', err, result);
+			});
+			
+			board.addressOfArticle.call(defaultArticles.Delegation, function(err, result){
+				console.log('Boardroom Delegation System', err, result);
+			});
+			
+			board.addressOfArticle.call(defaultArticles.Token, function(err, result){
+				console.log('Boardroom Token System', err, result);
+			});
+			
+			board.addressOfArticle.call(defaultArticles.Family, function(err, result){
+				console.log('BoardRoom Family System', err, result);
+			});
+			
+			board.addressOfArticle.call(defaultArticles.Executive, function(err, result){
+				console.log('Boardroom Executive', err, result);
+			});
+			
+			board.implementer.call(function(err, result){
+				console.log('Boardroom implementer', err, result);
+			});
+			
+			testMembershipSystem();
+			testProposalSystem();0x8ed6314650bb8b2a09334bafc58926f61fb42a62
+		}
+		
+		//testBoardRoom();
+		
+		function testMembershipSystem(){
+			var membership = MembershipSystem.at('0xf68eec949890f5b3bdd29de0a368adcf551afb21');
+			
+			membership.isMember.call(boardroomAddress, web3.eth.accounts[0], function(err, result){
+				console.log('Master member is member', err, result);
+			});
+			
+			membership.isMember.call(boardroomAddress, '0x20d9880e396f7b103049b356b0468d87eebee503', function(err, result){
+				console.log('Random member is not member', err, result);
+			});
+		}
+		
+		//testMembershipSystem();
+		
+		function deployProposalSystem(){ 
+			var txObject = {
+				from: web3.eth.accounts[0],
+				gas: 3000000,
+			};0x8ed6314650bb8b2a09334bafc58926f61fb42a62
+			
+			ProposalSystem.new(_.extend(txObject, {data: ProposalSystem.bytecode}), function(err, result){
+				console.log('Proposal System', err, result);
+			});
+		}
+		
+		function testProposalSystem(){
+			/*
+			table(address _board, string _name, uint _kind,
+				bytes32[] _data, uint[] _value, address[] _addr, 
+				bytes _transactionBytecode)
+			*/
+			
+			var txObject = {
+				from: web3.eth.accounts[0],
+				gas: 3000000,
+			};
+			
+			var proposalSystem = ProposalSystem.at('0x4e873bbb986f373a93c1ddc67d4378adbabad39b');	
+			var util = BytesUTIL.at('0x58147e45202af892035572378522b6d88bea3fd8');
+			
+			proposalSystem.table.sendTransaction(boardroomAddress, 
+												 "Ammend constitution 12", 
+												 1,
+												 [util.numToBytes(12), util.addressToBytes("0xe7787fdc36366a4db7ac894916e9e286fd2c433b")], 
+												 [0],
+												 [boardroomAddress],
+												 0,
+												 txObject,
+												 function(err, result){
+				console.log('Table proposal transaction', err, result);
+			});
+			
+			// Proposal tabled for...
+			// 241960 241960
+			
+			proposalSystem.Tabled(function(err, result){
+				web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+					console.log('Proposal is tabled', err, result);
+					console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+					
+					testProposalVoting();
+				});
+				
+				proposalSystem.numProposals.call(boardroomAddress, function(err, result){
+					console.log('Num proposals', err, result);
+				});
+
+				proposalSystem.proposals.call(boardroomAddress, 0, function(err, result){
+					console.log('Proposals call', err, result);
+				});0xeb08e32275961a49c71c338445ff256e19714281
+
+				proposalSystem.valueAt.call(boardroomAddress, 0, 0, function(err, result){
+					console.log('Value at proposal storage 0: ', err, result);
+				});
+
+				proposalSystem.addressAt.call(boardroomAddress, 0, 0, function(err, result){
+					console.log('Address at proposal storage 0: ', err, result);
+				});
+
+				proposalSystem.dataAt.call(boardroomAddress, 0, 0, function(err, result){
+					console.log('Data at proposal storage 0: ', err, result);
+				});
+
+				proposalSystem.dataAt.call(boardroomAddress, 0, 1, function(err, result){
+					console.log('Data at proposal storage 1: ', err, result);
+				});
+				
+				var processor = ProcessingSystem.at('0xfbb865ecbfc55fd7947fa1465b97949a04de3bca');
+				
+				processor.methodName.call(1, function(err, result){
+					console.log('Processor method name by kind: ', err, result);
+				});
+				
+				processor.expectedDataLength.call(1, function(err, result){
+					console.log('Expected data length of kind: ', err, result);
+				});
+			});
+			
+			//console.log(JSON.stringify(ProposalSystem.abi));
+		}
+		
+		//testProposalSystem();
+		
+		function testProposalVoting(){
+			var txObject = {
+				from: web3.eth.accounts[0],
+				gas: 3000000,
+			};
+			
+			var proposalSystem = ProposalSystem.at('0x4e873bbb986f373a93c1ddc67d4378adbabad39b');	
+			
+			proposalSystem.Voted(function(err, result){
+				web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+					console.log('Voted on proposal!', err, result);	
+					console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+					
+					testProposalVotingMetrics();
+				});
+			});
+			
+			// Vote on proposal
+			// 136759 136759
+			
+			proposalSystem.vote(boardroomAddress, 0, 1, txObject, function(err, result){
+				console.log('Vote on proposal', err, result);
+			});	
+		}
+		
+		//testProposalVoting();
+		
+		//testMembershipDeregister();
+		
+		function testProposalVotingMetrics(){
+			var proposalSystem = ProposalSystem.at('0x4e873bbb986f373a93c1ddc67d4378adbabad39b');	
+			
+			proposalSystem.hasVoted(boardroomAddress, 0, web3.eth.accounts[0], function(err, result){
+				console.log('Member has voted', err, result);
+			});
+			
+			proposalSystem.idOf(boardroomAddress, 0, web3.eth.accounts[0], function(err, result){
+				console.log('Voter ID of member address ', err, result);
+			});
+			
+			proposalSystem.memberOf(boardroomAddress, 0, 0, function(err, result){
+				console.log('Member address of voter ID 0: ', err, result);
+			});
+			
+			proposalSystem.positionOf(boardroomAddress, 0, 0, function(err, result){
+				console.log('Vote position of voteID 0: ', err, result);
+			});
+			
+			proposalSystem.voteCountOf(boardroomAddress, 0, function(err, result){
+				console.log('Vote count of proposal 0:', err, result);
+			});
+			
+			var token = Standard_Token.at('0x78bfb8805c985cabeadf05694fa38c30b41cf2cc');
+			
+			token.balanceOf(web3.eth.accounts[0], function(err, result){
+				console.log('Token balance of main account: ', err, result);
+			});
+			
+			token.totalSupply(function(err, result){
+				console.log('Total supply of tokens: ', err, result);
+			});
+			
+			var board = BoardRoom.at(boardroomAddress);
+			
+			board.addressOfArticle.call(defaultArticles.Chair, function(err, result){
+				console.log('Chair of the board: ', err, result);
+			});
+			
+			board.addressOfArticle.call(defaultArticles.Executive, function(err, result){
+				console.log('Executive of the board: ', err, result);
+			});
+			
+			testVotingHasWon();
+			testProposalExecution();
+		};
+		
+		//testProposalVotingMetrics();
+		
+		function testVotingHasWon(){
+			var votingSystem = VotingSystem.at('0x2a983fbd9a303df72bf18931b3cd35a79e332e37');
+
+			votingSystem.hasWon.call(boardroomAddress, 0, function(err, result){
+				console.log('Proposal has won? ', err, result);
+			});			
+			
+			votingSystem.canExecute.call(boardroomAddress, 0, web3.eth.accounts[0], function(err, result){
+				console.log('Can the proposal be executed? ', err, result);
+			});
+			
+			votingSystem.canVote.call(boardroomAddress, 0, web3.eth.accounts[0], function(err, result){
+				console.log('Can vote', err, result);
+			});
+		}
+		
+		function testProposalExecution(){
+			var txObject = {
+				from: web3.eth.accounts[0],
+				gas: 3000000,
+			};
+			
+			var proposalSystem = ProposalSystem.at('0x4e873bbb986f373a93c1ddc67d4378adbabad39b');	
+			
+			proposalSystem.isExecuted(boardroomAddress, 0, function(err, result){
+				console.log('Has proposal been executed? ', err, result);
+			});
+				
+			var board = BoardRoom.at(boardroomAddress);
+			
+			board.addressOfArticle.call(12, function(err, result){
+				console.log('What is the address of article 12: ', err, result);
+			});
+			
+			proposalSystem.hashOf(boardroomAddress, 0, function(err, result){
+				console.log('Does proposal hash = the execute hash', err, result);
+			});
+			
+			proposalSystem.checkProposalCode(boardroomAddress, 0, 0, function(err, result){
+				console.log('Proposal hash works', err, result);
+			});
+			
+			proposalSystem.execute.sendTransaction(boardroomAddress, 0, 0, txObject,
+												 function(err, result){
+				console.log('Executed proposal transaction', err, result);	
+			});
+			
+			proposalSystem.Executed(function(err, result){
+				web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+					console.log('Executed proposal', err, result);	
+					console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+				});
+			});
+			
+			board.Amended(function(err, result){
+				web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+					console.log('Article ammended by the board', err, result);
+					console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+				});
+			
+				board.addressOfArticle.call(12, function(err, result){
+					console.log('What is the address of article 12: ', err, result);
+				});
+			});
+			
+			board.Forwarded(function(err, result){
+				web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+					console.log('Proxy forwarded transaction', err, result);
+					console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+				});
+			});
+		}
+		
+		
+		
+		//testVotingHasWon();
+		
+		function deployVotingSystem(){
+			var txObject = {
+				from: web3.eth.accounts[0],
+				gas: 3000000,
+			};
+			
+			VotingSystem.new(_.extend(txObject, {data: VotingSystem.bytecode}), function(err, result){
+				if(result.address) {
+					web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+						console.log('Voting System', err, result);
+						console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+					});
+					
+					var votingSystem = VotingSystem.at(result.address);
+					
+					votingSystem.hasWon.call(boardroomAddress, 0, function(err, result){
+						console.log('Proposal has won? ', err, result);
+					});
+				}
+			});
+		}
+		
+		//deployVotingSystem();
+		
+		function testProcessor(){
+			var txObject = {
+				from: web3.eth.accounts[0],
+				gas: 3000000,
+			};
+			
+			//function process(address _board, uint _proposalID, uint _kind, bytes32[] _data,  address[] _addr, uint[] _value, bytes _transactionBytecode){
+			
+			var processingSystem = BoardRoomProcessor.at('0xfbb865ecbfc55fd7947fa1465b97949a04de3bca');
+			
+			processingSystem.process(boardroomAddress, 0, 5, [], ['0xbd1faa9114a38256784d1ed4f9162c0fca921d17'], [13], 0, function(err, result){
+				console.log(err, result);
+			});
+			
+			processingSystem.Processed(function(err, result){
+				web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+					console.log('Executed proposal', err, result);	
+					console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+				});
+			});
+			
+			var controller = BoardRoomController.at(BoardRoom.at(boardroomAddress).controller());
+			var board = BoardRoom.at(boardroomAddress);
+			
+			controller.Forwarded(function(err, result){
+				web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+					console.log('Proxy Forwarded proposal', err, result);	
+					console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+				});
+			
+				board.addressOfArticle.call(12, function(err, result){
+					console.log('What is the address of article 12: ', err, result);
+				});
+			});
+			
+			board.Amended(function(err, result){
+				web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+					console.log('Board ammended', err, result);	
+					console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+
+					board.addressOfArticle.call(12, function(err, result){
+						console.log('What is the address of article 12: ', err, result);
+					});
+				});
+			});
+		}
+		
+		//testProcessor();
+		
+		function testProcessorResult(){
+			var board = BoardRoom.at(boardroomAddress);
+			
+			BoardRoom.at(boardroomAddress).controller(function(err, addr){
+				var controller = BoardRoomController.at(addr);
+
+				controller.implementer.call(function(err, result){
+					console.log('impl == processor: ', err, result, '0xbd1faa9114a38256784d1ed4f9162c0fca921d13');
+				});
+
+				board.addressOfArticle.call(12, function(err, result){
+					console.log('What is the address of article 12: ', err, result);
+				});	
+			});
+		}
+		
+		//testProcessorResult();
+		
+		function changeArticle(){
+			var board = BoardRoom.at(boardroomAddress);
+			
+			board.amendConstitution(12, '0xbd1faa9114a38256784d1ed4f9162c0fca921d13', function(err, result){
+				
+			});
+			
+			board.Amended(function(err, result){
+				web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+					console.log('Article amended', err, result);	
+					console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+					
+					board.addressOfArticle.call(12, function(err, result){
+						console.log('What is the address of article 12: ', err, result);
+					});
+				});
+			});
+		}
+		
+		//changeArticle();
+		
+		
+		
+		//testProposalExecution();
+		
+		function deployMembershipRegistry(){
+			var txObject = {
+				from: web3.eth.accounts[0],
+				gas: 3000000,
+			};
+			
+			MembershipRegistry.new(_.extend(txObject, {data: MembershipRegistry.bytecode}), function(err, result){
+				if(result.address){
+					web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+						console.log('Deploying Membership Registry', err, result);
+						console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+					});
+				}
+			});
+			
+			// Membership registry 0x7b08f12205ba18727a344915278f8e3d3b6f7290
+			// 421385 421385
+		}
+		
+		//deployMembershipRegistry();
+		
+		function testMembershipRegister(){
+			var txObject = {
+				from: web3.eth.accounts[0],
+				gas: 3000000,
+			};
+			
+			var membershipRegistry = MembershipRegistry.at('0x7b08f12205ba18727a344915278f8e3d3b6f7290');
+			
+			membershipRegistry.Registered(function(err, result){
+				web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+					console.log('Member registered!', err, result);
+					console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+					
+					membershipRegistry.addressOf.call(boardroomAddress, 0, function(err, result){
+						console.log('Address of main account', err, result);
+					});
+
+					membershipRegistry.idOf.call(boardroomAddress, web3.eth.accounts[0], function(err, result){
+						console.log('ID of main account', err, result);
+					});
+
+					membershipRegistry.totalMembers.call(boardroomAddress, function(err, result){
+						console.log('Total number registered', err, result);
+					});
+				});
+			});
+			
+			membershipRegistry.register(boardroomAddress, txObject, function(err, result){
+				console.log('Registering', err, result);
+			});
+			
+			// Registering member
+			// 93214 93214
+		}
+		
+		//testMembershipRegister();
+		
+		function testMembershipDeregister(){
+			var txObject = {
+				from: web3.eth.accounts[0],
+				gas: 3000000,
+			};
+			
+			var membershipRegistry = MembershipRegistry.at('0x7b08f12205ba18727a344915278f8e3d3b6f7290');
+			
+			membershipRegistry.Unregistered(function(err, result){
+				web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+					console.log('Member deregistered!', err, result);
+					console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+					
+					membershipRegistry.addressOf.call(boardroomAddress, 0, function(err, result){
+						console.log('Address of main account', err, result);
+					});
+
+					membershipRegistry.idOf.call(boardroomAddress, web3.eth.accounts[0], function(err, result){
+						console.log('ID of main account', err, result);
+					});
+
+					membershipRegistry.totalMembers.call(boardroomAddress, function(err, result){
+						console.log('Total number registered', err, result);
+					});
+				});
+			});
+			
+			membershipRegistry.deregister(boardroomAddress, web3.eth.accounts[0], txObject, function(err, result){
+				console.log('Deregister', err, result);
+			});
+		}
+		
+		//deployMembershipRegistry();
+		
+		//testMembershipRegister();
+		
+		//testMembershipRegisteryCalls();
+		
+		// testMembershipDeregister();
+		
+		//deployProposalSystem();
+		
+		//deployVotingSystem();
+		
+		/*deploySystems(function(err, result){
+		//	console.log(err, result);
+		});*/
+		
+		//deployToken();
+		
+		//tokenSystemTests();
+		
+		//deployBoardRoom();
+		
+		//testBoardRoom();
+		
+		//testMembershipSystem();
+		
+		//testProposalSystem();
+		
+		//testVotingSystem();
+		
+		//testProposalVoting();
+		
+		//testVotingHasWon();
+		
+		//testProposalExecution();
+		
+        /*try {
+            BoardRoom.new({
+                from: web3.eth.defaultAccount, 
+                data: BoardRoom.code, 
+                gasPrice: LocalStore.get('gasPrice'),
+                gas: 3000000
+            }, function(err, result){
+                if(err)
+                    return TemplateVar.set(template, 'state', {isError: true, error: String(err)});
+
+                if(result.address) {
+                    TemplateVar.set(template, 'state', {isMined: true, address: result.address});
+                    Boards.import(result.address);
+                }
+            });
+        }catch(err){
+            TemplateVar.set(template, 'state', {isError: true, error: String(err)});
+        }*/

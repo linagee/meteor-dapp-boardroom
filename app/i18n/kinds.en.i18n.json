@@ -1,0 +1,64 @@
+{
+    "kinds": [
+		{
+			"id": 0,
+			"code": "transaction",
+			"name": "Etheruem Standard Transaction",
+			"nameShort": "Standard Transaction",
+			"description": "This will send a standard Ethereum transaction of a specified value to the specified addresses. Transaction bytecode data may also be specified.",
+			"descriptionShort": "This will send an Ethereum standard transaction.",
+			"method": "",
+			"data": [],
+			"address": {},
+			"value": {},
+			"cautionLevel": 4,
+			"warning": "If transaction bytecode is provided for this proposal, it may have code that could break the Board's operational capacity. Approach with caution when voting on this proposal type.",
+			"icon": "glyphicon glyphicon-share-alt",
+			"estimateGas": {
+				"tabling": "180000",
+				"executing": "100000"
+			}
+		},
+		{
+			"id": 1,
+			"code": "amendConstitution",
+			"name": "Constitutional Amendment",
+			"nameShort": "Amend",
+			"method": "amendConstitution(uint256,address)",
+			"description": "This action will amend specified articles of the Board`s constitution.",
+			"descriptionShort": "Amend specific articles of the boards constitution.",
+			"cautionLevel": 5,
+			"warning": "Invalid or incompatible constitutional amendments can break a Board's operational capactiy. If a Board is broken, the funds and assets issued to that board may be trapped forever within the contract. Please take extreme caution when making constitutional changes, and make sure all your components are compatible with one another.",
+            "icon": "glyphicon glyphicon-list",
+			"data": [
+				{
+					"id": 0,
+					"name": "Article",
+					"description": "The constitutional article number to be amended.",
+					"descriptionShort": "The article number.",
+					"type": "uint",
+					"isUint": true
+				},
+				{
+					"id": 1,
+					"name": "Contract Address",
+					"description": "The address value that will be amended to the constitution.",
+					"descriptionShort": "The constitutional address.",
+					"type": "address",
+					"isAddress": true
+				}
+			],
+			"address": {
+				"name": "Board Address",
+				"nameShort": "Address",
+				"description": "The address of the Board that`s constitution will be amended",
+				"desriptionShort": "The address of the board."
+			},
+			"value": {},
+			"estimateGas": {
+				"tabling": "250000",
+				"executing": "120000"
+			}
+		}
+	]
+}

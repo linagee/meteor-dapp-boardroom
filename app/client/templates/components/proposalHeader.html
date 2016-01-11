@@ -1,6 +1,6 @@
 <template name="components_proposalHeader">
     {{#with toKind kind}}
-    <i class="proposal-icon glyphicon glyphicon-{{glyphicon}}"></i>
+    <i class="proposal-icon {{icon}}"></i>
     {{/with}}
     
     <h1 class="proposal-header text-center">
@@ -14,18 +14,13 @@
     </h1>
 
     <h4 class="proposal-subheader text-center">
-        {{> dapp_identicon identity=0x000 class="dapp-small icon"}}
-        {{#with toMember from ../boardroom.address}}
+        {{> dapp_identicon identity=from class="dapp-small icon proposal-member-icon" style="width: 20px; height: 20px;"}}
         <span class="member">
-            {{#if isChair}}
-                (Chair)
-            {{/if}}
-            {{> components_toName addr}}
+            {{> components_toName from}}
         </span>
-        {{/with}}
         <span class="type">
             {{#with toKind kind}}
-                • {{titleShort}}
+                • {{name}}
             {{/with}}
         </span>
     </h4>

@@ -1,0 +1,49 @@
+<template name="views_equity">
+    <h2>
+        Equity Breakdown
+    </h2>
+    
+    <p class="description description-contract">Here you can find information regarding the registered Board members equity holdings.</p>
+    
+	<label>Equity Token Address</label>
+	{{#if TemplateVar.get 'tokenAddress'}}
+		<strong>{{TemplateVar.get 'tokenAddress'}}</strong>
+	{{else}}
+		Loading...
+	{{/if}}
+	
+	<label>Token Supply</label>
+	{{#if TemplateVar.get 'totalSupply'}}
+		<strong>{{TemplateVar.get 'totalSupply'}}</strong>
+	{{else}}
+		Loading...
+	{{/if}}
+	
+	<label>Account Address</label>
+	<input type="text" class="form-control" id="member-address" placeholder="Address" />
+	
+	<br />
+    
+    <ul class="list-group list-members-nav list-inline">
+        <li class="list-group-item">
+            <a id="check-holdings"
+               class=" btn btn-default">
+                Check Equity Holdings
+            </a>
+        </li>
+    </ul>
+	
+	{{#with TemplateVar.get 'balanceCheck'}}
+        <div class="alert alert-info">
+            The balance for this account is: <strong>{{balance}}</strong>
+        </div>
+	{{/with}}
+	
+    <hr />
+    
+    <ul class="list-group list-members">
+    {{#each members}}
+        {{> components_itemEquity}}
+    {{/each}}
+    </ul>
+</template>

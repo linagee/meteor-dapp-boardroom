@@ -27,7 +27,6 @@ contract ProposalSystem {
         string name;
         address from;
         uint kind;
-		bytes32 hash;
 		
         bytes32[] data;
         address[] addr;
@@ -38,7 +37,7 @@ contract ProposalSystem {
         mapping(address => bool) voted;
 		mapping(address => uint) toID;
 		
-        bool executed;
+        uint executed;
         uint created;
     }
 	
@@ -71,8 +70,7 @@ contract ProposalSystem {
 	}
 	
 	function table(address _board, string _name, uint _kind,
-				bytes32[] _data, uint[] _value, address[] _addr, 
-				bytes _transactionBytecode) public {			
+				bytes32[] _data, uint[] _value, address[] _addr) public {			
 		if(!VotingSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Voting))).canTable(_board, _kind, msg.sender)
 			|| _addr.length != _value.length)
 			throw;
@@ -86,56 +84,36 @@ contract ProposalSystem {
         p.from = msg.sender;
         p.value = _value;
         p.created = now;
-		p.hash = sha3(_board, proposalID, _transactionBytecode);
 		
         Tabled(_board, proposalID, msg.sender);
     }
 	
-	function execute(address _board, uint _proposalID, bytes _transactionBytecode) public {
+	function execute(address _board, uint _proposalID, bytes _transactionBytecode, uint _blockNumber) public {
         Proposal p = proposals[_board][_proposalID];
-		    
-        if(!VotingSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Voting))).canExecute(_board, _proposalID, msg.sender)
-			|| p.hash != sha3(_board, _proposalID, _transactionBytecode))
+		
+		if(p.executed == 0) {
+			if(!VotingSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Voting))).canExecute(_board, _proposalID, msg.sender))
+				throw;
+		}
+		
+		if(p.data[_blockNumber] != sha3(_board, _proposalID, _transactionBytecode)
+			|| (_blockNumber != p.executed)
+			|| (_blockNumber >= p.data.length))
 			throw;
-        
-		p.executed = true;
-        numExecuted[_board] += 1;
 		
-		uint d = 0;
-		uint length;
-		bytes4 name;
-		
-		if(p.kind >= 1) {
-			length = ProcessingSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Processor))).expectedDataLength(p.kind);
-			name = ProcessingSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Processor))).methodName(p.kind);
-		}
-		
-		for(uint a = 0; a < p.addr.length; a++) {
-			if(p.kind == 0)
-				BoardRoom(_board).forward(p.addr[a], p.value[a], _transactionBytecode);
+		if(_blockNumber == p.data.length - 1)
+			numExecuted[_board] += 1;
 			
-			if(p.kind >= 1) {
-				bytes32[] memory assembly = new bytes32[](length);
-				uint k = 0;
-				
-				for(uint i = d; i < (a + 1) * length; i++) {
-					assembly[k] = p.data[i];
-					d += 1;
-					k += 1;
-				}
-			
-				BoardRoom(_board).forward_method(p.addr[a], p.value[0], name, assembly);
-			}
-		}
-			
+		p.executed = _blockNumber + 1;
+		BoardRoom(_board).forward(p.addr[_blockNumber], p.value[_blockNumber], _transactionBytecode);
         Executed(_board, _proposalID, msg.sender);
 	}
 	
     
-    function checkProposalCode(address _board, uint _proposalID, bytes _transactionBytecode) public constant returns (bool) {
+    function checkProposalCode(address _board, uint _proposalID, bytes _transactionBytecode, uint _blockNumber) public constant returns (bool) {
         Proposal p = proposals[_board][_proposalID];
         
-        if(p.hash == sha3(_board, _proposalID, _transactionBytecode))
+        if(p.data[_blockNumber] == sha3(_board, _proposalID, _transactionBytecode))
             return true;
     }
 	
@@ -170,20 +148,14 @@ contract ProposalSystem {
         return p.value[_index];
     }
 	
-	
-	function hashOf(address _board, uint _proposalID) public constant returns (bytes32) {
-        Proposal p = proposals[_board][_proposalID];
 		
-		return p.hash;
-	}
-	
 	function createdAt(address _board, uint _proposalID) public constant returns (uint) {
 		Proposal p = proposals[_board][_proposalID];
         
         return p.created;
 	}
 	
-	function isExecuted(address _board, uint _proposalID) public constant returns(bool) {
+	function isExecuted(address _board, uint _proposalID) public constant returns(uint) {
         Proposal p = proposals[_board][_proposalID];
         
         return p.executed;

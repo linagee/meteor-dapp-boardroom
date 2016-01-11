@@ -2,20 +2,14 @@
 // Simple global name registrar.
 // @authors:
 //   Gav Wood <g@ethdev.com>
-
-contract NameRegister {
-	function getAddress(bytes32 _name) constant returns (address o_owner) {}
-	function getName(address _owner) constant returns (bytes32 o_name) {}
-}
-
 import "service";
 import "owned";
 
-contract NameReg is service(1), owned, NameRegister {
+contract NameReg is service(1), owned {
   	event AddressRegistered(address indexed account);
   	event AddressDeregistered(address indexed account);
-
-	function register(bytes32 name) {
+  	
+	function register(bytes32 name) public {
 		// Don't allow the same name to be overwritten.
 		if (toAddress[name] != address(0))
 			return;
@@ -23,31 +17,29 @@ contract NameReg is service(1), owned, NameRegister {
 		if (toName[msg.sender] != "")
 			toAddress[toName[msg.sender]] = 0;
 			
+		AddressRegistered(msg.sender);
 		toName[msg.sender] = name;
 		toAddress[name] = msg.sender;
-		AddressRegistered(msg.sender);
 	}
 
-	function unregister() {
+	function unregister() public {
 		bytes32 n = toName[msg.sender];
-		
 		if (n == "")
 			return;
 			
+		AddressDeregistered(toAddress[n]);
 		toName[msg.sender] = "";
 		toAddress[n] = address(0);
-		AddressDeregistered(msg.sender);
-	}
-
-	function addressOf(bytes32 name) constant returns (address addr) {
-		return toAddress[name];
-	}
-
-	function nameOf(address addr) constant returns (bytes32 name) {
-		return toName[addr];
 	}
 	
-	mapping (address => bytes32) toName;
-	mapping (bytes32 => address) toAddress;
+	mapping (address => bytes32) public toName;
+	mapping (bytes32 => address) public toAddress;
+	
+	function addressOf(bytes32 _name) public constant returns (address){
+		return toAddress[_name];
+	}
+	
+	function nameOf(address _addr) public constant returns (bytes32){
+		return toName[_addr];
+	}
 }
-    

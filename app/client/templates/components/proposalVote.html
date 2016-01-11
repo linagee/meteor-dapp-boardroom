@@ -1,6 +1,6 @@
 <template name="components_proposalVote">
     <h5 class="proposal-expiry text-uppercase">
-        Expires {{formatTime expiry "fromnow"}}
+        Voting Ends {{formatTime expiry "fromnow"}}
     </h5>
     
     <h2 class="proposal-active">
@@ -18,16 +18,18 @@
         </span>
         {{/if}}
         
-        {{#if isVotable}}
-        <span class="text-info">
-            <i class="glyphicon glyphicon-refresh"></i>
-            Proposal Active
-        </span>
-        {{/if}}
+		{{#unless isExecutable}}
+			{{#if isVotable}}
+			<span class="text-info">
+				<i class="glyphicon glyphicon-refresh"></i>
+				Proposal Active
+			</span>
+			{{/if}}
+		{{/unless}}
     </h2>
     
     <h5 class="proposal-backers text-muted">
-        This proposal has {{numVotes}} backers
+        This proposal has {{numVotes}} voters
     </h5>
     
     <hr />
@@ -35,28 +37,23 @@
         <div class="col-xs-7">
             <!--<canvas id="proposalChart" class="proposal-chart"
                     width="150" height="150"></canvas>-->
-            {{#if numMembers}}
             <div id="proposalChart" 
                  class="ct-chart ct-perfect-fourth"></div>
-            {{/if}}
         </div>
 
         <ul class="list-group col-xs-5 text-uppercase
                    list-proposal-votes list-naked">
             <li class="list-group-item">
-                <strong>{{numFor}}</strong> for
+                <strong>{{numWeightFor}} ({{numFor}})</strong> for
             </li>
             <li class="list-group-item">
-                <strong>{{numAgainst}}</strong> against
-            </li>
-            <li class="list-group-item">
-                <strong>{{numAbstains}}</strong> abstains
+                <strong>{{numWeightAgainst}} ({{numAgainst}})</strong> against
             </li>
             <li class="list-group-item">
                 <hr />
             </li>
             <li class="list-group-item">
-                <strong>of {{numMembers}} members</strong>
+                <strong>of {{numVotes}} members</strong>
             </li>
         </ul>
     </div>
@@ -74,29 +71,31 @@
         </li>
         {{/if}}
         
-        {{#if isVotable}}
-        <li class="list-group-item">
-            <button class="btn btn-vote btn-vote-for btn-info" 
-                    data-type="1">
-                <i class="glyphicon glyphicon-ok"></i>
-                For
-            </button>
-        </li>    
-        <li class="list-group-item">
-            <button class="btn btn-vote btn-vote-against btn-warning" 
-                    data-type="0">
-                <i class="glyphicon glyphicon-remove"></i>
-                Against
-            </button>
-        </li>
-        <li class="list-group-item">
-            <button class="btn btn-vote btn-vote-abstain" 
-                    data-type="3">
-                <i class="glyphicon glyphicon-share-alt" data-type="1"></i>
-                Delegate
-            </button>
-        </li>
-        {{/if}}
+		{{#unless isExecutable}}
+			{{#if isVotable}}
+			<li class="list-group-item">
+				<button class="btn btn-vote btn-vote-for btn-info" 
+						data-type="1">
+					<i class="glyphicon glyphicon-ok"></i>
+					For
+				</button>
+			</li>    
+			<li class="list-group-item">
+				<button class="btn btn-vote btn-vote-against btn-warning" 
+						data-type="0">
+					<i class="glyphicon glyphicon-remove"></i>
+					Against
+				</button>
+			</li>
+			<li class="list-group-item">
+				<button class="btn btn-vote btn-vote-abstain" 
+						data-type="3">
+					<i class="glyphicon glyphicon-share-alt" data-type="1"></i>
+					Delegate
+				</button>
+			</li>
+			{{/if}}
+		{{/unless}}
     </ul>
     
     {{#with TemplateVar.get 'state'}}
