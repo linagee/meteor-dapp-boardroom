@@ -1,4 +1,39 @@
 <template name="components_deploy">
+    {{#with TemplateVar.get 'tokenState'}}
+        {{#if isUndeployed}}
+		<label>Deploy Standard Token</label>
+		<input type="number" class="form-control" id="initial-amount" value="" placeholder="i.e. Initial Token Amount" />
+		<br />
+		<br />
+
+        <button class="btn btn-token-deploy btn-primary">
+            <i class="glyphicon glyphicon-download-alt"></i>
+            Deploy A Token
+        </button>
+		{{/if}}
+
+        {{#if isMining}}
+        <div class="alert alert-info">
+            Your token is being deployed...
+            <i class="fa fa-spinner fa-pulse"></i>
+        </div>
+        {{/if}}
+
+        {{#if isError}}
+        <div class="alert alert-warning">
+            There was an error deploying your token. 
+			The error was {{error}}
+        </div>
+        {{/if}}
+
+        {{#if isMined}}
+        <div class="alert alert-success">
+            Your token has been deployed to this address: 
+            <input type="text" class="form-control" value="{{address}}">
+        </div>
+        {{/if}}
+	{{/with}}
+	
     {{#with TemplateVar.get 'state'}}
         {{#if isUndeployed}}
 		<label>Standard Token Address</label>

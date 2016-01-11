@@ -133,12 +133,17 @@ Template['views_proposal'].helpers({
 		var chunksIndex = 0;
 		for(var a = 0; a < proposal.numAddresses; a++){
 			var chunkDataIndex = 0;
-			var chunkObject = {id: a, data: [], address: {}, value: {}};
+			var chunkObject = {id: a, data: [], address: {}, value: {}, dataAscii: []};
 			
 			for(var d = chunksIndex; d < (chunksIndex + dataLength); d++) {
 				chunkObject.data[chunkDataIndex] = proposal.data[d];
+				chunkObject.dataAscii[chunkDataIndex] = proposal.data[d].ascii;
 				chunkDataIndex++;
 			}
+			
+			var proposalKind = BoardRoom.kinds[proposal.kind];
+			chunkObject.bytecode = ethABI.rawEncode(proposalKind.methodShort, proposalKind.abi, chunkObject.dataAscii);	
+			chunkObject.bytecodeHex = '0x' +  chunkObject.bytecode.toString('hex');
 			
 			chunksIndex += dataLength;
 			
@@ -150,6 +155,8 @@ Template['views_proposal'].helpers({
 			
 			proposal.chunks.push(chunkObject);
 		}
+		
+		console.log(proposal);
 		
 		return proposal;
 	},

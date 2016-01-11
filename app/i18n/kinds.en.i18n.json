@@ -25,11 +25,13 @@
 			"name": "Constitutional Amendment",
 			"nameShort": "Amend",
 			"method": "amendConstitution(uint256,address)",
+			"methodShort": "amendConstitution",
 			"description": "This action will amend specified articles of the Board`s constitution.",
 			"descriptionShort": "Amend specific articles of the boards constitution.",
 			"cautionLevel": 5,
 			"warning": "Invalid or incompatible constitutional amendments can break a Board's operational capactiy. If a Board is broken, the funds and assets issued to that board may be trapped forever within the contract. Please take extreme caution when making constitutional changes, and make sure all your components are compatible with one another.",
             "icon": "glyphicon glyphicon-list",
+			"abi": ["uint256", "address"],
 			"data": [
 				{
 					"id": 0,

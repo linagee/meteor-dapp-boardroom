@@ -18,6 +18,32 @@ Template['components_deploy'].events({
     @method (click .btn-deploy)
     */
 
+    'click .btn-token-deploy': function(event, template){
+        TemplateVar.set(template, 'tokenState', {isMining: true});
+		
+		var initialAmount = $('#initial-amount').val();
+		
+		Standard_Token.new(parseInt(initialAmount), _.extend({gas: 3000000, from:  web3.eth.defaultAccount}, {data: Standard_Token.bytecode}), function(err, result){
+			if(err)
+				TemplateVar.set(template, 'tokenState', {isError: true, error: err});
+			
+			if(result.address) {
+				web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+					console.log('Token Instance', err, result.address);
+					console.log(txResult.cumulativeGasUsed, txResult.gasUsed);
+					
+					TemplateVar.set(template, 'tokenState', {isMined: true, address: result.address});
+				});
+			}
+		});
+	},
+	
+    /**
+    When 'Deploy BoardRoom' is clicked.
+
+    @method (click .btn-deploy)
+    */
+
     'click .btn-deploy': function(event, template){
         TemplateVar.set(template, 'state', {isMining: true});
 		
@@ -31,9 +57,6 @@ Template['components_deploy'].events({
 				Family, 
 				Chair, 
 				Executive}}*/
-		
-		console.log(objects);
-		
 		BoardRoom.new([objects.defaultComponents.Proposals.address, //'0x4e873bbb986f373a93c1ddc67d4378adbabad39b',
 					  objects.defaultComponents.Processor.address, //'0xfbb865ecbfc55fd7947fa1465b97949a04de3bca',
 					  objects.defaultComponents.Voting.address, //'0x2a983fbd9a303df72bf18931b3cd35a79e332e37',
@@ -69,4 +92,5 @@ Template['components_deploy'].helpers({
 
 Template['components_deploy'].rendered = function(){
     TemplateVar.set('state', {isUndeployed: true});
+    TemplateVar.set('tokenState', {isUndeployed: true});
 };
