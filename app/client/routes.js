@@ -23,7 +23,6 @@ function handleData(){
 	
 	/*enum DefaultArticles {
 				Proposals, 
-				Processor, 
 				Voting, 
 				Membership, 
 				Delegation, 
@@ -32,31 +31,49 @@ function handleData(){
 				Chair, 
 				Executive}}*/
 	
+	/*
+	proposals 303437 0xee8b6fe000e4f0ca2b74edaff90d6a3b109bea48 
+
+	membership registry 303437 0x3aa4253e6cc1b5b5d085b83af5f42d212839bdd0 
+
+	name registry 303437 0x7b4e7bd50b540ecc0b75e912b9524b02e0f95fdd 
+
+	membership 303437 0x0c31c01ad6c4b6a6837897e7de8df9277290d1a9 
+
+	delegation 303437 0x41999a81d46bc676dc5692d02509ad321b97259d 
+
+	bytesutil 303437 0xc69e61410ed3f6accd0cf02ce6067063d23e8247 
+
+	family 303437 0x710596fd51f28f5d6110b5401015326d05abcd42 
+
+	voting 303437 0x888d87d972e5fda038f77b6a5a2b73b040e66e5f 
+
+	hashregistry 303437 0xaedb3aeeca8e124b6cdf59b36f5759e09911ce18 */
+	
     objects = {
         boardroom: {},
         proposal: {},
         middleware: {},
         kind: {},
 		defaultComponents: {
-			Proposals: ProposalSystem.at('0x9ce62bab6e9040dc9aa9f63ab1ae79e1db31fa6c'),
-			Processor: ProcessingSystem.at('0xfbb865ecbfc55fd7947fa1465b97949a04de3bca'),
-			Voting: VotingSystem.at('0x2a983fbd9a303df72bf18931b3cd35a79e332e37'),
-			Membership: MembershipSystem.at('0xf68eec949890f5b3bdd29de0a368adcf551afb21'),
-			Delegation: DelegationSystem.at('0xb71676e3624d318000ad9e9cb0f49879db7404ca'),
-			Family: FamilySystem.at('0x24675b3c9a2f4b55e10941d98356d5fcfd096205'),
-			MembershipRegistry: MembershipRegistry.at('0x3691324d56c89814f90c486a0b8e27cf2e81de3b'),
-			NameReg: NameReg.at('0xd7c6faea52c46116ea726a55f3e9179b6ad9f8e2'),
+			Proposals: ProposalSystem.at('0x3dfdda4a51df0ebbb6d69587ed1b73f3b8d2ef3c'), //Processor: ProcessingSystem.at('0xfbb865ecbfc55fd7947fa1465b97949a04de3bca'),
+			Voting: VotingSystem.at('0xe188d75cbcc0f73ede25b726526485bbd3cb28c8'),
+			Membership: MembershipSystem.at('0xe140c922bf5aab4df115f3d1bc05e4c9dda93591'),
+			Delegation: DelegationSystem.at('0x9131ba36d8ffc5b95c7f0819cae8d8559d80f2f2'),
+			Family: FamilySystem.at('0x710596fd51f28f5d6110b5401015326d05abcd42'),
+			MembershipRegistry: MembershipRegistry.at('0x76a0c7c1e0ff23563feef74dd783a3d20fa3b26a'),
+			NameReg: NameReg.at('0x7b4e7bd50b540ecc0b75e912b9524b02e0f95fdd'),
+			HashRegistry: HashRegistry.at('0xbecb6851a8a1208b84468ec8ee9e4f437386c655'),
 		},
 		defaultArticles: {
-			Proposals: 0,
-			Processor: 1, 
-			Voting: 2, 
-			Membership: 3, 
-			Delegation: 4, 
-			Token: 5, 
-			Family: 6, 
-			Chair: 7, 
-			Executive: 8 	
+			Proposals: 0, //Processor: 1, 
+			Voting: 1, 
+			Membership: 2, 
+			Delegation: 3, 
+			Token: 4, 
+			Family: 5, 
+			Chair: 6, 
+			Executive: 7 	
 		},
         params: paramsObject,
         url: {
@@ -363,7 +380,7 @@ Router.route('/boardroom/:_boardroom/support', {
 });
 
 // Route to a middleware app about page
-Router.route('/boardroom/:_boardroom/middleware/registry', {
+/*Router.route('/boardroom/:_boardroom/middleware/registry', {
     template: 'views_middlewareRegistry',
     layoutTemplate: 'layout_boardroom',
     yieldRegions: {
@@ -415,7 +432,7 @@ Router.route('/boardroom/:_boardroom/middleware/:_middleware/interface', {
         'layout_middlewareHeader': {to: 'subheader'},
     },
     data: handleData,
-});
+});*/
 
 // Route to a most recent board proposal
 Router.route('/boardroom/:_boardroom/home', {

@@ -14,12 +14,20 @@ contract ProposalSystem {
 }
 
 contract HashRegistry {
-	enum DefaultArticles {Proposals, Processor, Voting, Membership, Delegation, Token, Family, Chair, Executive}
+	enum DefaultArticles {Proposals, Voting, Membership, Delegation, Token, Family, Chair, Executive}
+	event Registered(address _board, uint _proposalID, address _member);
 	
-	mapping(address => mapping(uint => bytes)) hashStorage;
+	mapping(address => mapping(uint => string)) public hashStorage;
 	
-	function register(address _board, uint _proposalID, bytes _hash){
-		if(ProposalSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Proposals))).tabledBy(_board, _proposalID) == msg.sender)
-			hashStorage[_board][_proposalID] = _hash;
+	function register(address _board, uint _proposalID, string _hash){
+		if(ProposalSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Proposals))).tabledBy(_board, _proposalID) != msg.sender)
+			throw;
+		
+		Registered(_board, _proposalID, msg.sender);
+		hashStorage[_board][_proposalID] = _hash;
+	}
+	
+	function hashOf(address _board, uint _proposalID) public constant returns (string) {
+		return hashStorage[_board][_proposalID];
 	}
 }

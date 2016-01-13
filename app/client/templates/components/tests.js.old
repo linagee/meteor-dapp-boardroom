@@ -303,7 +303,7 @@
 			var txObject = {
 				from: web3.eth.accounts[0],
 				gas: 3000000,
-			};0x8ed6314650bb8b2a09334bafc58926f61fb42a62
+			};
 			
 			ProposalSystem.new(_.extend(txObject, {data: ProposalSystem.bytecode}), function(err, result){
 				console.log('Proposal System', err, result);

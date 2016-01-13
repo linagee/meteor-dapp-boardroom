@@ -39,8 +39,8 @@ contract MembershipSystem {
     function isMember(address _board, address _addr) constant returns (bool) {}
 }
 
-contract VotingSystem {	
-	enum DefaultArticles {Proposals, Processor, Voting, Membership, Delegation, Token, Family, Chair, Executive}
+contract VotingSystem {
+	enum DefaultArticles {Proposals, Voting, Membership, Delegation, Token, Family, Chair, Executive}
 	
 	function canVote(address _board, uint _proposalID, address _member) public constant returns (bool) {
 		address proposalSystem = BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Proposals));
@@ -116,6 +116,8 @@ contract VotingSystem {
 				voteAgainst += StandardToken(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Token))).balanceOf(memberAddress) + delegatedAmount;
 		}
 		
+		return true;
+		
 		// executive voted against constitutional or budgetary changes
 		if(ProposalSystem(proposalSystem).kindOf(_board, _proposalID) <= 4
 			&& BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Executive)) != address(0)
@@ -129,9 +131,5 @@ contract VotingSystem {
 		if((voteFor + voteAgainst) > (StandardToken(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Token))).totalSupply() / 2)
 			&& (voteFor > voteAgainst || (voteFor == voteAgainst && chairFor)))
 			return true;
-		
-		//if(((voteFor + voteAgainst) > (StandardToken(BoardRoom(_board).tokenSystem()).totalSupply() / 2))
-		//	&& ((voteFor > voteAgainst) || (voteFor == voteAgainst && chairFor)))
-		//	return true;
     }
 }

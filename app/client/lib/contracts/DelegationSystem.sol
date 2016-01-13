@@ -18,7 +18,7 @@ contract MembershipSystem {
 }
 
 contract DelegationSystem {
-	enum DefaultArticles {Proposals, Processor, Voting, Membership, Delegation, Token, Family, Chair, Executive}
+	enum DefaultArticles {Proposals, Voting, Membership, Delegation, Token, Family, Chair, Executive}
 	
 	event Delegated(address _board, uint _proposalID, address _from);
 	

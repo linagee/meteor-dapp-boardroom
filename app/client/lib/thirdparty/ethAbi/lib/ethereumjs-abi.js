@@ -53,6 +53,7 @@ const Common = require('./common.js');
 const utf8 = require('utf8');
 
 var ABI = function() {
+  this.BN = BN;
   this.common = new Common();
 };
 

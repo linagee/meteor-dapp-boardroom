@@ -49,7 +49,6 @@ Template['components_deploy'].events({
 		
 		/*enum DefaultArticles {
 				Proposals, 
-				Processor, 
 				Voting, 
 				Membership, 
 				Delegation, 
@@ -57,8 +56,8 @@ Template['components_deploy'].events({
 				Family, 
 				Chair, 
 				Executive}}*/
+		
 		BoardRoom.new([objects.defaultComponents.Proposals.address, //'0x4e873bbb986f373a93c1ddc67d4378adbabad39b',
-					  objects.defaultComponents.Processor.address, //'0xfbb865ecbfc55fd7947fa1465b97949a04de3bca',
 					  objects.defaultComponents.Voting.address, //'0x2a983fbd9a303df72bf18931b3cd35a79e332e37',
 					  objects.defaultComponents.Membership.address, //'0xf68eec949890f5b3bdd29de0a368adcf551afb21',
 					  objects.defaultComponents.Delegation.address, //'0xb71676e3624d318000ad9e9cb0f49879db7404ca',
@@ -80,6 +79,8 @@ Template['components_deploy'].events({
 				});
 			}
 		});
+		
+		//objects.defaultComponents.Processor.address, //'0xfbb865ecbfc55fd7947fa1465b97949a04de3bca',
     },
 });
 

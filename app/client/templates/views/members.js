@@ -13,6 +13,61 @@ Template['views_members'].created = function(){
         Boards.update({address: boardroomInstance.address}, {$set: {numMembers: numMembers}});
     });*/
 	
+	/*boardroomInstance.addressOfArticle(objects.defaultArticles.Membership, function(err, result){
+		console.log('memberhsip', err, result);
+	});
+	
+	VotingSystem.new({data: VotingSystem.bytecode, gas: 3000000, from:  web3.eth.defaultAccount}, function(err, result){
+		console.log('voting', err, result);
+	});*/
+	
+	/*var voting = VotingSystem.at('0xe188d75cbcc0f73ede25b726526485bbd3cb28c8').canTable(boardroomInstance.address, 0, web3.eth.defaultAccount, function(err, result){
+		console.log('can table', err, result);	
+	});
+	
+	DelegationSystem.new({data: DelegationSystem.bytecode, gas: 3000000, from:  web3.eth.defaultAccount}, function(err, result){
+		console.log('delegation', err, result);
+	});*/
+	
+	/*MembershipRegistry.new({data: MembershipRegistry.bytecode, gas: 3000000, from:  web3.eth.defaultAccount}, function(err, result){
+		console.log('mem reg', err, result);
+	});*/
+	
+	/*ProposalSystem.new({data: ProposalSystem.bytecode, gas: 3000000, from:  web3.eth.defaultAccount}, function(err, result){
+		console.log('proposals', err, result);
+	});*/
+	
+	/*HashRegistry.new({data: HashRegistry.bytecode, gas: 3000000, from:  web3.eth.defaultAccount}, function(err, result){
+		console.log('hash', err, result);
+	});
+	
+	objects.defaultComponents.Proposals.tabledBy(boardroomInstance.address, 2, function(err, result){
+		console.log('tabled by', err, result);
+	});*/
+	
+	/*ProposalSystem.new({data: ProposalSystem.bytecode, gas: 3000000, from:  web3.eth.defaultAccount}, function(err, result){
+		console.log('proposals', err, result);
+	});
+	
+	VotingSystem.new({data: VotingSystem.bytecode, gas: 3000000, from:  web3.eth.defaultAccount}, function(err, result){
+		console.log('voting', err, result);
+		
+		if(!result.address) {
+			web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+				console.log(err, {name: 'membership', contract: result, receipt: txResult});
+			});
+		}
+		
+		if(result.address){
+			VotingSystem.at(result.address).hasWon(boardroomInstance.address, 0, function(err, hasWon){ //'0x9a8bcfee7681f7328d3d39da8d41fe541ec595d0'
+				console.log(err, hasWon);
+			});
+		}
+	});
+	
+	VotingSystem.at('0x9a8bcfee7681f7328d3d39da8d41fe541ec595d0').hasWon(boardroomInstance.address, 0, function(err, hasWon){ //'0x9a8bcfee7681f7328d3d39da8d41fe541ec595d0'
+		console.log(err, hasWon);
+	});*/
 	
 	objects.defaultComponents.MembershipRegistry.totalMembers(boardroomInstance.address, function(err, totalMembers){
 		for(var memberID = 0; memberID < totalMembers.toNumber(10); memberID++){

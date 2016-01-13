@@ -14,6 +14,9 @@ Template['views_newProposal'].rendered = function(){
             TemplateVar.set(template, 'selectedKind', BoardRoom.kinds[kind.id]);
     });
 	
+	objects.defaultComponents.Voting.canTable(boardroomInstance.address, 1, web3.eth.defaultAccount, function(err, result){
+		console.log('can table', err, result);
+	});
 };
 
 Template['views_newProposal'].helpers({
@@ -39,10 +42,10 @@ Template['views_newProposal'].helpers({
 		return '0x' + String(web3.sha3(value)).slice(0, 8);
 	},
 	'methodProcessorHash': function(kind){
-		return objects.defaultComponents.Processor.methodName(kind);
+		//return objects.defaultComponents.Processor.methodName(kind);
 	},
 	'methodHashesMatch': function(value, kind){
-		return (String('0x' + String(web3.sha3(value)).slice(0, 8)) == String(objects.defaultComponents.Processor.methodName(kind)));
+		//return (String('0x' + String(web3.sha3(value)).slice(0, 8)) == String(objects.defaultComponents.Processor.methodName(kind)));
 	},
 	'proposalKinds': function(){
 		return BoardRoom.kinds;	
@@ -92,158 +95,126 @@ Template['views_newProposal'].events({
 			kindObject = BoardRoom.kinds[kind],
 			dataSize = kindObject.data.length,
             name = String($('#proposalName').val()),
+			proposalBytecode = String($('#proposalBytecode').val()),
 			transactionBytecode = '',
 			chunks = TemplateVar.get(template, 'dataChunks'),
 			txObject = {
 				gas: 3000000,
 				from: web3.eth.defaultAccount
 			},
+			ipfsData = {
+				version: '0.0.1',
+				board: boardroomInstance.address,
+				member: web3.eth.defaultAccount,
+				kind: kind,
+				method: kindObject.method,
+				abi: kindObject.abi,
+				blocks: [],
+				created: moment().unix()
+			},
 			valueArray = [],
 			dataArray = [],
 			addressArray = [];
 		
-		if(kind == 0)
-			transactionBytecode = String($('#proposalBytecode').val());
+		//if(kind == 0)
+		//	transactionBytecode = String($('#proposalBytecode').val());
 		
 		for(var c = 0; c < chunks.length; c++){
 			var chunk_id = chunks[c].chunkID,
 				address = $('#proposalAddress_' + chunk_id).val(),
-				value = $('#proposalValue_' + chunk_id).val();
+				value = parseInt($('#proposalValue_' + chunk_id).val()),
+				ipfsBlock = {
+					bytecode: 0,
+					hash: '',
+					raw: [],
+					destination: address,
+					value: value,
+				};
 			
 			addressArray.push(address);
 			valueArray.push(value);
-			
-			var util = BytesUTIL.at('0xae9ab0dfb18226af8b6f5c2b37d9e017edfa865d');
 			
 			for(var d = 0; d < dataSize; d++){
 				var dataValue = $('#proposalData_' + d + '_' + chunk_id).val(),
 					dataType = kindObject.data[d].type;
 				
-				if(dataType == "uint")
-					dataValue = util.numToBytes(dataValue);
-				
-				if(dataType == "address")
-					dataValue = util.addressToBytes(dataValue);
-				
-				dataArray.push(dataValue); // convert to bytes32!!!!
+				ipfsBlock.raw.push(dataValue);
 			}
+			
+			if(kind == 0)
+				ipfsBlock.bytecode = proposalBytecode == '' ? 0 : proposalBytecode;
+			else
+				ipfsBlock.bytecode = ethABI.rawEncode(kindObject.methodShort, kindObject.abi, ipfsBlock.raw);
+			
+			// ERROR HERE WITH TYPE 0
+			ipfsBlock.hash = '0x' + ethABI.soliditySHA3(["address", "uint256", "bytes"], [new ethABI.BN(ethUTIL.stripHexPrefix(address), 16), value, ipfsBlock.bytecode]).toString('hex');
+			
+			if(kind > 0)
+				ipfsBlock.bytecode = ipfsBlock.bytecode.toString('hex');
+			
+			ipfsData.blocks.push(ipfsBlock);
+			dataArray.push(ipfsBlock.hash);
 		}
+	
+		console.log(boardroomInstance.address, name, kind, dataArray, valueArray, addressArray, ipfsData);
 		
 		/*
 		(address _board, string _name, uint _kind,
 				bytes32[] _data, uint[] _value, address[] _addr, 
 				bytes _transactionBytecode)*/
 		
-		objects.defaultComponents.Proposals.table.sendTransaction(boardroomInstance.address, name, kind, 
-																  dataArray, valueArray, addressArray, 
-																  transactionBytecode, txObject, function(err, result){
+		ipfs.cat('Qmc7CrwGJvRyCYZZU64aPawPj7CJ56vyBxdhxa38Dh1aKt', function(err, result){
 			if(err)
-                return TemplateVar.set(template, 'state', {isError: true, error: String(err)});
+				throw err;
 			
-            TemplateVar.set(template, 'state', {isMining: true});
-		});
-		objects.defaultComponents.Proposals.Tabled({_board: boardroomInstance.address}, function(err, result){
-			if(err)
-                return TemplateVar.set(template, 'state', {isError: true, error: String(err)});
-            
-            TemplateVar.set(template, 'state', {isMined: true});
-		});
+			var tableTransactionHash = '';
 		
-		
-        /*var kind = parseInt($('#proposalKind').val()),
-            name = String($('#proposalName').val()),
-            address = $('#proposalAddress').val(),
-            data = $('#proposalData').val(),
-            value = parseInt($('#proposalValue').val()),
-            expiry = new Date($('#proposalExpiry').val())
-                    .getTime() / 1000;
-        
-        if($('#proposalData').hasClass("set-due-date"))
-            value = new Date($('#proposalValue').val())
-                    .getTime() / 1000;
-        
-        if($('#proposalValue').hasClass("set-due-date"))
-            value = new Date($('#proposalValue').val())
-                    .getTime() / 1000;
-        
-        console.log(value);
-        
-        if(_.isNaN(value))
-            value = 0;
-        
-        if(_.isUndefined(name))
-            name = '';
-        
-        if(_.isUndefined(data))
-            data = '';
-        
-        if(_.isUndefined(address))
-            address = '';
-        
-        var obj = {
-                kind: kind, 
-                name: name, 
-                data: data, 
-                value: value, 
-                expiry: expiry
-            },
-            requiredKey = false,
-            invalidKey = false;
-        
-        _.each(_.keys(obj), function(key, keyIndex){
-            if(String(obj[key]).length > 32)
-                invalidKey = key;
-        });
-            
-        if(invalidKey)
-            return TemplateVar.set(template, 'state', {
-                isError: true, 
-                error: "The proposal '" 
-                        + invalidKey 
-                        + "' was too long and must be below 32 characters, and is currently " 
-                        + String(obj[invalidKey]).length 
-                        + " characters long"
-            });*/
-        
-        /*var member = Members.findOne({
-            boardroom: boardroomInstance.address, 
-            addr: web3.eth.defaultAccount
-        });
-        
-        TemplateVar.set(template, 'state', {isMining: true});
-        
-        if(_.isUndefined(member))
-            return TemplateVar.set(template, 'state', {
-                isError: true, 
-                error: 'Invalid member attempting to table proposal'
-            });
-        
-        var watcher = boardroomInstance.onProposal({_kind: kind, _from: member.id}, function(err, result){
-            if(err) {
-                TemplateVar.set(template, 'state', {
-                    isError: true, 
-                    error: String(err)
-                });
-                watcher.stopWatching();
-            }
-            
-            if(!err)
-                TemplateVar.set(template, 'state', {
-                    isMined: true
-                });
-        });
-        
-        boardroomInstance.table.sendTransaction(name, data, kind
-    , address, value, expiry, {gas: 300000, 
-                gasPrice: LocalStore.get('gasPrice'), from:  web3.eth.defaultAccount}, function(err, result){
-            if(err) {
-                TemplateVar.set(template, 'state', {
-                    isError: true, 
-                    error: String(err)
-                });
-                watcher.stopWatching();
-            }
-        });*/
-              
+			objects.defaultComponents.Proposals.table.sendTransaction(boardroomInstance.address, name, kind, 
+																	  dataArray, valueArray, addressArray, txObject, function(err, result){
+				if(err)
+					return TemplateVar.set(template, 'state', {isError: true, error: String(err)});
+
+				tableTransactionHash = result;			
+				TemplateVar.set(template, 'state', {isTabling: true, transactionHash: result});
+			});
+
+			objects.defaultComponents.Proposals.Tabled({_board: boardroomInstance.address}, function(err, result){
+				if(err)
+					return TemplateVar.set(template, 'state', {isError: true, error: String(err)});
+
+				var proposalID = result.args._proposalID.toNumber(10),
+					IPFS_hash = '',
+					registryTransactionHash = '';
+
+				TemplateVar.set(template, 'state', {isAddingIPFS: true, proposalID: proposalID});
+
+				IPFS_Backup.upsert({boardroom: boardroomInstance.address, proposalID: proposalID}, {boardroom: boardroomInstance.address, proposalID: proposalID, data: ipfsData});
+
+				ipfs.addJson(ipfsData, function(err, result){
+					if(err)
+						return TemplateVar.set(template, 'state', {isError: true, error: String(err)});
+
+					IPFS_hash = result;
+
+					TemplateVar.set(template, 'state', {isIPFSAdded: true, hash: result});
+
+					objects.defaultComponents.HashRegistry.register(boardroomInstance.address, proposalID, IPFS_hash, txObject, function(err, result){
+						if(err)
+							return TemplateVar.set(template, 'state', {isError: true, error: String(err)});
+
+						registryTransactionHash = result;
+
+						TemplateVar.set(template, 'state', {isRegisteringHash: true, transactionHash: result});
+					});
+				});
+
+				objects.defaultComponents.HashRegistry.Registered({_board: boardroomInstance.address, _proposalID: proposalID}, function(err, result){
+					if(err)
+						return TemplateVar.set(template, 'state', {isError: true, error: String(err)});
+
+					TemplateVar.set(template, 'state', {isMined: true, proposalID: proposalID, tableTransactionHash: tableTransactionHash, registryTransactionHash: registryTransactionHash, IPFS_hash: IPFS_hash});
+				});
+			});
+		});
     },
 });

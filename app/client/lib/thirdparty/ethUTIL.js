@@ -1,4 +1,4 @@
-ethUtil = {
+ethUTIL = {
 	isHexPrefixed: function (str) {
 	  return str.slice(0, 2) === '0x'
 	},

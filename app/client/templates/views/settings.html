@@ -16,6 +16,25 @@
     
     <pre class="info info-geth">geth --rpc --rpccorsdomain "*" --shh --unlock 0</pre>
     
+	
+    <hr />
+    
+    <h3>IPFS Provider</h3>
+    
+    <p class="description description-rpc-provider">
+    	IPFS is a file storage protocol that allows BoardRoom users to store transaction bytecode of their upcoming proposals so that all members or viewers of the Board can access them. The IPFS provider is an IPFS node running on a remote server. You may change this to your own IPFS node.
+    </p>
+    
+    <input type="text" 
+           class="form-control input-ipfs-provider"
+           value="{{TemplateVar.get 'ipfsProvider'}}"/>
+    
+    <br>
+    
+    <button class="btn btn-default btn-ipfs-provider">
+        Update IPFS Provider
+    </button>
+	
     <hr />
     
     <h3>RPC Provider</h3>
@@ -31,7 +50,7 @@
     <br>
     
     <button class="btn btn-default btn-rpc-provider">
-        Update Provider
+        Update RPC Provider
     </button>
     
     <hr />

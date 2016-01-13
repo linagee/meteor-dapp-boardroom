@@ -14,7 +14,7 @@ contract BoardRoom {
 }
 
 contract MembershipSystem {
-	enum DefaultArticles {Proposals, Processor, Voting, Membership, Delegation, Token, Family, Chair, Executive}
+	enum DefaultArticles {Proposals, Voting, Membership, Delegation, Token, Family, Chair, Executive}
 	
     function isMember(address _board, address _addr) public constant returns (bool){
         if((Standard_Token(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Token))).balanceOf(_addr) > 0

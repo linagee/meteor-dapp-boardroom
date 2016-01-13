@@ -42,3 +42,7 @@ new PersistentMinimongo(Messages);
 // A collection for BoardRoom middleware
 Balances = new Mongo.Collection('balances', {connection: null});
 new PersistentMinimongo(Balances);
+
+// A collection for BoardRoom middleware
+IPFS_Backup = new Mongo.Collection('IPFS_Data_Backup', {connection: null});
+new PersistentMinimongo(IPFS_Backup);

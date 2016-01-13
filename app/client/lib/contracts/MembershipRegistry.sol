@@ -19,7 +19,7 @@ contract MembershipSystem {
 }
 
 contract MembershipRegistry {
-	enum DefaultArticles {Proposals, Processor, Voting, Membership, Delegation, Token, Family, Chair, Executive}
+	enum DefaultArticles {Proposals, Voting, Membership, Delegation, Token, Family, Chair, Executive}
 	
 	struct Member {
 		address addr;

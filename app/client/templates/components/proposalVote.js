@@ -68,7 +68,10 @@ Template['components_proposalVote'].events({
     },
     
     'click .btn-execute': function(event, template){
-        objects.defaultComponents.Proposals.execute.sendTransaction(boardroomInstance.address, objects.params._proposal,
+		var block_number = 0;
+		var bytecode = 0;
+		
+        objects.defaultComponents.Proposals.execute.sendTransaction(boardroomInstance.address, objects.params._proposal, bytecode, block_number,
                                     {from: web3.eth.defaultAccount,
 									 gas: 3000000}, 
                                function(err, result){

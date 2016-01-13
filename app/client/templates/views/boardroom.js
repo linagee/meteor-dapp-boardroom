@@ -1,6 +1,20 @@
 Template['views_boardroom'].rendered = function(){
 	Meta.setSuffix(TAPi18n.__("dapp.boardroom.title"));
 	
+	/*MembershipSystem.new(_.extend({from: web3.eth.defaultAccount, gas: 300000}, {data: MembershipSystem.bytecode}), function(err, result){
+		console.log(result);
+		
+		if(result.address) {
+			web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+				callback(err, {name: 'membership', contract: result, receipt: txResult});
+			});
+		}
+	});*/
+				
+	var membership = MembershipSystem.at('0xe140c922bf5aab4df115f3d1bc05e4c9dda93591');
+
+	console.log(membership.isMember(boardroomInstance.address, '0xbe7e4aecf8a725f00ec588e058d42c9b75b197ae'));
+	
     Meteor.setInterval(function(){
         var sum = function(a, b) { return a + b };     
 		var board = Boards.findOne({address: boardroomInstance.address});

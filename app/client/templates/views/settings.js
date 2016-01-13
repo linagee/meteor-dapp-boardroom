@@ -18,6 +18,7 @@ Template['views_settings'].rendered = function(){
                     LocalStore.get('httpProvider'));
     TemplateVar.set('nodeInfo', {api: web3.version.api});
 	TemplateVar.set('systemsDeployment', []);
+	TemplateVar.set('ipfsProvider', LocalStore.get('ipfsProvider'));
     
     web3.version.getEthereum(function(err, result){
         var info = TemplateVar.get(template, 'nodeInfo');
@@ -44,15 +45,18 @@ function deploySystems(callback) {
 		gas: 3000000,
 	};
 
-	ProcessingSystem.new(_.extend(txObject, {data: ProcessingSystem.bytecode}), function(err, result){
+	/*ProcessingSystem.new(_.extend(txObject, {data: ProcessingSystem.bytecode}), function(err, result){
 		if(result.address) {
 			web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
 				callback(err, {name: 'processing', contract: result, receipt: txResult});
 			});
 		}					
-	});
+	});*/
 
 	NameReg.new(_.extend(txObject, {data: NameReg.bytecode}), function(err, result){
+		if(err)
+			console.log(err);
+		
 		if(result.address) {
 			web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
 				callback(err, {name: 'name registry', contract: result, receipt: txResult});
@@ -61,6 +65,9 @@ function deploySystems(callback) {
 	});
 
 	MembershipRegistry.new(_.extend(txObject, {data: MembershipRegistry.bytecode}), function(err, result){
+		if(err)
+			console.log(err);
+		
 		if(result.address) {
 			web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
 				callback(err, {name: 'membership registry', contract: result, receipt: txResult});
@@ -69,6 +76,9 @@ function deploySystems(callback) {
 	});
 
 	MembershipSystem.new(_.extend(txObject, {data: MembershipSystem.bytecode}), function(err, result){
+		if(err)
+			console.log(err);
+		
 		if(result.address) {
 			web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
 				callback(err, {name: 'membership', contract: result, receipt: txResult});
@@ -77,6 +87,9 @@ function deploySystems(callback) {
 	});
 
 	ProposalSystem.new(_.extend(txObject, {data: ProposalSystem.bytecode}), function(err, result){
+		if(err)
+			console.log(err);
+		
 		if(result.address) {
 			web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
 				callback(err, {name: 'proposals', contract: result, receipt: txResult});
@@ -115,6 +128,14 @@ function deploySystems(callback) {
 			});
 		}
 	});
+
+	HashRegistry.new(_.extend(txObject, {data: HashRegistry.bytecode}), function(err, result){
+		if(result.address) {
+			web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+				callback(err, {name: 'hashregistry', contract: result, receipt: txResult});
+			});
+		}
+	});
 }
 
 Template['views_settings'].events({
@@ -129,6 +150,19 @@ Template['views_settings'].events({
         LocalStore.set('httpProvider', rpcProvider);
         TemplateVar.set(template, 'httpProvider', rpcProvider);
         web3.setProvider(new web3.providers.HttpProvider(rpcProvider));
+    },
+	
+    /**
+    When clicked, update RPC provider.
+
+    @event (click .btn-rpc-provider)
+    */
+
+    'click .btn-ipfs-provider': function(event, template){
+        var ipfsProvider = $('.input-ipfs-provider').val();
+        LocalStore.set('ipfsProvider', ipfsProvider);
+        TemplateVar.set(template, 'ipfsProvider', ipfsProvider);
+		ipfs.setProvider({host: ipfsProvider, port: '5001'});
     },
     
     

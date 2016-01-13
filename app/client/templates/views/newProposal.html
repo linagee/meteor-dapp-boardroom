@@ -11,9 +11,30 @@
         <hr class="spacer" />
         
         {{#with TemplateVar.get 'state'}}
-            {{#if isMining}}
+            {{#if isTabling}}
             <div class="alert alert-info">
                 Your proposal is being processed...
+                <i class="fa fa-spinner fa-pulse"></i>
+            </div>
+            {{/if}}
+		
+			 {{#if isAddingIPFS}}
+            <div class="alert alert-info">
+                Your proposal data is being stored on IPFS for proposal #{{proposalID}}
+                <i class="fa fa-spinner fa-pulse"></i>
+            </div>
+            {{/if}}
+		
+			 {{#if isIPFSAdded}}
+            <div class="alert alert-info">
+                Your proposal data will be stored at this IPFS hash: {{hash}}
+                <i class="fa fa-spinner fa-pulse"></i>
+            </div>
+            {{/if}}
+		
+			 {{#if isRegisteringHash}}
+            <div class="alert alert-info">
+                Your IPFS hash is being registered on the proposal hash registry with transaction hash: {{transactionHash}}
                 <i class="fa fa-spinner fa-pulse"></i>
             </div>
             {{/if}}
@@ -27,6 +48,22 @@
             {{#if isMined}}
             <div class="alert alert-success">
                 Your proposal has been tabled!
+
+				<br /><br />
+				<label>IPFS Hash</label>
+				{{IPFS_hash}}
+				
+				<br /><br />
+				<label>Table Transaction Hash</label>
+				{{tableTransactionHash}}
+				
+				<br /><br />
+				<label>Registry Transaction Hash</label>
+				{{registryTransactionHash}}
+				
+				<br /><br />
+				<label>Proposal ID#</label>
+				{{proposalID}}
             </div>
             {{/if}}
         {{/with}}
@@ -76,12 +113,13 @@
 						<label>API Method</label>
 						{{method}}
 						<br />
-						<small><strong>L:</strong> {{methodHash method}} <strong>R:</strong> {{methodProcessorHash id}}</small>
+						<small><strong>L:</strong> {{methodHash method}} </small>
+						<!--<strong>R:</strong> {{methodProcessorHash id}}</small>
 						{{#if methodHashesMatch}}
 							<i class="glyphicon glyphicon-check text-success"></i>
 						{{else}}
 							<i class="glyphicon glyphicon-remove text-warning"></i>
-						{{/if}}
+						{{/if}}-->
 					{{/if}}
 				</p>
 			</li>
@@ -107,14 +145,16 @@
 							<p>{{description}}</p>
 
 							{{#if isUint}}
-								<input type="number" class="form-control" 
+								<input type="number" class="form-control proposal-data-value" 
 									   id="proposalData_{{id}}_{{../chunkID}}"
+									   data-chunk-id="{{../chunkID}}"
 									   placeholder="i.e. 34" />
 							{{/if}}
 
 							{{#if isAddress}}
-								<input type="text" class="form-control" 
+								<input type="text" class="form-control proposal-data-value" 
 									   id="proposalData_{{id}}_{{../chunkID}}"
+									   data-chunk-id="{{../chunkID}}"
 									   placeholder="i.e. 0xfd7387e829..." />
 							{{/if}}
 						{{/each}}

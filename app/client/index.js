@@ -17,6 +17,9 @@ if(!LocalStore.get('httpProvider'))
 if(!LocalStore.get('nameregAddress'))
     LocalStore.set('nameregAddress', '0xec5eabdc7d40f412726d937784e486ab3a4b037e');
 
+// Set the default unit to ether
+if(!LocalStore.get('ipfsProvider'))
+    LocalStore.set('ipfsProvider', "104.131.53.68");
 
 // Set Session default values for components
 if (Meteor.isClient) {
@@ -35,6 +38,9 @@ Meteor.startup(function() {
       transaction_signer: accounts
     });
     web3.setProvider(provider);
+	
+	// IPFS Provider
+	ipfs.setProvider({host: LocalStore.get('ipfsProvider'), port: '5001'});
 
     // SET default language
     if(Cookie.get('TAPi18next')) {

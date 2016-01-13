@@ -15,7 +15,7 @@ yasinuslu:blaze-meta
 numeral:numeral
 ethereum:accounts
 ethereum:elements
-ethereum:tools
+#ethereum:tools
 ethereum:web3
 frozeman:persistent-minimongo
 frozeman:storage
