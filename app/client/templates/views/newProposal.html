@@ -161,6 +161,20 @@
 									   data-chunk-id="{{../chunkID}}"
 									   placeholder="i.e. 0xfd7387e829..." />
 							{{/if}}
+
+							{{#if isBytes}}
+								<input type="text" class="form-control proposal-data-value" 
+									   id="proposalData_{{id}}_{{../chunkID}}"
+									   data-chunk-id="{{../chunkID}}"
+									   placeholder="i.e. Some Data" />
+							{{/if}}
+
+							{{#if isString}}
+								<input type="text" class="form-control proposal-data-value" 
+									   id="proposalData_{{id}}_{{../chunkID}}"
+									   data-chunk-id="{{../chunkID}}"
+									   placeholder="i.e. Some Text" />
+							{{/if}}
 						{{/each}}
 						</li>
 					{{/if}}

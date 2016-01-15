@@ -457,5 +457,90 @@
 				"executing": "150000"
 			}
 		}
+		, {
+			"id": 11,
+			"code": "reserve",
+			"name": "Reserve Name",
+			"nameShort": "Register Name",
+			"method": "reserve(string)",
+			"methodShort": "reserve",
+			"description": "Register the Board name with a name registry system.",
+			"descriptionShort": "Register the Board name.",
+			"cautionLevel": 3,
+			"warning": "--",
+            "icon": "glyphicon glyphicon-move",
+			"abi": ["string"],
+			"event": {
+				"name": "Changed",
+				"description": "",
+				"filter": {
+					"name": 0
+				}
+			},
+			"data": [
+				{
+					"id": 0,
+					"name": "Name",
+					"description": "The name of the Board to be registered.",
+					"descriptionShort": "The name.",
+					"type": "string",
+					"isString": true
+				}
+			],
+			"address": {
+				"name": "Name Registry Address",
+				"nameShort": "Registry Address",
+				"description": "The address of the name registry system.",
+				"desriptionShort": "The address of the registry system."
+			},
+			"value": {},
+			"estimateGas": {
+				"tabling": "250000",
+				"executing": "150000"
+			}
+		}
+		, {
+			"id": 12,
+			"code": "setOwner",
+			"name": "Set Name Owner",
+			"nameShort": "Set Name Owner",
+			"method": "setOwner(string,address)",
+			"methodShort": "setOwner",
+			"description": "Set the owner of a specified name in the registry.",
+			"descriptionShort": "Set the owner of a specified name.",
+			"cautionLevel": 3,
+			"warning": "--",
+            "icon": "glyphicon glyphicon-move",
+			"abi": ["string","address"],
+			"data": [
+				{
+					"id": 0,
+					"name": "Reserved Name",
+					"description": "The name thats ownership will be changed.",
+					"descriptionShort": "The name.",
+					"type": "string",
+					"isString": true
+				},
+				{
+					"id": 1,
+					"name": "New Owner Address",
+					"description": "The address of the names new owner.",
+					"descriptionShort": "The address of the new name owner.",
+					"type": "address",
+					"isAddress": true
+				}
+			],
+			"address": {
+				"name": "Name Registry Address",
+				"nameShort": "Registry Address",
+				"description": "The address of the name registry system.",
+				"desriptionShort": "The address of the registry system."
+			},
+			"value": {},
+			"estimateGas": {
+				"tabling": "250000",
+				"executing": "150000"
+			}
+		}
 	]
 }
