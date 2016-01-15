@@ -123,6 +123,7 @@ Template['views_newProposal'].events({
 			var chunk_id = chunks[c].chunkID,
 				address = $('#proposalAddress_' + chunk_id).val(),
 				value = parseInt($('#proposalValue_' + chunk_id).val()),
+				parsed = [],
 				ipfsBlock = {
 					bytecode: 0,
 					hash: '',
@@ -136,19 +137,39 @@ Template['views_newProposal'].events({
 			
 			for(var d = 0; d < dataSize; d++){
 				var dataValue = $('#proposalData_' + d + '_' + chunk_id).val(),
+					dataParsedValue = dataValue,
 					dataType = kindObject.data[d].type;
 				
+				if(dataType == "address")
+					dataParsedValue = new ethABI.BN(ethUTIL.stripHexPrefix(dataValue), 16);
+				
+				//if(dataType == "uint")
+				//	dataParsedValue = new ethABI.BN(, 16);
+				
+				if(dataType == "bytes" && dataValue == "" || dataValue == 0)
+					dataParsedValue =  new Buffer([0]);
+				
+				if(dataType == "bytes")
+					dataParsedValue =  new Buffer(dataParsedValue);
+				
+				if(dataType == "string")
+					dataParsedValue =  new Buffer(dataParsedValue);
+				
+				parsed.push(dataParsedValue);
 				ipfsBlock.raw.push(dataValue);
 			}
 			
 			if(kind == 0)
-				ipfsBlock.bytecode = proposalBytecode == '' ? 0 : proposalBytecode;
+				ipfsBlock.bytecode = proposalBytecode == '' ? new Buffer([0]) : ethUTIL.stripHexPrefix(proposalBytecode);
 			else
-				ipfsBlock.bytecode = ethABI.rawEncode(kindObject.methodShort, kindObject.abi, ipfsBlock.raw);
+				ipfsBlock.bytecode = ethABI.rawEncode(kindObject.methodShort, kindObject.abi, parsed);
 			
 			// ERROR HERE WITH TYPE 0
 			ipfsBlock.hash = '0x' + ethABI.soliditySHA3(["address", "uint256", "bytes"], [new ethABI.BN(ethUTIL.stripHexPrefix(address), 16), value, ipfsBlock.bytecode]).toString('hex');
 			
+			if(kind == 0 && _.has(ipfsBlock.bytecode, 'isBuffer'))
+				ipfsBlock.bytecode = ipfsBlock.bytecode.toString('hex');
+				
 			if(kind > 0)
 				ipfsBlock.bytecode = ipfsBlock.bytecode.toString('hex');
 			

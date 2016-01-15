@@ -62,5 +62,400 @@
 				"executing": "120000"
 			}
 		}
+		, {
+			"id": 2,
+			"code": "transferOwnership",
+			"name": "Transfer Board Ownership",
+			"nameShort": "transferOwnership",
+			"method": "transfer_ownership(address)",
+			"methodShort": "transfer_ownership",
+			"description": "This article will transfer the boards identity and asset ownership to a specified account.",
+			"descriptionShort": "Transfer board ownership to a specified account.",
+			"cautionLevel": 5,
+			"warning": "Transfering ownership of a board will move all asset ownership and funds held under the board address to a new owner that has full control of these assets. Invalid transfer data can lead to these assets and identity being lost forever. Please use extreme caution when transfering Board ownership.",
+            "icon": "glyphicon glyphicon-new-window",
+			"abi": ["address"],
+			"data": [
+				{
+					"id": 0,
+					"name": "Account Address",
+					"description": "The address of the new owner's account. This could be another Board or persons account.",
+					"descriptionShort": "The new owner's account.",
+					"type": "address",
+					"isAddress": true
+				}
+			],
+			"address": {
+				"name": "Board Address",
+				"nameShort": "Address",
+				"description": "The address of the Board thats ownership will be ammended.",
+				"desriptionShort": "The address of the board."
+			},
+			"value": {},
+			"estimateGas": {
+				"tabling": "190000",
+				"executing": "120000"
+			}
+		}
+		, {
+			"id": 3,
+			"code": "disolveBoard",
+			"name": "Disolve Board",
+			"nameShort": "disolveBoard",
+			"method": "disolve(address)",
+			"methodShort": "disolve",
+			"description": "Disolve the board and liquidate it's funds to a specified address.",
+			"descriptionShort": "Disolve the board and liquidate it's funds.",
+			"cautionLevel": 5,
+			"warning": "Disolving the board will destroy all Board operational capacity. All assets in ether held at the Board account will be liquidated to the specified address. Any third-party assets such as shares or tokens must be moved prior to disolving the board in order to maintain ownership of those assets. Please be extremly cautious when disolving a board.",
+            "icon": "glyphicon glyphicon-new-window",
+			"abi": ["address"],
+			"data": [
+				{
+					"id": 0,
+					"name": "Liquidation Recipient",
+					"description": "All funds held in at the Board's address will be sent to this account.",
+					"descriptionShort": "The liquidator account.",
+					"type": "address",
+					"isAddress": true
+				}
+			],
+			"address": {
+				"name": "Board Address",
+				"nameShort": "Address",
+				"description": "The address of the Board thats ownership will be ammended.",
+				"desriptionShort": "The address of the board."
+			},
+			"value": {},
+			"estimateGas": {
+				"tabling": "190000",
+				"executing": "120000"
+			}
+		}
+		, {
+			"id": 4,
+			"code": "execute",
+			"name": "Execute Middleware",
+			"nameShort": "execute",
+			"method": "execute(uint256)",
+			"methodShort": "execute",
+			"description": "Execute a BoardRoom middleware transaction. Middleware can do various things such as payroll, token transfer and more.",
+			"descriptionShort": "Execute a middleware transaciton.",
+			"cautionLevel": 3,
+			"warning": "While a middleware transaction can be dangerous, it will not directly affect Board ownership, funds or it's constitution. However, if middleware can effect constitutional components, then extreme caution should be taken.",
+            "icon": "glyphicon glyphicon-new-window",
+			"abi": ["uint256"],
+			"data": [
+				{
+					"id": 0,
+					"name": "Proposal ID",
+					"description": "The proposal ID number to be executed by the middleware.",
+					"descriptionShort": "The proposal ID number.",
+					"type": "uint",
+					"isUint": true
+				}
+			],
+			"address": {
+				"name": "Middleware Address",
+				"nameShort": "Middleware",
+				"description": "The address of the middleware to be executed.",
+				"desriptionShort": "The address of the middleware."
+			},
+			"value": {},
+			"estimateGas": {
+				"tabling": "250000",
+				"executing": "120000"
+			}
+		}
+		, {
+			"id": 5,
+			"code": "vote",
+			"name": "Voting",
+			"nameShort": "execute",
+			"method": "vote(address,uint256,uint256)",
+			"methodShort": "vote",
+			"description": "Vote on another Boards proposal as the board.",
+			"descriptionShort": "Vote on a Boards proposal.",
+			"cautionLevel": 3,
+			"warning": "Voting on other Boards proposal may effect your Boards assets or funds, but does not directly effect any change to this Board itself.",
+            "icon": "glyphicon glyphicon-check",
+			"abi": ["address","uint256","uint256"],
+			"data": [
+				{
+					"id": 0,
+					"name": "Board Address",
+					"description": "The address of the Board thats proposal is being voted on.",
+					"descriptionShort": "The address of the Board.",
+					"type": "address",
+					"isAddress": true
+				},
+				{
+					"id": 1,
+					"name": "Proposal ID",
+					"description": "The proposal ID of the proposal that will be voted on.",
+					"descriptionShort": "The proposal ID number.",
+					"type": "uint",
+					"isUint": true
+				},
+				{
+					"id": 2,
+					"name": "Vote Position",
+					"description": "The vote position, usually the number 1 is for (or yay) and 0 is against (nay).",
+					"descriptionShort": "The vote position.",
+					"type": "uint",
+					"isUint": true
+				}
+			],
+			"address": {
+				"name": "Proposal System Address",
+				"nameShort": "Proposal System",
+				"description": "The address of the proposal system that is being voted on.",
+				"desriptionShort": "The address of the proposal system."
+			},
+			"value": {},
+			"estimateGas": {
+				"tabling": "240000",
+				"executing": "150000"
+			}
+		}
+		, {
+			"id": 6,
+			"code": "delegation",
+			"name": "Vote Delegation",
+			"nameShort": "Delegation",
+			"method": "delegate(address,uint256,address)",
+			"methodShort": "delegate",
+			"description": "Delegate this Boards vote on a specified proposal to another account.",
+			"descriptionShort": "Delegate Board vote.",
+			"cautionLevel": 3,
+			"warning": "While Board vote delegation may not directly affect this Boards funds or constitution, it may effect others.",
+            "icon": "glyphicon glyphicon-move",
+			"abi": ["address","uint256","address"],
+			"data": [
+				{
+					"id": 0,
+					"name": "Board Address",
+					"description": "The address of the Board thats proposal is being voted on.",
+					"descriptionShort": "The address of the Board.",
+					"type": "address",
+					"isAddress": true
+				},
+				{
+					"id": 1,
+					"name": "Proposal ID",
+					"description": "The proposal ID of the proposal that will be voted on.",
+					"descriptionShort": "The proposal ID number.",
+					"type": "uint",
+					"isUint": true
+				},
+				{
+					"id": 2,
+					"name": "Delegation Account",
+					"description": "The account this Boards vote will be delegated too.",
+					"descriptionShort": "The delegation account.",
+					"type": "address",
+					"isAddress": true
+				}
+			],
+			"address": {
+				"name": "Delegation System Address",
+				"nameShort": "Delegation System",
+				"description": "The address of the delegation system.",
+				"desriptionShort": "The address of the delegation system."
+			},
+			"value": {},
+			"estimateGas": {
+				"tabling": "240000",
+				"executing": "150000"
+			}
+		}
+		, {
+			"id": 7,
+			"code": "delegation",
+			"name": "Vote Delegation",
+			"nameShort": "Delegation",
+			"method": "delegate(address,uint256,address)",
+			"methodShort": "delegate",
+			"description": "Delegate this Boards vote on a specified proposal to another account.",
+			"descriptionShort": "Delegate Board vote.",
+			"cautionLevel": 3,
+			"warning": "While Board vote delegation may not directly affect this Boards funds or constitution, it may effect others.",
+            "icon": "glyphicon glyphicon-move",
+			"abi": ["address","uint256","address"],
+			"data": [
+				{
+					"id": 0,
+					"name": "Board Address",
+					"description": "The address of the Board thats proposal is being voted on.",
+					"descriptionShort": "The address of the Board.",
+					"type": "address",
+					"isAddress": true
+				},
+				{
+					"id": 1,
+					"name": "Proposal ID",
+					"description": "The proposal ID of the proposal that will be voted on.",
+					"descriptionShort": "The proposal ID number.",
+					"type": "uint",
+					"isUint": true
+				},
+				{
+					"id": 2,
+					"name": "Delegation Account",
+					"description": "The account this Boards vote will be delegated too.",
+					"descriptionShort": "The delegation account.",
+					"type": "address",
+					"isAddress": true
+				}
+			],
+			"address": {
+				"name": "Delegation System Address",
+				"nameShort": "Delegation System",
+				"description": "The address of the delegation system.",
+				"desriptionShort": "The address of the delegation system."
+			},
+			"value": {},
+			"estimateGas": {
+				"tabling": "240000",
+				"executing": "150000"
+			}
+		}
+		, {
+			"id": 8,
+			"code": "approve",
+			"name": "Approve Tokens",
+			"nameShort": "Approve",
+			"method": "approve(address,uint256)",
+			"methodShort": "approve",
+			"description": "Approve an account to debit tokens from the Boards account.",
+			"descriptionShort": "Allow an account to debit tokens.",
+			"cautionLevel": 3,
+			"warning": "--",
+            "icon": "glyphicon glyphicon-move",
+			"abi": ["address","uint256"],
+			"data": [
+				{
+					"id": 0,
+					"name": "Approval Address",
+					"description": "The address of the account that can debit from the Boards tokens.",
+					"descriptionShort": "The address of the account.",
+					"type": "address",
+					"isAddress": true
+				},
+				{
+					"id": 1,
+					"name": "Token Amount",
+					"description": "The amount of tokens to approve.",
+					"descriptionShort": "The token amount.",
+					"type": "uint",
+					"isUint": true
+				}
+			],
+			"address": {
+				"name": "Token System Address",
+				"nameShort": "Token System",
+				"description": "The address of the token system.",
+				"desriptionShort": "The address of the token system."
+			},
+			"value": {},
+			"estimateGas": {
+				"tabling": "220000",
+				"executing": "150000"
+			}
+		}
+		, {
+			"id": 9,
+			"code": "transferFrom",
+			"name": "Transfer Tokens From Account",
+			"nameShort": "Transfer Tokens",
+			"method": "transferFrom(address,uint256,address)",
+			"methodShort": "transferFrom",
+			"description": "Transfer tokens from one account to another.",
+			"descriptionShort": "Transfer tokens from an account.",
+			"cautionLevel": 3,
+			"warning": "--",
+            "icon": "glyphicon glyphicon-move",
+			"abi": ["address","uint256","address"],
+			"data": [
+				{
+					"id": 0,
+					"name": "From Account",
+					"description": "The address of the account tokens will be transfered from.",
+					"descriptionShort": "The address of the account.",
+					"type": "address",
+					"isAddress": true
+				},
+				{
+					"id": 1,
+					"name": "Token Amount",
+					"description": "The amount of tokens to transfer.",
+					"descriptionShort": "The token amount.",
+					"type": "uint",
+					"isUint": true
+				},
+				{
+					"id": 2,
+					"name": "To Account",
+					"description": "The address of the account tokens will be transfered to.",
+					"descriptionShort": "The address of the account.",
+					"type": "address",
+					"isAddress": true
+				}
+			],
+			"address": {
+				"name": "Token System Address",
+				"nameShort": "Token System",
+				"description": "The address of the token system.",
+				"desriptionShort": "The address of the token system."
+			},
+			"value": {},
+			"estimateGas": {
+				"tabling": "220000",
+				"executing": "150000"
+			}
+		}
+		, {
+			"id": 10,
+			"code": "transfer",
+			"name": "Transfer Tokens",
+			"nameShort": "Transfer Tokens",
+			"method": "transfer(uint256,address)",
+			"methodShort": "transfer",
+			"description": "Transfer tokens from the Board account to another account.",
+			"descriptionShort": "Transfer tokens from an account.",
+			"cautionLevel": 3,
+			"warning": "--",
+            "icon": "glyphicon glyphicon-move",
+			"abi": ["uint256","address"],
+			"data": [
+				{
+					"id": 0,
+					"name": "Token Amount",
+					"description": "The amount of tokens to transfer.",
+					"descriptionShort": "The token amount.",
+					"type": "uint",
+					"isUint": true
+				},
+				{
+					"id": 1,
+					"name": "To Account",
+					"description": "The address of the account tokens will be transfered to.",
+					"descriptionShort": "The address of the account.",
+					"type": "address",
+					"isAddress": true
+				}
+			],
+			"address": {
+				"name": "Token System Address",
+				"nameShort": "Token System",
+				"description": "The address of the token system.",
+				"desriptionShort": "The address of the token system."
+			},
+			"value": {},
+			"estimateGas": {
+				"tabling": "220000",
+				"executing": "150000"
+			}
+		}
 	]
 }

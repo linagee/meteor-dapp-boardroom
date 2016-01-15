@@ -17,6 +17,16 @@ Template['views_proposal'].rendered = function(){
 	
 	BoardRoom.importProposal(boardroomInstance.address, objects.params._proposal);
 	
+	//var encoded = ethABI.encode(Standard_Token.abi, "balanceOf(uint256 address)", [ "0x0000000000000000000000000000000000000000" ])
+	
+	//var encoded = ethABI.rawEncode("balanceOf", [ "address" ], [new ethABI.BN("e93cc8f7aa8cd0157df326adcfc7a0b03fd997d9", 16)]);
+	
+	//var hash = ethABI.soliditySHA3(["address", "uint256", "bytes"], [new ethABI.BN(ethUTIL.stripHexPrefix("e93cc8f7aa8cd0157df326adcfc7a0b03fd997d9"), 16), 0, new Buffer([0])]).toString('hex');
+	
+	//console.log(encoded, encoded.toString('hex'), hash, hash.toString('hex'));
+	
+	//BoardRoom.importProposal(boardroomInstance.address, objects.params._proposal);
+	
 	//if(_.isUndefined(proposal))
 	//	Proposals.upsert({boardroom: boardroomInstance.address, id: proposalID}, {boardroom: boardroomInstance.address, id: proposalID});
 		
@@ -88,6 +98,8 @@ Template['views_proposal'].helpers({
 		
 		var backup = IPFS_Backup.findOne({boardroom: boardroomInstance.address, proposalID: objects.params._proposal});
 		
+		console.log(proposal);
+		
 		if((_.isUndefined(proposal.ipfsData) 
 			|| proposal.ipfsData == null
 			|| !_.has(proposal.ipfsData, 'blocks')
@@ -130,9 +142,16 @@ Template['views_proposal'].helpers({
 				};
 			}
 			
-			var bytecode = ethABI.rawEncode(proposalKind.methodShort, proposalKind.abi, rawBlockData);			
+			var bytecode = new Buffer([0]);
+			
+			if(proposal.kind > 0 && _.isString(proposal.ipfsData.blocks[blockID].bytecode))
+				bytecode = ethABI.rawEncode(proposalKind.methodShort, proposalKind.abi, rawBlockData);
+					
 			var hash = '0x' + ethABI.soliditySHA3(["address", "uint256", "bytes"], [new ethABI.BN(ethUTIL.stripHexPrefix(addr), 16), value, bytecode]).toString('hex');
 			bytecode = bytecode.toString('hex');
+			
+			if(!_.isString(proposal.ipfsData.blocks[blockID].bytecode))
+				proposal.ipfsData.blocks[blockID].bytecode = '0';
 			
 			if(bytecode == proposal.ipfsData.blocks[blockID].bytecode)
 				proposal.ipfsData.blocks[blockID].bytecodeVerified = true;

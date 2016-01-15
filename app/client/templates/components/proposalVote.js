@@ -1,8 +1,9 @@
-var transactionObject;
+var transactionObject,
+	proposal;
 
 Template['components_proposalVote'].rendered = function(){
     TemplateVar.set(this, 'state', {});
-	var proposal = Proposals.findOne({boardroom: boardroomInstance.address, id: objects.params._proposal});
+	proposal = Proposals.findOne({boardroom: boardroomInstance.address, id: objects.params._proposal});
 
     Meteor.setInterval(function(){
         var sum = function(a, b) { return a + b };  
@@ -68,18 +69,24 @@ Template['components_proposalVote'].events({
     },
     
     'click .btn-execute': function(event, template){
-		var block_number = 0;
-		var bytecode = 0;
+		if(_.isUndefined(proposal))
+			throw "proposal not defined";
 		
-        objects.defaultComponents.Proposals.execute.sendTransaction(boardroomInstance.address, objects.params._proposal, bytecode, block_number,
-                                    {from: web3.eth.defaultAccount,
-									 gas: 3000000}, 
-                               function(err, result){
-            if(err)
-                return TemplateVar.set(template, 'state', {isError: true, error: String(err)});
+		for(var block_number = 0; block_number < proposal.numAddresses; block_number++){			
+			var bytecode = '0x' + proposal.ipfsData.blocks[block_number].bytecode;
 			
-        	TemplateVar.set(template, 'state', {isMining: true});
-        });
+			console.log(block_number, bytecode);
+			
+			objects.defaultComponents.Proposals.execute.sendTransaction(boardroomInstance.address, objects.params._proposal, bytecode, block_number,
+										{from: web3.eth.defaultAccount,
+										 gas: 3000000},
+								   function(err, result){
+				if(err)
+					return TemplateVar.set(template, 'state', {isError: true, error: String(err)});
+
+				TemplateVar.set(template, 'state', {isMining: true});
+			});
+		}
     },
 });
 

@@ -4,17 +4,19 @@
     </h5>
     
     <h2 class="proposal-active">
-        {{#if isExecutable}}
-        <span class="text-success">
-            <i class="glyphicon glyphicon-flash"></i>
-            Proposal Won
-        </span>
-        {{/if}}
+		{{#unless executed}}
+			{{#if isWon}}
+			<span class="text-success">
+				<i class="glyphicon glyphicon-flash"></i>
+				Proposal Won
+			</span>
+			{{/if}}
+		{{/unless}}
         
         {{#if executed}}
         <span class="text-success">
             <i class="glyphicon glyphicon-refresh"></i>
-            Proposal Executed!
+            Proposal Executed
         </span>
         {{/if}}
         
@@ -62,13 +64,15 @@
     
     <ul class="list-group list-proposal-vote list-inline">
         {{#if isExecutable}}
-        <li class="list-group-item">
-            <button class="btn btn-success btn-execute"
-                    data-type="2">
-                <i class="glyphicon glyphicon-flash"></i>
-                Execute
-            </button>
-        </li>
+			{{#unless executed}}
+				<li class="list-group-item">
+					<button class="btn btn-success btn-execute"
+							data-type="2">
+						<i class="glyphicon glyphicon-flash"></i>
+						Execute
+					</button>
+				</li>
+			{{/unless}}
         {{/if}}
         
 		{{#unless isExecutable}}

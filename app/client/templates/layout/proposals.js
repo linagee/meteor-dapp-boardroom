@@ -30,8 +30,6 @@ Template['layout_proposals'].helpers({
 		
 		if(!_.isUndefined(board)) {
 			for(var proposalID = 0; proposalID < board.numProposals; proposalID++){
-				console.log(proposalID);
-				
 				BoardRoom.importProposal(boardroomInstance.address, proposalID);
 			}
 		}

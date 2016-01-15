@@ -115,8 +115,6 @@ BoardRoom.ChildrenMinimongo = function(mongodb){
         var args = Array.prototype.slice.call(arguments),
             filter = function(id, child){
                 
-            console.log(id, child);
-                
             if(child.addr == web3.address(0))
                 return false;
             
@@ -222,8 +220,6 @@ BoardRoom.importProposal = function(board, proposalID){
 		  || !_.isNumber(proposalObject.id)
 		  || proposalObject.id == NaN)
 			return;
-		
-		console.log(proposalObject);
 
 		Proposals.upsert({boardroom: board, id: proposalID}, proposalObject);
 
@@ -234,8 +230,6 @@ BoardRoom.importProposal = function(board, proposalID){
 				updateObject.isExecutable = true;
 				updateObject.isVotable = false;
 			}
-
-			console.log(updateObject);
 
 			Proposals.update({boardroom: board, id: proposalID}, {$set: updateObject});
 		});
@@ -272,6 +266,8 @@ BoardRoom.importProposal = function(board, proposalID){
 			
 			Proposals.update({boardroom: board, id: proposalID}, {$set: updateObject});
 			
+			console.log(proposalID);
+			
 			// UNTESTED!!!
 			function insertVote(voteID){
 				objects.defaultComponents.Proposals.memberOf(board, proposalID, voteID, function(err, member){
@@ -305,7 +301,7 @@ BoardRoom.importProposal = function(board, proposalID){
 									}
 								}
 
-								Proposals.update({boardroom: boardroomInstance.address, id: objects.params._proposal}, {$set: {numWeightFor: numWeightFor, numWeightAgainst: numWeightAgainst, numFor: numFor, numAgainst: numAgainst}});	
+								Proposals.update({boardroom: boardroomInstance.address, id: proposalID}, {$set: {numWeightFor: numWeightFor, numWeightAgainst: numWeightAgainst, numFor: numFor, numAgainst: numAgainst}});	
 							}
 						});
 					});

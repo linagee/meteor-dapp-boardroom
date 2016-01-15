@@ -137,7 +137,11 @@
 			
 			{{#each TemplateVar.get 'dataChunks'}}
 			<div class="list-group-item chunk">
-				<div  style="border-radius: 5px; border: 1px solid #bbb;">
+				<div style="border-radius: 5px; border: 1px solid #bbb; ">
+					<h2 style="margin-left: 10px; margin-top: 10px;">
+						Transaction Block: #{{chunkID}}
+					</h2>
+					
 					{{#if ../data}}
 						<li class="list-group-item">
 						{{#each ../data}}
@@ -163,10 +167,18 @@
 
 					<li class="list-group-item">
 						<label>
-							Address
+							{{#if ../address.name}}
+								{{../address.name}}
+							{{else}}
+								Address
+							{{/if}}
 						</label>
 						<p class="description description-proposal-name">
-							The account the transaction will be sent to.
+							{{#if ../address.description}}
+								{{../address.description}}
+							{{else}}
+								The address the transaction will be sent to.
+							{{/if}}
 						</p>
 						<input type="text" class="form-control" 
 							   id="proposalAddress_{{chunkID}}"
@@ -175,10 +187,18 @@
 
 					<li class="list-group-item">
 						<label>
-							Value
+							{{#if ../value.name}}
+								{{../value.name}}
+							{{else}}
+								Value
+							{{/if}}
 						</label>
 						<p class="description description-proposal-name">
-							The amount of ether that will be widthrawn from the Boards budget.
+							{{#if ../value.description}}
+								{{../value.description}}
+							{{else}}
+								The amount of ether that will be removed from the Board's balance and sent to the specified address.
+							{{/if}}
 						</p>
 						<input type="text" class="form-control" 
 							   id="proposalValue_{{chunkID}}"
@@ -194,12 +214,12 @@
 				<button class="btn btn-default 
 							   btn-remove-chunk">
 					<i class="glyphicon glyphicon-minus"></i>
-					Remove Address
+					Remove Block
 				</button>
 				<button class="btn btn-default 
 							   btn-add-chunk">
                     <i class="glyphicon glyphicon-plus text-info"></i>
-					Add Address
+					Add Transaction Block
 				</button>
 			</li>
 		
