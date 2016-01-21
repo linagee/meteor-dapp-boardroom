@@ -113,7 +113,7 @@
 						<label>API Method</label>
 						{{method}}
 						<br />
-						<small><strong>L:</strong> {{methodHash method}} </small>
+						<small><strong>L:</strong> {{hashOfMethod method}} </small>
 						<!--<strong>R:</strong> {{methodProcessorHash id}}</small>
 						{{#if methodHashesMatch}}
 							<i class="glyphicon glyphicon-check text-success"></i>
@@ -141,6 +141,18 @@
 					<h2 style="margin-left: 10px; margin-top: 10px;">
 						Transaction Block: #{{chunkID}}
 					</h2>
+							
+					{{#if $eq ../code 'setPersonaAttributes'}}
+					<li class="list-group-item">
+						<a href="/boardroom/{{boardroomAddress}}/persona" target="_blank">
+							<button class="btn btn-default 
+										   btn-build-persona">
+								<i class="glyphicon glyphicon-plus text-info"></i>
+								Build Persona Repository
+							</button>
+						</a>
+					</li>
+					{{/if}}
 					
 					{{#if ../data}}
 						<li class="list-group-item">
@@ -196,7 +208,8 @@
 						</p>
 						<input type="text" class="form-control" 
 							   id="proposalAddress_{{chunkID}}"
-							   placeholder="i.e. 0xfd7387e829..."/>
+							   placeholder="i.e. 0xfd7387e829..."
+							   value="{{#if ../address.isPersona}}{{personaAddress}}{{/if}}{{#if ../address.isBoardroom}}{{boardroomAddress}}{{/if}}"/>
 					</li>
 
 					<li class="list-group-item">

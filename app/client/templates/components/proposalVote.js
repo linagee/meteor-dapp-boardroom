@@ -69,11 +69,15 @@ Template['components_proposalVote'].events({
     },
     
     'click .btn-execute': function(event, template){
+		proposal = Proposals.findOne({boardroom: boardroomInstance.address, id: objects.params._proposal});
+		
 		if(_.isUndefined(proposal))
 			throw "proposal not defined";
 		
-		for(var block_number = 0; block_number < proposal.numAddresses; block_number++){			
-			var bytecode = '0x' + proposal.ipfsData.blocks[block_number].bytecode;
+		for(var block_number = 0; block_number < proposal.numAddresses; block_number++){	
+			console.log(proposal);
+			
+			var bytecode = '0x' + proposal.ipfsData.blocks[block_number].bytecode; // PROBLEM HERE!
 			
 			console.log(block_number, bytecode);
 			

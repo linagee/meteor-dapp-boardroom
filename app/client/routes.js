@@ -64,6 +64,7 @@ function handleData(){
 			MembershipRegistry: MembershipRegistry.at('0x76a0c7c1e0ff23563feef74dd783a3d20fa3b26a'),
 			NameReg: NameReg.at('0x7b4e7bd50b540ecc0b75e912b9524b02e0f95fdd'),
 			HashRegistry: HashRegistry.at('0xbecb6851a8a1208b84468ec8ee9e4f437386c655'),
+			PersonaRegistry: PersonaRegistry.at('0x875802d6c54ffd4d2977a6fb6773579c891b0053'),
 		},
 		defaultArticles: {
 			Proposals: 0, //Processor: 1, 
@@ -265,6 +266,13 @@ Router.route('/namereg', {
     name: 'namereg',
 });
 
+// Route to persona manager
+Router.route('/persona', {
+    template: 'views_persona',
+    layoutTemplate: 'layout_main',
+    name: 'persona',
+});
+
 // Route to about manager
 Router.route('/about', {
     template: 'views_about',
@@ -347,6 +355,13 @@ Router.route('/boardroom/:_boardroom/stats', {
 // Route to a boardrooms namereg
 Router.route('/boardroom/:_boardroom/namereg', {
     template: 'views_namereg',
+    layoutTemplate: 'layout_boardroom',
+    data: handleData,
+});
+
+// Route to a boardrooms namereg
+Router.route('/boardroom/:_boardroom/persona', {
+    template: 'views_persona',
     layoutTemplate: 'layout_boardroom',
     data: handleData,
 });

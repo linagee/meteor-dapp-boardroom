@@ -1,0 +1,115 @@
+<template name="views_persona">
+    <h2>
+        Persona - Identity Management System
+    </h2>
+    
+    <p class="description description-namereg">Here you can create a Persona standard IPFS repository. This will hold your new Persona's identity information.</p>
+	
+	<label>Persona Registry Address</label>
+    
+	<strong>{{personaAddress}}</strong>
+	
+	<hr />
+	
+	<h4>Build Persona Repository</h4>
+	
+	<label>Persona Name</label>
+	
+	<input type="text" class="form-control" id="persona-name" placeholder="i.e. Bob" />
+	
+	<label>Photo URL</label>
+	
+	<input type="text" class="form-control" id="persona-image-content-url" placeholder="i.e. http://someurl" />
+	
+    <hr class="spacer no-margin-bottom" />
+	
+	{{#with TemplateVar.get 'state'}}    
+        {{#if isUndeployed}}
+			<button class="btn btn-default 
+						   btn-deploy">
+				<i class="glyphicon glyphicon-plus text-info"></i>
+				Deploy Repository
+			</button>
+        {{/if}}
+	
+        {{#if isDeploying}}
+        <div class="alert alert-info" role="alert">
+            This may take a minute or two.
+            
+            <span class="badge">
+                <i class="fa fa-cog fa-spin"></i>
+            </span>
+        </div>
+        {{/if}}
+    
+        {{#if isSuccess}}
+			{{#with TemplateVar.get 'personaRegistryState'}}
+				{{#if isUndeployed}}
+					<div class="alert alert-success" role="alert">
+						Your Persona repository has been deployed to IPFS hash: {{../ipfsHash}}
+					</div>
+	
+					<label>Your Current Address</label>
+	
+					{{selectedAddress}}
+	
+					<br /><br />
+	
+					<button class="btn btn-default 
+								   btn-register-persona">
+						<i class="glyphicon glyphicon-plus text-info"></i>
+						Set As Your Persona
+					</button>
+				{{/if}}
+
+				{{#if isDeploying}}
+				<div class="alert alert-info" role="alert">
+					This may take a minute or two.
+
+					<span class="badge">
+						<i class="fa fa-cog fa-spin"></i>
+					</span>
+				</div>
+				{{/if}}
+
+				{{#if isSuccess}}
+				<div class="alert alert-success" role="alert">
+					Your Persona has been registered with this hash: {{ipfsHash}} at this address: {{selectedAddress}}
+				</div>
+				{{/if}}
+
+				{{#if isError}}
+				<div class="alert alert-warning" role="alert">    
+					The error was: {{error}}
+				</div>
+				{{/if}}
+			{{/with}}
+        {{/if}}
+    
+        {{#if isError}}
+        <div class="alert alert-warning" role="alert">    
+            The error was: {{error}}
+        </div>
+        {{/if}}
+    {{/with}}
+	
+	<hr />
+	
+	<h4>Persona Lookup</h4>
+	
+	<label>Account Address</label>
+	
+	<input type="text" class="form-control" id="persona-address" placeholder="i.e. Persona Address" />
+	
+	<br /><br />
+	
+	<button class="btn btn-default 
+				   btn-lookup-persona">
+		<i class="glyphicon glyphicon-plus text-info"></i>
+		Lookup Persona
+	</button>
+	
+	{{#if TemplateVar.get 'personaLookup'}}
+		
+	{{/if}}
+</template>

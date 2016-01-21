@@ -17,6 +17,8 @@ Template['views_newProposal'].rendered = function(){
 	objects.defaultComponents.Voting.canTable(boardroomInstance.address, 1, web3.eth.defaultAccount, function(err, result){
 		console.log('can table', err, result);
 	});
+	
+	console.log(abi.rawEncode('someMethod', ["bytes"], [ new Buffer(ipfs.base58ToHex('QmVJ9DRyHmtPgHGERC7LGMkCFXWjoC89phefa9GYuHXNTz')) ]));
 };
 
 Template['views_newProposal'].helpers({
@@ -38,8 +40,16 @@ Template['views_newProposal'].helpers({
             $('.datetimepicker').datetimepicker();
         }, 300);
     },
-	'methodHash': function(value){
+	'hashOfMethod': function(value){
+		console.log(value);
+		
 		return '0x' + String(web3.sha3(value)).slice(0, 8);
+	},
+	'personaAddress': function(){
+		return LocalStore.get('personaAddress');	
+	},
+	'boardroomAddress': function(){
+		return boardroomInstance.address;	
 	},
 	'methodProcessorHash': function(kind){
 		//return objects.defaultComponents.Processor.methodName(kind);
@@ -143,17 +153,16 @@ Template['views_newProposal'].events({
 				if(dataType == "address")
 					dataParsedValue = new ethABI.BN(ethUTIL.stripHexPrefix(dataValue), 16);
 				
-				//if(dataType == "uint")
-				//	dataParsedValue = new ethABI.BN(, 16);
+				if(_.has(kindObject.data[d], 'encodeBase58')) {
+					dataParsedValue = new Buffer(ipfs.utils.base58ToHex(dataValue), 'hex');
+					dataValue = '0x' + ipfs.utils.base58ToHex(dataValue);
+				}else{
+					if(dataType == "bytes" || dataType == "string")
+						dataParsedValue =  new Buffer(dataParsedValue);
+				}
 				
-				if(dataType == "bytes" && dataValue == "" || dataValue == 0)
+				if(dataType == "bytes" && (dataValue == "" || dataValue == 0))
 					dataParsedValue =  new Buffer([0]);
-				
-				if(dataType == "bytes")
-					dataParsedValue =  new Buffer(dataParsedValue);
-				
-				if(dataType == "string")
-					dataParsedValue =  new Buffer(dataParsedValue);
 				
 				parsed.push(dataParsedValue);
 				ipfsBlock.raw.push(dataValue);

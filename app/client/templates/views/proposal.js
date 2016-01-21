@@ -17,20 +17,6 @@ Template['views_proposal'].rendered = function(){
 	
 	BoardRoom.importProposal(boardroomInstance.address, objects.params._proposal);
 	
-	//var encoded = ethABI.encode(Standard_Token.abi, "balanceOf(uint256 address)", [ "0x0000000000000000000000000000000000000000" ])
-	
-	//var encoded = ethABI.rawEncode("balanceOf", [ "address" ], [new ethABI.BN("e93cc8f7aa8cd0157df326adcfc7a0b03fd997d9", 16)]);
-	
-	//var hash = ethABI.soliditySHA3(["address", "uint256", "bytes"], [new ethABI.BN(ethUTIL.stripHexPrefix("e93cc8f7aa8cd0157df326adcfc7a0b03fd997d9"), 16), 0, new Buffer([0])]).toString('hex');
-	
-	//console.log(encoded, encoded.toString('hex'), hash, hash.toString('hex'));
-	
-	//BoardRoom.importProposal(boardroomInstance.address, objects.params._proposal);
-	
-	//if(_.isUndefined(proposal))
-	//	Proposals.upsert({boardroom: boardroomInstance.address, id: proposalID}, {boardroom: boardroomInstance.address, id: proposalID});
-		
-    
     /*Meteor.setTimeout(function(){
         $('#pdfContent').empty();
         Helpers.loadPDF('#pdfContent', 1, 'http://crossorigin.me/http://boardroom.to/BoardRoom_WhitePaper.pdf');
@@ -86,6 +72,9 @@ Template['views_proposal'].helpers({
 		else
 			return true;
 	},
+	'hashOfMethod': function(value){
+		return '0x' + String(web3.sha3(value)).slice(0, 8);
+	},
 	'proposal': function(){
 		var proposal = Proposals.findOne({boardroom: boardroomInstance.address, id: objects.params._proposal});
 		
@@ -97,8 +86,6 @@ Template['views_proposal'].helpers({
 			proposalKind = BoardRoom.kinds[proposal.kind];
 		
 		var backup = IPFS_Backup.findOne({boardroom: boardroomInstance.address, proposalID: objects.params._proposal});
-		
-		console.log(proposal);
 		
 		if((_.isUndefined(proposal.ipfsData) 
 			|| proposal.ipfsData == null
@@ -129,17 +116,38 @@ Template['views_proposal'].helpers({
 			proposal.ipfsData.blocks[blockID].value = {raw: value, ether: web3.fromWei(value, 'ether'), kind: BoardRoom.kinds[proposal.kind].value};
 			
 			for(var rawID = 0; rawID < proposal.ipfsData.blocks[blockID].raw.length; rawID++) {
-				var rawData = proposal.ipfsData.blocks[blockID].raw[rawID];
-				rawBlockData.push(rawData);
-				var kind_index = rawID;
+				var rawData = proposal.ipfsData.blocks[blockID].raw[rawID],
+					kind_index = rawID,
+					parseData = rawData;
+				
+				
+				
+				//if(_.has(BoardRoom.kinds[proposal.kind].data[kind_index], 'encoding')
+				//   && BoardRoom.kinds[proposal.kind].data[kind_index].encoding == 'base58')
+				//	rawData = ipfs.utils.base58ToHex(rawData);
+				
+				if(BoardRoom.kinds[proposal.kind].data[kind_index].type == "bytes")
+					rawData = ethUTIL.stripHexPrefix(rawData);
+				
+				if(BoardRoom.kinds[proposal.kind].data[kind_index].type == "bytes"
+				  || BoardRoom.kinds[proposal.kind].data[kind_index].type == "string")
+					rawData = new Buffer(rawData);
 			
 				if(kind_index >= BoardRoom.kinds[proposal.kind].data.length)
 					kind_index = kind_index - BoardRoom.kinds[proposal.kind].data.length;
 				
+				try {
+					if(_.has(BoardRoom.kinds[proposal.kind].data[kind_index], 'encodeBase58'))
+							parseData = ipfs.utils.hexToBase58(parseData.slice(2));
+				}catch(e){}
+					
 				proposal.ipfsData.blocks[blockID].parsed[rawID] = {
 					raw: rawData,
+					parsed: parseData,
 					kind: BoardRoom.kinds[proposal.kind].data[kind_index],
 				};
+				
+				rawBlockData.push(rawData);
 			}
 			
 			var bytecode = new Buffer([0]);

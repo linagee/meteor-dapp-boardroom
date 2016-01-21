@@ -2,7 +2,8 @@
     <a class="list-group-item pointer text-center 
               list-boards-modal {{#if $eq address ../boardroom.address}}selected{{/if}}"
         href="/boardroom/{{address}}">
-        {{> dapp_identicon identity=address class="dapp-normal"}}
+        {{> components_toIcon identity=address class="dapp-normal"}}
+        <!--{{> dapp_identicon identity=address class="dapp-normal"}}-->
         <h6>{{> components_toName address}}</h6>
     </a>
 </template>

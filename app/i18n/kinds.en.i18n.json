@@ -53,6 +53,7 @@
 			"address": {
 				"name": "Board Address",
 				"nameShort": "Address",
+				"isBoardroom": true,
 				"description": "The address of the Board that`s constitution will be amended",
 				"desriptionShort": "The address of the board."
 			},
@@ -88,6 +89,7 @@
 			"address": {
 				"name": "Board Address",
 				"nameShort": "Address",
+				"isBoardroom": true,
 				"description": "The address of the Board thats ownership will be ammended.",
 				"desriptionShort": "The address of the board."
 			},
@@ -123,6 +125,7 @@
 			"address": {
 				"name": "Board Address",
 				"nameShort": "Address",
+				"isBoardroom": true,
 				"description": "The address of the Board thats ownership will be ammended.",
 				"desriptionShort": "The address of the board."
 			},
@@ -271,57 +274,6 @@
 		}
 		, {
 			"id": 7,
-			"code": "delegation",
-			"name": "Vote Delegation",
-			"nameShort": "Delegation",
-			"method": "delegate(address,uint256,address)",
-			"methodShort": "delegate",
-			"description": "Delegate this Boards vote on a specified proposal to another account.",
-			"descriptionShort": "Delegate Board vote.",
-			"cautionLevel": 3,
-			"warning": "While Board vote delegation may not directly affect this Boards funds or constitution, it may effect others.",
-            "icon": "glyphicon glyphicon-move",
-			"abi": ["address","uint256","address"],
-			"data": [
-				{
-					"id": 0,
-					"name": "Board Address",
-					"description": "The address of the Board thats proposal is being voted on.",
-					"descriptionShort": "The address of the Board.",
-					"type": "address",
-					"isAddress": true
-				},
-				{
-					"id": 1,
-					"name": "Proposal ID",
-					"description": "The proposal ID of the proposal that will be voted on.",
-					"descriptionShort": "The proposal ID number.",
-					"type": "uint",
-					"isUint": true
-				},
-				{
-					"id": 2,
-					"name": "Delegation Account",
-					"description": "The account this Boards vote will be delegated too.",
-					"descriptionShort": "The delegation account.",
-					"type": "address",
-					"isAddress": true
-				}
-			],
-			"address": {
-				"name": "Delegation System Address",
-				"nameShort": "Delegation System",
-				"description": "The address of the delegation system.",
-				"desriptionShort": "The address of the delegation system."
-			},
-			"value": {},
-			"estimateGas": {
-				"tabling": "240000",
-				"executing": "150000"
-			}
-		}
-		, {
-			"id": 8,
 			"code": "approve",
 			"name": "Approve Tokens",
 			"nameShort": "Approve",
@@ -364,7 +316,7 @@
 			}
 		}
 		, {
-			"id": 9,
+			"id": 8,
 			"code": "transferFrom",
 			"name": "Transfer Tokens From Account",
 			"nameShort": "Transfer Tokens",
@@ -415,7 +367,7 @@
 			}
 		}
 		, {
-			"id": 10,
+			"id": 9,
 			"code": "transfer",
 			"name": "Transfer Tokens",
 			"nameShort": "Transfer Tokens",
@@ -458,7 +410,7 @@
 			}
 		}
 		, {
-			"id": 11,
+			"id": 10,
 			"code": "reserve",
 			"name": "Reserve Name",
 			"nameShort": "Register Name",
@@ -500,7 +452,7 @@
 			}
 		}
 		, {
-			"id": 12,
+			"id": 11,
 			"code": "setOwner",
 			"name": "Set Name Owner",
 			"nameShort": "Set Name Owner",
@@ -535,6 +487,44 @@
 				"nameShort": "Registry Address",
 				"description": "The address of the name registry system.",
 				"desriptionShort": "The address of the registry system."
+			},
+			"value": {},
+			"estimateGas": {
+				"tabling": "250000",
+				"executing": "150000"
+			}
+		}
+		, {
+			"id": 12,
+			"code": "setPersonaAttributes",
+			"name": "Set Persona",
+			"nameShort": "Set Persona",
+			"method": "setPersonaAttributes(bytes)",
+			"methodShort": "setPersonaAttributes",
+			"description": "Set your persona IPFS hash.",
+			"descriptionShort": "Set your persona IPFS hash.",
+			"cautionLevel": 3,
+			"warning": "--",
+            "icon": "glyphicon glyphicon-user",
+			"abi": ["bytes"],
+			"data": [
+				{
+					"id": 0,
+					"name": "IPFS Hash",
+					"description": "Set the boards main IPFS hash.",
+					"descriptionShort": "The IPFS hash",
+					"type": "bytes",
+					"encoding": "base58",
+					"encodeBase58": true,
+					"isBytes": true
+				}
+			],
+			"address": {
+				"name": "Persona Registry Address",
+				"nameShort": "Persona Address",
+				"description": "The address of the name persona system.",
+				"desriptionShort": "The address of the persona system.",
+				"isPersona": true
 			},
 			"value": {},
 			"estimateGas": {

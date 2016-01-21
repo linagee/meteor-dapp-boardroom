@@ -17,6 +17,10 @@ if(!LocalStore.get('httpProvider'))
 if(!LocalStore.get('nameregAddress'))
     LocalStore.set('nameregAddress', '0xec5eabdc7d40f412726d937784e486ab3a4b037e');
 
+// Set the Default NameReg Contract
+//if(!LocalStore.get('personaAddress'))
+    LocalStore.set('personaAddress', '0x875802d6c54ffd4d2977a6fb6773579c891b0053');
+
 // Set the default unit to ether
 if(!LocalStore.get('ipfsProvider'))
     LocalStore.set('ipfsProvider', "104.131.53.68");
@@ -41,6 +45,9 @@ Meteor.startup(function() {
 	
 	// IPFS Provider
 	ipfs.setProvider({host: LocalStore.get('ipfsProvider'), port: '5001'});
+	
+	//Persona.setIpfsProvider({host: LocalStore.get('ipfsProvider'), port: '5001'});
+	//Persona.setWeb3Provider(LocalStore.get('httpProvider'));
 
     // SET default language
     if(Cookie.get('TAPi18next')) {

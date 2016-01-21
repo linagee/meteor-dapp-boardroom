@@ -88,7 +88,7 @@ contract ProposalSystem {
         Tabled(_board, proposalID, msg.sender);
     }
 	
-	function execute(address _board, uint _proposalID, bytes _transactionBytecode, uint _blockNumber) public {
+	function execute(address _board, uint _proposalID, bytes _transactionBytecode, uint _blockNumber) public { // REMOVE _blockNumber
         Proposal p = proposals[_board][_proposalID];
 		
 		if(p.executed == 0) {

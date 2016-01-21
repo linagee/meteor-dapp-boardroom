@@ -170,13 +170,13 @@
 											{{> dapp_identicon identity=raw class="dapp-small icon proposal-member-icon" style="width: 20px; height: 20px;"}}
 										{{/if}}
 
-										{{raw}}
+										{{parsed}}
 									</h4>
 								</p>
 
 								<p>
 									<small>
-										type: <strong>{{kind.type}}</strong> raw: {{raw}}
+										type: <strong>{{kind.type}}</strong> raw: {{raw}} {{#if kind.encoding}} encoding: {{kind.encoding}} {{/if}}
 									</small>
 								</p>
 							{{/each}}

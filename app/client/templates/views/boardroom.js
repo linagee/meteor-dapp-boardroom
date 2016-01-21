@@ -1,5 +1,5 @@
 Template['views_boardroom'].rendered = function(){
-	Meta.setSuffix(TAPi18n.__("dapp.boardroom.title"));
+	Meta.setSuffix(TAPi18n.__("dapp.boardroom.title"));	
 	
     Meteor.setInterval(function(){
         var sum = function(a, b) { return a + b };     
