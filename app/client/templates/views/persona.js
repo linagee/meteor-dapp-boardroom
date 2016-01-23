@@ -49,25 +49,48 @@ Template['views_persona'].events({
 	},
 	'click .btn-lookup-persona': function(event, template){
 		var address = $('#persona-address').val();
-			
-		objects.defaultComponents.PersonaRegistry.getPersonaAttributes(address, function(err, result){
-			if(err)
-				return TemplateVar.set(template, 'personaLookup', {isError: true, error: String(err)});
-			
-			console.log(result);
-		});
+		
+		
+		try {
+			objects.defaultComponents.PersonaRegistry.getPersonaAttributes(address, function(err, result){
+				try {
+					if(err)
+						return TemplateVar.set(template, 'personaLookup', {isError: true, error: String(err)});
+					
+					console.log(result, result.slice(0), ipfs.utils.hexToBase58(result.slice(0)));
+					
+					if(result == '0x')
+						return TemplateVar.set(template, 'personaLookup', {isError: true, error: 'No persona at this address.'});
+					
+					if(result != '0x')
+						TemplateVar.set(template, 'personaLookup', {hasPersona: true, hash: result});
+				}catch(err){
+					return TemplateVar.set(template, 'personaLookup', {isError: true, error: String(err)});
+				}
+			});
+		}catch(err){
+			return TemplateVar.set(template, 'personaRegistryState', {isError: true, error: String(err)});
+		}
 	},
 	'click .btn-register-persona': function(event, template){
 		TemplateVar.set(template, 'personaRegistryState', {isDeploying: true});
 		
 		var ipfs_hash_base58 = '0x' + ipfs.utils.base58ToHex(ipfs_hash);
 		
-		objects.defaultComponents.PersonaRegistry.setPersonaAttributes(ipfs_hash_base58, {gas: 3000000, from: web3.eth.defaultAccount}, function(err, result){
-			if(err)
-				return TemplateVar.set(template, 'personaRegistryState', {isError: true, error: String(err)});
-			
-			if(result)
-				TemplateVar.set(template, 'personaRegistryState', {isSuccess: true, transactionHash: result});
-		});
+		try {
+			objects.defaultComponents.PersonaRegistry.setPersonaAttributes(ipfs_hash_base58, {gas: 3000000, from: web3.eth.defaultAccount}, function(err, result){
+				try {
+					if(err)
+						return TemplateVar.set(template, 'personaRegistryState', {isError: true, error: String(err)});
+
+					if(result)
+						TemplateVar.set(template, 'personaRegistryState', {isSuccess: true, transactionHash: result});
+				}catch(err){
+					return TemplateVar.set(template, 'personaRegistryState', {isError: true, error: String(err)});
+				}
+			});
+		}catch(err){
+			return TemplateVar.set(template, 'personaRegistryState', {isError: true, error: String(err)});
+		}
 	},
 });

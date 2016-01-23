@@ -11,18 +11,8 @@ A Persona to ICON.
 @constructor
 */
 
-var template;
-
-Template['components_toIcon'].rendered = function(){	
-	template = this;
-	
-	//TemplateVar.set(template, 'persona', {hasPersona: false, address: this.data.identity, htmlClass: this.data['class']});
-};
-
 Template['components_toIcon'].helpers({
 	'persona': function(){
-		console.log(this, Personas.findOne({address: this.identity}));
-		
 		return Personas.findOne({address: this.identity});		
 	},
 	'address': function(){
@@ -30,5 +20,8 @@ Template['components_toIcon'].helpers({
 	},
 	'htmlClass': function(){
 		return this['class'];
+	},
+	'htmlStyle': function(){
+		return this.style;
 	},
 });

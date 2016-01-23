@@ -101,7 +101,7 @@
 	
 	<input type="text" class="form-control" id="persona-address" placeholder="i.e. Persona Address" />
 	
-	<br /><br />
+	<br />
 	
 	<button class="btn btn-default 
 				   btn-lookup-persona">
@@ -109,7 +109,21 @@
 		Lookup Persona
 	</button>
 	
+	<br /><br />
+	
 	{{#if TemplateVar.get 'personaLookup'}}
-		
+		{{#with TemplateVar.get 'personaLookup'}}
+			{{#if isError}}
+			<div class="alert alert-warning" role="alert">    
+				The error was: {{error}}
+			</div>
+			{{/if}}
+	
+			{{#if hasPersona}}	
+			<div class="alert alert-info" role="alert">
+				This address has a persona at hash: {{hash}}
+			</div>
+			{{/if}}
+		{{/with}}
 	{{/if}}
 </template>

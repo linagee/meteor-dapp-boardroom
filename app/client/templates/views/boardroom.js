@@ -31,10 +31,6 @@ Template['views_boardroom'].rendered = function(){
             }
         }
     }, 300);
-	
-	boardroomInstance.addressOfArticle(9, function(err, result){
-		console.log(err, result);
-	});
 };
 
 Template['views_boardroom'].events({
@@ -48,5 +44,8 @@ Template['views_boardroom'].events({
 Template['views_boardroom'].helpers({
 	'board': function(){		
 		return Boards.findOne({address: boardroomInstance.address});	
+	},
+	'selectedAccount': function(){		
+		return web3.eth.defaultAccount;
 	},
 });

@@ -266,8 +266,6 @@ BoardRoom.importProposal = function(board, proposalID){
 			
 			Proposals.update({boardroom: board, id: proposalID}, {$set: updateObject});
 			
-			console.log(proposalID);
-			
 			// UNTESTED!!!
 			function insertVote(voteID){
 				objects.defaultComponents.Proposals.memberOf(board, proposalID, voteID, function(err, member){

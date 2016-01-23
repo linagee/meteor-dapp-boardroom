@@ -115,57 +115,59 @@ Template['views_proposal'].helpers({
 			proposal.ipfsData.blocks[blockID].destination = {raw: addr, kind: BoardRoom.kinds[proposal.kind].address};
 			proposal.ipfsData.blocks[blockID].value = {raw: value, ether: web3.fromWei(value, 'ether'), kind: BoardRoom.kinds[proposal.kind].value};
 			
-			for(var rawID = 0; rawID < proposal.ipfsData.blocks[blockID].raw.length; rawID++) {
-				var rawData = proposal.ipfsData.blocks[blockID].raw[rawID],
-					kind_index = rawID,
-					parseData = rawData;
-				
-				
-				
-				//if(_.has(BoardRoom.kinds[proposal.kind].data[kind_index], 'encoding')
-				//   && BoardRoom.kinds[proposal.kind].data[kind_index].encoding == 'base58')
-				//	rawData = ipfs.utils.base58ToHex(rawData);
-				
-				if(BoardRoom.kinds[proposal.kind].data[kind_index].type == "bytes")
-					rawData = ethUTIL.stripHexPrefix(rawData);
-				
-				if(BoardRoom.kinds[proposal.kind].data[kind_index].type == "bytes"
-				  || BoardRoom.kinds[proposal.kind].data[kind_index].type == "string")
-					rawData = new Buffer(rawData);
-			
-				if(kind_index >= BoardRoom.kinds[proposal.kind].data.length)
-					kind_index = kind_index - BoardRoom.kinds[proposal.kind].data.length;
-				
-				try {
-					if(_.has(BoardRoom.kinds[proposal.kind].data[kind_index], 'encodeBase58'))
-							parseData = ipfs.utils.hexToBase58(parseData.slice(2));
-				}catch(e){}
-					
-				proposal.ipfsData.blocks[blockID].parsed[rawID] = {
-					raw: rawData,
-					parsed: parseData,
-					kind: BoardRoom.kinds[proposal.kind].data[kind_index],
-				};
-				
-				rawBlockData.push(rawData);
-			}
-			
-			var bytecode = new Buffer([0]);
-			
-			if(proposal.kind > 0 && _.isString(proposal.ipfsData.blocks[blockID].bytecode))
-				bytecode = ethABI.rawEncode(proposalKind.methodShort, proposalKind.abi, rawBlockData);
-					
-			var hash = '0x' + ethABI.soliditySHA3(["address", "uint256", "bytes"], [new ethABI.BN(ethUTIL.stripHexPrefix(addr), 16), value, bytecode]).toString('hex');
-			bytecode = bytecode.toString('hex');
-			
-			if(!_.isString(proposal.ipfsData.blocks[blockID].bytecode))
-				proposal.ipfsData.blocks[blockID].bytecode = '0';
-			
-			if(bytecode == proposal.ipfsData.blocks[blockID].bytecode)
-				proposal.ipfsData.blocks[blockID].bytecodeVerified = true;
+			try {
+				for(var rawID = 0; rawID < proposal.ipfsData.blocks[blockID].raw.length; rawID++) {
+					var rawData = proposal.ipfsData.blocks[blockID].raw[rawID],
+						bytecodeData = rawData,
+						kind_index = rawID,
+						parseData = rawData;
 
-			if(hash == proposal.ipfsData.blocks[blockID].hash)
-				proposal.ipfsData.blocks[blockID].hashVerified = true;
+					// Handle Bytes and Encoding
+					if(BoardRoom.kinds[proposal.kind].data[kind_index].type == "bytes"){
+						bytecodeData = ethUTIL.stripHexPrefix(bytecodeData);
+
+						if(_.has(BoardRoom.kinds[proposal.kind].data[kind_index], 'encodeBase58')) {
+							parseData = ipfs.utils.hexToBase58(bytecodeData);
+							bytecodeData = new Buffer(bytecodeData, 'hex');
+						}else{
+							bytecodeData = new Buffer(bytecodeData);
+						}
+					}
+
+					// State Kind Index
+					if(kind_index >= BoardRoom.kinds[proposal.kind].data.length)
+						kind_index = kind_index - BoardRoom.kinds[proposal.kind].data.length;
+
+					// Setup Parsed IPFS blocks for template
+					proposal.ipfsData.blocks[blockID].parsed[rawID] = {
+						raw: rawData,
+						bytecode: bytecodeData,
+						parsed: parseData,
+						kind: BoardRoom.kinds[proposal.kind].data[kind_index],
+					};
+
+					// Push raw data for bytecode recreation
+					rawBlockData.push(bytecodeData);
+				}
+				
+				var bytecode = new Buffer([0]);
+
+				// rebuild bytecode and verify validity
+				if(proposal.kind > 0 && _.isString(proposal.ipfsData.blocks[blockID].bytecode))
+					bytecode = ethABI.rawEncode(proposalKind.methodShort, proposalKind.abi, rawBlockData);
+
+				var hash = '0x' + ethABI.soliditySHA3(["address", "uint256", "bytes"], [new ethABI.BN(ethUTIL.stripHexPrefix(addr), 16), value, bytecode]).toString('hex');
+				bytecode = bytecode.toString('hex');
+
+				if(!_.isString(proposal.ipfsData.blocks[blockID].bytecode))
+					proposal.ipfsData.blocks[blockID].bytecode = '0';
+
+				if(bytecode == proposal.ipfsData.blocks[blockID].bytecode)
+					proposal.ipfsData.blocks[blockID].bytecodeVerified = true;
+
+				if(hash == proposal.ipfsData.blocks[blockID].hash)
+					proposal.ipfsData.blocks[blockID].hashVerified = true;
+			}catch(e){}
 		}
 		
 		return proposal;

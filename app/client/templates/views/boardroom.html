@@ -1,9 +1,7 @@
 <template name="views_boardroom">
     {{#with board}}
 		<div class="row">
-			{{#with accounts 'selected'}}
-				<h3>Welcome, {{> components_toName address}}</h3>
-			{{/with}}
+			<h3>Welcome back, {{> components_toName selectedAccount}}</h3>
 
 			<small class="description description-stats">
 				Here you can get an overview of the boardrooms statistics.

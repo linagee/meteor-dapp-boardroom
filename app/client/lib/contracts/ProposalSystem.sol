@@ -109,6 +109,25 @@ contract ProposalSystem {
         Executed(_board, _proposalID, msg.sender);
 	}
 	
+	function execute2(address _board, uint _proposalID, bytes _transactionBytecode) public { // REMOVE _blockNumber
+        Proposal p = proposals[_board][_proposalID];
+		
+		if(p.executed == 0) {
+			if(!VotingSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Voting))).canExecute(_board, _proposalID, msg.sender))
+				throw;
+		}
+		
+		if(p.data[p.executed] != sha3(p.addr[p.executed], p.value[p.executed], _transactionBytecode)
+			|| (p.executed >= p.data.length))
+			throw;
+		
+		if(p.addr[p.executed] != address(0))
+			BoardRoom(_board).forward(p.addr[p.executed], p.value[p.executed], _transactionBytecode);
+		
+		numExecuted[_board] += 1;
+		p.executed += 1;
+        Executed(_board, _proposalID, msg.sender);
+	}
     
     function checkProposalCode(address _board, uint _proposalID, bytes _transactionBytecode, uint _blockNumber) public constant returns (bool) {
         Proposal p = proposals[_board][_proposalID];
@@ -148,7 +167,24 @@ contract ProposalSystem {
         return p.value[_index];
     }
 	
+    function addressIn(address _board, uint _proposalID, address _addr) public constant returns (bool) {
+        Proposal p = proposals[_board][_proposalID];
+        
+		for(uint blockID = 0; blockID < p.addr.length; blockID++)
+			if(p.addr[blockID] == _addr)
+				return true;
+    }
+	
+	function totalValue(address _board, uint _proposalID) public constant returns (uint) {
+        Proposal p = proposals[_board][_proposalID];
+		uint total = 0;
+        
+		for(uint blockID = 0; blockID < p.addr.length; blockID++)
+			total += p.value[blockID];
 		
+		return total;
+    }
+	
 	function createdAt(address _board, uint _proposalID) public constant returns (uint) {
 		Proposal p = proposals[_board][_proposalID];
         

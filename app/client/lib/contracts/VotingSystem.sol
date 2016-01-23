@@ -1,12 +1,5 @@
 contract BoardRoom {
-	function amendConstitution(uint _article, address _addr){}
-	function transfer_ownership(address _addr) {}
-	function disolve(address _addr) {}
-	function forward(address _destination, uint _value, bytes _transactionBytecode) {}
-	function forward_method(address _destination, uint _value, bytes4 _methodName, bytes32[] _transactionData) {}
-	
 	function addressOfArticle(uint _article) constant returns (address) {}
-	function implementer() constant returns (address) {}
 }
 
 contract StandardToken {
@@ -15,7 +8,6 @@ contract StandardToken {
 }
 
 contract DelegationSystem {
-	function delegatedTo(address _board, uint _proposalID, address _delegator) public returns (address) {}
 	function delegatedFrom(address _board, uint _proposalID, address _delegated, uint _index) public returns (address) {}
 	function totalDelegationsTo(address _board, uint _proposalID, address _delegated) public returns (uint) {}
 	function hasDelegated(address _board, uint _proposalID, address _delegator) public returns (bool) {}
@@ -30,6 +22,8 @@ contract ProposalSystem {
 	function voteCountOf(address _board, uint _proposalID) public constant returns (uint) {}
     function hasVoted(address _board, uint _proposalID, address _member) public constant returns (bool) {}
 	
+	function addressIn(address _board, uint _proposalID, address _addr) public constant returns (bool) {}
+	function totalValue(address _board, uint _proposalID) public constant returns (uint) {}
     function positionOf(address _board, uint _proposalID, uint _voteID) public constant returns (uint) {}
     function memberOf(address _board, uint _proposalID, uint _voteID) public constant returns (address) {}
     function idOf(address _board, uint _proposalID, address _member) public constant returns (uint) {}
@@ -95,9 +89,13 @@ contract VotingSystem {
 			
 			// retrieve delegations
 			if(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Delegation)) != address(0)) {
-				for (uint delegationID = 0; delegationID < DelegationSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Delegation))).totalDelegationsTo(_board, _proposalID, memberAddress); delegationID++) {
-					address del = DelegationSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Delegation))).delegatedFrom(_board, _proposalID, memberAddress, delegationID);
-					delegatedAmount += StandardToken(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Token))).balanceOf(del);
+				for (uint delegationID = 0; 
+				    delegationID < DelegationSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Delegation)))
+				                                                .totalDelegationsTo(_board, _proposalID, memberAddress); 
+				    delegationID++) {
+					delegatedAmount += StandardToken(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Token)))
+					                    .balanceOf(DelegationSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Delegation)))
+					                    .delegatedFrom(_board, _proposalID, memberAddress, delegationID));
 				}
 			}
 			
@@ -116,14 +114,11 @@ contract VotingSystem {
 				voteAgainst += StandardToken(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Token))).balanceOf(memberAddress) + delegatedAmount;
 		}
 		
-		return true;
-		
-		// executive voted against constitutional or budgetary changes
-		if(ProposalSystem(proposalSystem).kindOf(_board, _proposalID) <= 4
-			&& BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Executive)) != address(0)
+		if((ProposalSystem(proposalSystem).addressIn(_board, _proposalID, _board) // affects the board
+			|| ProposalSystem(proposalSystem).totalValue(_board, _proposalID) > 0) // fund release: ether widthrawl
 			&& !executiveFor)
 			return false;
-			
+		
 		// executive voted for
 		//if(executiveFor)
 		//	return true;

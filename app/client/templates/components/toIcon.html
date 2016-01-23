@@ -1,11 +1,9 @@
 <template name="components_toIcon">
 	{{#if persona}}
 		{{#with persona}}
-			<span class="dapp-identicon {{../htmlClass}}" style="background-image: url({{personSchema.image.contentUrl}});"></span>
+			<span class="dapp-identicon {{../class}}" style="background-image: url({{personSchema.image.contentUrl}}); {{../style}}"></span>
 		{{/with}}	
 	{{else}}
-		{{> dapp_identicon identity=address class=htmlClass}}
+		{{> dapp_identicon identity=address class=class style=style}}
 	{{/if}}
-    
-    {{load}}
 </template>
