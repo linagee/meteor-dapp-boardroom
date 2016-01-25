@@ -4,7 +4,7 @@ var transactionObject,
 Template['components_proposalVote'].rendered = function(){
     TemplateVar.set(this, 'state', {});
 	proposal = Proposals.findOne({boardroom: boardroomInstance.address, id: objects.params._proposal});
-
+	
     Meteor.setInterval(function(){
         var sum = function(a, b) { return a + b };  
 		
@@ -38,8 +38,19 @@ Template['components_proposalVote'].events({
             if(err)
                 return TemplateVar.set(template, 'state', {isError: true, error: String(err)});
 			
-        	TemplateVar.set(template, 'state', {isMining: true});
+        	TemplateVar.set(template, 'state', {isMining: true, transactionHash: result});
         });
+		
+		objects.defaultComponents.Proposals.Voted({_board: boardroomInstance.address, _proposalID: objects.params._proposal, _member: web3.eth.defaultAccount}, function(err, result){
+			if(err)
+				return TemplateVar.set(template, 'state', {isError: true, error: String(err)});
+			
+        	TemplateVar.set(template, 'state', {isVoted: true, transactionHash: result.transactionHash});
+			
+			web3.eth.getTransactionReceipt(result.transactionHash, function(err, txResult){
+				TemplateVar.set(template, 'state', {isVoted: true, address: result.address, transactionHash: txResult.transactionHash, cumulativeGasUsed: txResult.cumulativeGasUsed});
+			});
+		});
     },
     
     'click .btn-vote-against': function(event, template){
@@ -75,13 +86,9 @@ Template['components_proposalVote'].events({
 			throw "proposal not defined";
 		
 		for(var block_number = 0; block_number < proposal.numAddresses; block_number++){	
-			console.log(proposal);
-			
 			var bytecode = '0x' + proposal.ipfsData.blocks[block_number].bytecode; // PROBLEM HERE!
 			
-			console.log(block_number, bytecode);
-			
-			objects.defaultComponents.Proposals.execute.sendTransaction(boardroomInstance.address, objects.params._proposal, bytecode, block_number,
+			objects.defaultComponents.Proposals.execute.sendTransaction(boardroomInstance.address, objects.params._proposal, bytecode,
 										{from: web3.eth.defaultAccount,
 										 gas: 3000000},
 								   function(err, result){
@@ -97,20 +104,6 @@ Template['components_proposalVote'].events({
 Template['components_proposalVote'].helpers({
     'refresh': function(){
         TemplateVar.set('state', {});
-        
-        /*Proposals.import(boardroomInstance.address, objects.proposal.id);
-        
-        boardroomInstance.hasWon.call(objects.proposal.id, function(err, hasWon){
-            if(err)
-                console.log('err', err);
-            
-            Proposals.update(Proposals.findOne({
-                boardroom: boardroomInstance.address, 
-                id: objects.proposal.id
-            })._id, {
-                $set: {hasWon: hasWon}
-            });
-        });*/
     },
     
     'update': function(){   

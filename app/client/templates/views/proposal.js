@@ -17,6 +17,8 @@ Template['views_proposal'].rendered = function(){
 	
 	BoardRoom.importProposal(boardroomInstance.address, objects.params._proposal);
 	
+	console.log(Proposals.find({boardroom: boardroomInstance.address}).fetch());
+	
     /*Meteor.setTimeout(function(){
         $('#pdfContent').empty();
         Helpers.loadPDF('#pdfContent', 1, 'http://crossorigin.me/http://boardroom.to/BoardRoom_WhitePaper.pdf');
@@ -42,8 +44,6 @@ Template['views_proposal'].events({
 			objects.defaultComponents.HashRegistry.register(boardroomInstance.address, proposalID, IPFS_hash, txObject, function(err, registryTransactionHash){
 				if(err)
 					return TemplateVar.set(template, 'ipfs-state', {isError: true, error: String(err)});
-				
-				console.log(registryTransactionHash);
 
 				TemplateVar.set(template, 'ipfs-state', {isRegisteringHash: true, transactionHash: registryTransactionHash});
 			});
@@ -51,8 +51,6 @@ Template['views_proposal'].events({
 			objects.defaultComponents.HashRegistry.Registered({_board: boardroomInstance.address, _proposalID: proposalID}, function(err, result){
 				if(err)
 					return TemplateVar.set(template, 'ipfs-state', {isError: true, error: String(err)});
-				
-				console.log(result);
 
 				TemplateVar.set(template, 'ipfs-state', {isMined: true, proposalID: proposalID, registryTransactionHash: registryTransactionHash, IPFS_hash: IPFS_hash});
 			});

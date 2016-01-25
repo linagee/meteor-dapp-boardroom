@@ -1,6 +1,14 @@
 Template['views_boardroom'].rendered = function(){
 	Meta.setSuffix(TAPi18n.__("dapp.boardroom.title"));	
 	
+	/*ProposalSystem.new({data: ProposalSystem.bytecode, from: web3.eth.defaultAccount, gas: 3000000}, function(err, result){
+		console.log('prop system', err, result);
+	});
+	
+	VotingSystem.new({data: VotingSystem.bytecode, from: web3.eth.defaultAccount, gas: 3000000}, function(err, result){
+		console.log('voting system', err, result);
+	});*/
+	
     Meteor.setInterval(function(){
         var sum = function(a, b) { return a + b };     
 		var board = Boards.findOne({address: boardroomInstance.address});

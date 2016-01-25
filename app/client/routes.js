@@ -56,8 +56,8 @@ function handleData(){
         middleware: {},
         kind: {},
 		defaultComponents: {
-			Proposals: ProposalSystem.at('0x3dfdda4a51df0ebbb6d69587ed1b73f3b8d2ef3c'), //Processor: ProcessingSystem.at('0xfbb865ecbfc55fd7947fa1465b97949a04de3bca'),
-			Voting: VotingSystem.at('0xe188d75cbcc0f73ede25b726526485bbd3cb28c8'),
+			Proposals: ProposalSystem.at('0xc6d8ba9a20691157089cbbf4bb47d626f3e2539a'), //Processor: ProcessingSystem.at('0xfbb865ecbfc55fd7947fa1465b97949a04de3bca'),
+			Voting: VotingSystem.at('0xef17cbc0b01926f6b8895882036fa0711d0a16fd'),
 			Membership: MembershipSystem.at('0xe140c922bf5aab4df115f3d1bc05e4c9dda93591'),
 			Delegation: DelegationSystem.at('0x9131ba36d8ffc5b95c7f0819cae8d8559d80f2f2'),
 			Family: FamilySystem.at('0x710596fd51f28f5d6110b5401015326d05abcd42'),

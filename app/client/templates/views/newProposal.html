@@ -9,64 +9,6 @@
         <p class="description description-new-proposal">Here you can build and table a new proposal.</p>
         
         <hr class="spacer" />
-        
-        {{#with TemplateVar.get 'state'}}
-            {{#if isTabling}}
-            <div class="alert alert-info">
-                Your proposal is being processed...
-                <i class="fa fa-spinner fa-pulse"></i>
-            </div>
-            {{/if}}
-		
-			 {{#if isAddingIPFS}}
-            <div class="alert alert-info">
-                Your proposal data is being stored on IPFS for proposal #{{proposalID}}
-                <i class="fa fa-spinner fa-pulse"></i>
-            </div>
-            {{/if}}
-		
-			 {{#if isIPFSAdded}}
-            <div class="alert alert-info">
-                Your proposal data will be stored at this IPFS hash: {{hash}}
-                <i class="fa fa-spinner fa-pulse"></i>
-            </div>
-            {{/if}}
-		
-			 {{#if isRegisteringHash}}
-            <div class="alert alert-info">
-                Your IPFS hash is being registered on the proposal hash registry with transaction hash: {{transactionHash}}
-                <i class="fa fa-spinner fa-pulse"></i>
-            </div>
-            {{/if}}
-        
-            {{#if isError}}
-            <div class="alert alert-warning">
-                There was an error processing your proposal.. {{error}}
-            </div>
-            {{/if}}
-        
-            {{#if isMined}}
-            <div class="alert alert-success">
-                Your proposal has been tabled!
-
-				<br /><br />
-				<label>IPFS Hash</label>
-				{{IPFS_hash}}
-				
-				<br /><br />
-				<label>Table Transaction Hash</label>
-				{{tableTransactionHash}}
-				
-				<br /><br />
-				<label>Registry Transaction Hash</label>
-				{{registryTransactionHash}}
-				
-				<br /><br />
-				<label>Proposal ID#</label>
-				{{proposalID}}
-            </div>
-            {{/if}}
-        {{/with}}
 
         <ul class="list-group list-new-proposal">
             <li class="list-group-item">
@@ -128,11 +70,20 @@
 					Title
 				</label>
 				<p class="description description-proposal-name">
-					Let other Board members know what this proposal will do.
+					Let other Board members know what this proposal is called.
 				</p>
 				<input type="text" class="form-control" 
 					   id="proposalName"
-					   placeholder="i.e. Send Funds to Bob"/>
+					   placeholder="i.e. Send Funds to Treasury"/>
+			</li>
+			<li class="list-group-item">
+				<label>
+					Description
+				</label>
+				<p class="description description-proposal-name">
+					Let other Board members know what this proposal will do.
+				</p>
+				<textarea class="form-control" id="proposalDescription" placeholder="i.e. These funds will be used for..."></textarea>
 			</li>
 			
 			{{#each TemplateVar.get 'dataChunks'}}
@@ -229,8 +180,19 @@
 						</p>
 						<input type="text" class="form-control" 
 							   id="proposalValue_{{chunkID}}"
+							   value="0"
 							   placeholder="i.e. 4500"/>
 					</li>
+
+					<!--<li class="list-group-item">
+						<label>
+							Description
+						</label>
+						<p class="description description-proposal-name">
+							Tell the Board what this transaction block will do. Plase note, this will not be stored in any way on the blockchain.
+						</p>
+						<textarea class="form-control" id="proposalDescription_{{chunkID}}" placeholder="i.e. Send funds..."></textarea>
+					</li>-->
 					
 					<br class="clear" />
 				</div>
@@ -294,22 +256,98 @@
             <li class="list-group-item">
                 <ul class="list-group list-inline 
                            list-menu-nav text-right">
-                    <li class="list-group-item">
-                        <button class="btn btn-default
-                                       btn-reset"
-                                id="proposalTable">
-                            Reset
-                        </button>
-                    </li>
-                    <li class="list-group-item">
-                        <button class="btn btn-default 
-                                       btn-table">
-                            <i class="glyphicon glyphicon-file"></i>
-                            Table Proposal
-                        </button>
-                    </li>
+					{{#with TemplateVar.get 'userStatus'}}
+						{{#if canTable}}
+							<li class="list-group-item">
+								<button class="btn btn-default
+											   btn-reset"
+										id="proposalTable">
+									Reset
+								</button>
+							</li>
+							<li class="list-group-item">
+								<button class="btn btn-default 
+											   btn-table">
+									<i class="glyphicon glyphicon-file"></i>
+									Table Proposal
+								</button>
+							</li>
+						{{else}}
+							<li class="list-group-item">
+            					<div class="alert alert-warning">
+									You are not allowed to table proposals at this time.
+								</div>
+							</li>
+							<li class="list-group-item">
+								<button class="btn bg-muted">
+									<i class="glyphicon glyphicon-close"></i>
+									Table Proposal
+								</button>
+							</li>
+						{{/if}}
+					{{/with}}
                 </ul>
             </li>
+		
+            <li class="list-group-item">
+			{{#with TemplateVar.get 'state'}}
+				{{#if isTabling}}
+				<div class="alert alert-info">
+					Your proposal is being processed...
+					<i class="fa fa-spinner fa-pulse"></i>
+				</div>
+				{{/if}}
+
+				 {{#if isAddingIPFS}}
+				<div class="alert alert-info">
+					Your proposal data is being stored on IPFS for proposal #{{proposalID}}
+					<i class="fa fa-spinner fa-pulse"></i>
+				</div>
+				{{/if}}
+
+				 {{#if isIPFSAdded}}
+				<div class="alert alert-info">
+					Your proposal data will be stored at this IPFS hash: {{hash}}
+					<i class="fa fa-spinner fa-pulse"></i>
+				</div>
+				{{/if}}
+
+				 {{#if isRegisteringHash}}
+				<div class="alert alert-info">
+					Your IPFS hash is being registered on the proposal hash registry with transaction hash: {{transactionHash}}
+					<i class="fa fa-spinner fa-pulse"></i>
+				</div>
+				{{/if}}
+
+				{{#if isError}}
+				<div class="alert alert-warning">
+					There was an error processing your proposal.. {{error}}
+				</div>
+				{{/if}}
+
+				{{#if isMined}}
+				<div class="alert alert-success">
+					Your proposal has been tabled!
+
+					<br /><br />
+					<label>IPFS Hash</label>
+					{{IPFS_hash}}
+
+					<br /><br />
+					<label>Table Transaction Hash</label>
+					{{tableTransactionHash}}
+
+					<br /><br />
+					<label>Registry Transaction Hash</label>
+					{{registryTransactionHash}}
+
+					<br /><br />
+					<label>Proposal ID#</label>
+					{{proposalID}}
+				</div>
+				{{/if}}
+			{{/with}}
+			</li>
 		{{/with}}
 	</div>
 </template>

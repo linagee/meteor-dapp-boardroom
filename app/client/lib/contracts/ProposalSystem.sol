@@ -72,6 +72,7 @@ contract ProposalSystem {
 	function table(address _board, string _name, uint _kind,
 				bytes32[] _data, uint[] _value, address[] _addr) public {			
 		if(!VotingSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Voting))).canTable(_board, _kind, msg.sender)
+			|| _data.length != _addr.length
 			|| _addr.length != _value.length)
 			throw;
 			
@@ -88,28 +89,7 @@ contract ProposalSystem {
         Tabled(_board, proposalID, msg.sender);
     }
 	
-	function execute(address _board, uint _proposalID, bytes _transactionBytecode, uint _blockNumber) public { // REMOVE _blockNumber
-        Proposal p = proposals[_board][_proposalID];
-		
-		if(p.executed == 0) {
-			if(!VotingSystem(BoardRoom(_board).addressOfArticle(uint(DefaultArticles.Voting))).canExecute(_board, _proposalID, msg.sender))
-				throw;
-		}
-		
-		if(p.data[_blockNumber] != sha3(p.addr[_blockNumber], p.value[_blockNumber], _transactionBytecode)
-			|| (_blockNumber != p.executed)
-			|| (_blockNumber >= p.data.length))
-			throw;
-		
-		if(_blockNumber == p.data.length - 1)
-			numExecuted[_board] += 1;
-			
-		p.executed = _blockNumber + 1;
-		BoardRoom(_board).forward(p.addr[_blockNumber], p.value[_blockNumber], _transactionBytecode);
-        Executed(_board, _proposalID, msg.sender);
-	}
-	
-	function execute2(address _board, uint _proposalID, bytes _transactionBytecode) public { // REMOVE _blockNumber
+	function execute(address _board, uint _proposalID, bytes _transactionBytecode) public { // REMOVE _blockNumber
         Proposal p = proposals[_board][_proposalID];
 		
 		if(p.executed == 0) {
@@ -118,7 +98,7 @@ contract ProposalSystem {
 		}
 		
 		if(p.data[p.executed] != sha3(p.addr[p.executed], p.value[p.executed], _transactionBytecode)
-			|| (p.executed >= p.data.length))
+			|| (p.executed >= p.addr.length))
 			throw;
 		
 		if(p.addr[p.executed] != address(0))

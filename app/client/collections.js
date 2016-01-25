@@ -5,27 +5,22 @@
 // A collection for board room proposals
 Proposals = new Mongo.Collection('proposals', {connection: null});
 new PersistentMinimongo(Proposals);
-new BoardRoom.ProposalsMinimongo(Proposals);
 
 // A collection for BoardRoom boards to be stored
 Boards = new Mongo.Collection('boards', {connection: null});
 new PersistentMinimongo(Boards);
-new BoardRoom.BoardsMinimongo(Boards);
 
 // A collection for board members
 Members = new Mongo.Collection('members', {connection: null});
 new PersistentMinimongo(Members);
-new BoardRoom.MembersMinimongo(Members);
 
 // A collection for board subcommittees (or children)
 Children = new Mongo.Collection('children', {connection: null});
 new PersistentMinimongo(Children);
-new BoardRoom.ChildrenMinimongo(Children);
 
 // A collection for board delegations
 Delegations = new Mongo.Collection('delegations', {connection: null});
 new PersistentMinimongo(Delegations);
-new BoardRoom.DelegationsMinimongo(Delegations);
 
 // A collection for BoardRoom middleware
 Middleware = new Mongo.Collection('middlware', {connection: null});
