@@ -26,12 +26,3 @@ Start the app using BoardRoom
 
     $ cd meteor-dapp-boardroom/app
     $ meteor
-    
-# Todo
-
-- Subcommittee MongoDB
-- Proposal Data Handling
-- Whisper Comms
-- Budget Testing
-- Swarm Integration
-- Middleware Display

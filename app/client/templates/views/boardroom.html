@@ -23,7 +23,7 @@
 				</li>
 				<li class="list-group-item">
 					<strong>{{tokenSupply}}</strong> 
-					<span>Total Voting Shares</span>
+					<span>Voting Shares</span>
 				</li>
 			</ul>
 		</div>
@@ -37,21 +37,11 @@
 		<p class="info info-address">
 			{{chair}}
 		</p>
-
-		<hr />
-
-		<h3>Executive</h3>
-
-		<label>{{> components_toName executive}} </label>
-
-		<p class="info info-address">
-			{{executive}}
-		</p>
-
+        
 		<hr />
     
 		{{#if numProposals}}
-        <h3>Proposal Stats</h3>
+        <h3>Proposals</h3>
 
         <br>
 
@@ -66,7 +56,6 @@
                     <strong>{{numExecuted}}</strong> 
                     <span>Executed</span>
                 </li>
-                <hr class="list-group-item" />
                 <li class="list-group-item">
                     of <strong>{{numProposals}}</strong> 
                     <span>proposals</span>
@@ -76,6 +65,16 @@
     
 		<hr />
 		{{/if}}
+
+		<h3>Executive</h3>
+
+		<label>{{> components_toName executive}} </label>
+
+		<p class="info info-address">
+			{{executive}}
+		</p>
+
+		<hr />
 
 		<h3>Details</h3>
 

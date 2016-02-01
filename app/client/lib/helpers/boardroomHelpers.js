@@ -80,13 +80,18 @@ BoardRoom.importProposal = function(board, proposalID){
 				if(err || result == "")
 					return;
 				
-				var updateObject = {ipfsHash: result};
+				try {
+					var updateObject = {ipfsHash: result};
 
-				ipfs.catJson(updateObject.ipfsHash, function(err, result){
-					updateObject.ipfsData = result;
+					ipfs.catJson(updateObject.ipfsHash, function(err, result){				
+						
+						try {
+							updateObject.ipfsData = result;
 
-					Proposals.update({boardroom: board, id: proposalID}, {$set: updateObject});
-				});
+							Proposals.update({boardroom: board, id: proposalID}, {$set: updateObject});
+						}catch(e){console.log(e);}
+					});
+				}catch(e){console.log(e);}
 			});
 		}catch(e){console.log(e);}
 		

@@ -91,12 +91,22 @@
 					Against
 				</button>
 			</li>
+			<li class="list-group-item text-muted">
+				|
+			</li>
 			<li class="list-group-item">
 				<button class="btn btn-vote btn-vote-abstain" 
 						data-type="3">
 					<i class="glyphicon glyphicon-share-alt" data-type="1"></i>
 					Delegate
 				</button>
+			</li>
+			<li class="list-group-item">
+				<select id="select-delegation-account" class="form-control" style="margin-top: 3px; height: 35px;">
+					{{#each registeredMembers}}
+						<option value="{{address}}">{{> components_toName address}}</option>
+					{{/each}}
+				</select>
 			</li>
 			{{/if}}
 		{{/unless}}

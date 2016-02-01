@@ -33,6 +33,49 @@
         </li>
     </ul>
 	
+    <hr />
+	
+	<label>Account Address</label>
+	<input type="text" class="form-control" id="token-address" placeholder="Address" />
+	
+	<label>Amount to Send</label>
+	<input type="text" class="form-control" id="token-amount" placeholder="Amount" />
+	
+	<br />
+    
+    <ul class="list-group list-members-nav list-inline">
+        <li class="list-group-item">
+            <a id="transfer-tokens"
+               class=" btn btn-default">
+                Transfer Tokens To Account
+            </a>
+        </li>
+    </ul>
+	
+	<br />
+	
+	{{#with TemplateVar.get 'token-state'}}
+		{{#if isError}}
+			<div class="alert alert-warning">
+				Your token transfer encountered an error: {{error}}
+				<i class="fa fa-spinner fa-pulse"></i>
+			</div>
+		{{/if}}
+	
+		{{#if isMining}}
+			<div class="alert alert-info">
+				Your token transfer is underway at transaction hash: {{transactionHash}}
+				<i class="fa fa-spinner fa-pulse"></i>
+			</div>
+		{{/if}}
+	
+		{{#if isMined}}
+			<div class="alert alert-success">
+				Token transfer successful.
+			</div>
+		{{/if}}
+	{{/with}}
+	
 	{{#with TemplateVar.get 'balanceCheck'}}
         <div class="alert alert-info">
             The balance for this account is: <strong>{{balance}}</strong>

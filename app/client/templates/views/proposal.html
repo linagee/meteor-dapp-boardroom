@@ -59,8 +59,18 @@
 						<i class="glyphicon glyphicon-remove text-warning"></i>
 					{{/if}}-->
 				</li>
+	
+				<br /><br />
+
+				<p class="list-group-item" style="line-height: 24px; border-radius: 4px; border: 1px solid #F1F1F1;">
+					<label>Description</label>
+
+					{{#with ipfsData}}
+						{{description}}
+					{{/with}}
+				</p>
 				
-                <hr class="spacer" />
+				<br />
 				
 				{{#if ipfsHash}}
 				<li class="list-group-item" style="border-radius: 4px; border: 1px solid #F1F1F1;">
@@ -115,7 +125,7 @@
 			
 							{{#if isMined}}
 							<div class="alert alert-success">
-								Your proposal has been tabled!
+								Your ipfs data has been registered for this proposal!
 
 								<br /><br />
 								<label>IPFS Hash</label>
@@ -123,7 +133,7 @@
 
 								<br /><br />
 								<label>Registry Transaction Hash</label>
-								{{registryTransactionHash}}
+								{{transactionHash}}
 							</div>
 							{{/if}}
 						{{/with}}

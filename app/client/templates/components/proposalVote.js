@@ -105,6 +105,10 @@ Template['components_proposalVote'].helpers({
     'refresh': function(){
         TemplateVar.set('state', {});
     },
+	
+	'registeredMembers': function(){
+		return Members.find({boardroom: boardroomInstance.address});
+	},
     
     'update': function(){   
     },

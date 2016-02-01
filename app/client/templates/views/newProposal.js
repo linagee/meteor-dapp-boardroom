@@ -42,6 +42,15 @@ Template['views_newProposal'].helpers({
 		return BoardRoom.kinds;	
 	},
 });
+		
+ethUTIL.escapeSpecialChars = function(jsonString) {
+	return jsonString.replace(/\n/g, "\\n")
+		.replace(/\r/g, "\\r")
+		.replace(/\t/g, "\\t")
+		.replace(/\0/g, "")
+		.replace(/[^\x00-\x7F]/g, "")
+		.replace(/\f/g, "\\f");
+}
 
 Template['views_newProposal'].events({
     'click .btn-data-compress': function(event, template){
@@ -82,11 +91,14 @@ Template['views_newProposal'].events({
     },
     
     'click .btn-table': function(event, template){
+		TemplateVar.set(template, 'state', {isTabling: true});
+		
+		
 		try {
 			var kind = parseInt($('#proposalKind').val()),
 				kindObject = BoardRoom.kinds[kind],
 				dataSize = kindObject.data.length,
-				name = String($('#proposalName').val()),
+				name = ethUTIL.escapeSpecialChars(String($('#proposalName').val())),
 				proposalBytecode = String($('#proposalBytecode').val()),
 				transactionBytecode = '',
 				chunks = TemplateVar.get(template, 'dataChunks'),
@@ -99,7 +111,7 @@ Template['views_newProposal'].events({
 					board: boardroomInstance.address,
 					member: web3.eth.defaultAccount,
 					kind: kind,
-					description: String($('#proposalDescription').val()),
+					description: ethUTIL.escapeSpecialChars(String($('#proposalDescription').val()).replace(/[^\u0000-\u007E]/g, "")),
 					method: kindObject.method,
 					abi: kindObject.abi,
 					blocks: [],
@@ -112,7 +124,7 @@ Template['views_newProposal'].events({
 			for(var c = 0; c < chunks.length; c++){
 				var chunk_id = chunks[c].chunkID,
 					address = $('#proposalAddress_' + chunk_id).val(),
-					value = parseInt($('#proposalValue_' + chunk_id).val()),
+					value = web3.toWei(parseInt($('#proposalValue_' + chunk_id).val()), 'ether'),
 					parsed = [],
 					ipfsBlock = {
 						bytecode: 0,
@@ -165,6 +177,8 @@ Template['views_newProposal'].events({
 				ipfsData.blocks.push(ipfsBlock);
 				dataArray.push(ipfsBlock.hash);
 			}
+			
+			console.log('value array', valueArray);
 
 			ipfs.cat('Qmc7CrwGJvRyCYZZU64aPawPj7CJ56vyBxdhxa38Dh1aKt', function(err, result){
 				if(err)

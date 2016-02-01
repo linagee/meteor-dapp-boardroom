@@ -57,7 +57,7 @@ Template['views_persona'].events({
 					if(err)
 						return TemplateVar.set(template, 'personaLookup', {isError: true, error: String(err)});
 					
-					console.log(result, result.slice(0), ipfs.utils.hexToBase58(result.slice(0)));
+					console.log(result, result.slice(0), ipfs.utils.hexToBase58(result.slice(2)));
 					
 					if(result == '0x')
 						return TemplateVar.set(template, 'personaLookup', {isError: true, error: 'No persona at this address.'});
